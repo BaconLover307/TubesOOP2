@@ -1,4 +1,5 @@
-package cards;
+package com.avatarduel.model.cards;
+import com.avatarduel.model.Element;
 
 public class CharacterCard extends Card {
 
@@ -8,7 +9,13 @@ public class CharacterCard extends Card {
     int powVal;
 
     // method
-    public int getAttackVal() {return this.attVal;}
-    public int getDefenseVal() {return this.defVal;}
-    public int getPowerVal() {return this.powVal;}
+    public CharacterCard(String name, Element element, String description, int attack, int defense, int power){
+        super(name,element,description);
+        this.attVal = attack;
+        this.defVal = defense;
+        this.powVal = power;
+    }
+    public int getAttack() {return this.attVal;}
+    public int getDefense() {return this.defVal;}
+    public int getPower() {return this.powVal;}
 }
