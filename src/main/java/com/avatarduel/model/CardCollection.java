@@ -1,4 +1,6 @@
+package com.avatarduel.model;
 import java.util.ArrayList;
+import com.avatarduel.model.cards.Card;
 
 public class CardCollection {
     protected ArrayList<Card> contents;

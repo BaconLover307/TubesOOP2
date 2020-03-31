@@ -1,10 +1,10 @@
 package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
 
-public class DestroyCard extends SkillCard {
+public class Destroy extends Skill {
 
     //method
-    public DestroyCard(String name, Element element,String description, int power) {
+    public Destroy(String name, Element element,String description, int power) {
         super(name,element,description,power);
     }
     public void useSkill() {

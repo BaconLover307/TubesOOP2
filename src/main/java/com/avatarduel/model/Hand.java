@@ -1,4 +1,6 @@
+package com.avatarduel.model;
 import java.util.ArrayList;
+import com.avatarduel.model.cards.Card;
 
 public class Hand extends CardCollection {
 
@@ -7,7 +9,7 @@ public class Hand extends CardCollection {
     }
 
     public int findCard(String name){
-        i = 0;
+        int i = 0;
 
         while ((i < this.getSize()) && (!this.contents.get(i).getName().equals(name))){
             i++;
@@ -15,18 +17,20 @@ public class Hand extends CardCollection {
         if (this.contents.get(i).getName().equals(name)){
             return i;
         } else {
-            return null;
+            // return null;
+            return -999;
         }
     }
 
 	public Card useCard(String name){
         int index = findCard(name);
         
-        if(index == null){
+        //if(index == null)
+        if(index == -999){
             return null;
 
         } else {
-            Card C = this.contents.get(i);
+            Card C = this.contents.get(index); // you meant index CMIIW
             this.contents.remove(C);
             return C;
         }
