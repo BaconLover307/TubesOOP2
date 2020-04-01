@@ -45,7 +45,7 @@ public class LandCollection extends CardCollection {
         } else if (L.getElement() == Element.EARTH){
             this.earthPower++;
         }
-        this.addCard(L);
+        this.contents.add(L);
     }
 /*
     public void displayPower(){

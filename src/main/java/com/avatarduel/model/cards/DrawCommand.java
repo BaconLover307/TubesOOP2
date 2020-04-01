@@ -22,7 +22,7 @@ public class DrawCommand implements CommandBase {
             System.out.println("Lost via Deck-out");
         } else {
             Card c = d.drawCard();
-            h.addCard(c);
+            h.add(c);
         }
     }
     /*

@@ -15,10 +15,10 @@ public class Deck extends CardCollection {
         Card cardTemp;
 
         ArrayList<Card> stackTemp = new ArrayList<>();
-        randomNumber = r.nextInt(2*this.getSize()/3+1)+this.getSize()/3;
+        randomNumber = r.nextInt(2*this.contents.size()/3+1)+this.contents.size()/3;
         for (int i = 0; i <= randomNumber; i++) {
-            cardTemp = this.getCard(0);
-            this.removeCard(cardTemp);
+            cardTemp = this.contents.get(0);
+            this.contents.remove(cardTemp);
             stackTemp.add(cardTemp);
         }
 
@@ -28,7 +28,7 @@ public class Deck extends CardCollection {
             for (int i = randomNumber; i < sizze; i++) {
                 cardTemp = stackTemp.get(randomNumber);
                 stackTemp.remove(cardTemp);
-                this.addCard(cardTemp);
+                this.contents.add(cardTemp);
             }
         }
     }
@@ -36,7 +36,7 @@ public class Deck extends CardCollection {
 	public void addCard(Card C, int num){
         /* Adds several instances of C to collection */
         for (int i = 0; i < num; i++){
-            this.addCard(C);
+            this.contents.add(C);
         }
     }
 
@@ -45,8 +45,8 @@ public class Deck extends CardCollection {
             //lose
             return null;
         } else {
-            Card C = this.getCard(this.getSize() - 1);
-            this.removeCard(C);
+            Card C = this.contents.get(this.contents.size() - 1);
+            this.contents.remove(C);
             return C;
         }
     }
