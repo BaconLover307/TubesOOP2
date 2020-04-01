@@ -22,35 +22,36 @@ public class LandCollection extends CardCollection {
     public int getAirPower(){ return this.airPower; }
     public int getEarthPower(){ return this.earthPower; }
 
-    public int getActiveLands(Element element){
+//isTapped not used
+    /*    public int getActiveLands(Element element){
         int power = 0;
 
         for (int i = 0; i < this.getSize(); i++){
             if ((this.getCard(i).getElement() == element) && (!this.getCard(i).isTapped())){
-                power++;
+                power++; 
             }
         }
         
         return power;
-    }
+    } */
 
-    public void addLand(Land L){
-        if (Land.getElement() == WATER){
+    public void addLand(Card L){ // Land is a Card
+        if (L.getElement() == Element.WATER){
             this.waterPower++;
-        } else if (Land.getElement() == FIRE){
+        } else if (L.getElement() == Element.FIRE){
             this.firePower++;
-        } else if (Land.getElement() == AIR){
+        } else if (L.getElement() == Element.AIR){
             this.airPower++;
-        } else if (Land.getElement() == EARTH){
+        } else if (L.getElement() == Element.EARTH){
             this.earthPower++;
         }
         this.addCard(L);
     }
-
+/*
     public void displayPower(){
         System.out.println("WATER: " + this.getActiveLands(WATER) + "/" + this.getWaterPower());
         System.out.println("FIRE: " + this.getActiveLands(FIRE) + "/" + this.getFirePower());
         System.out.println("AIR: " + this.getActiveLands(AIR) + "/" + this.getAirPower());
         System.out.println("EARTH: " + this.getActiveLands(EARTH) + "/" + this.getEarthPower());
-    }
+    } */
 }

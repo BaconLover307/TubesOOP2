@@ -1,4 +1,5 @@
 package com.avatarduel.model.cards;
+
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
@@ -14,9 +15,8 @@ public class UseLandCommand implements CommandBase {
 
     public void reset(){
         this.used = false;
-    }
+    } 
 
-    @Override
     public void execute(Land L){
         System.out.println("Use one Land");
         if (this.used){

@@ -15,15 +15,14 @@ public class DrawCommand implements CommandBase {
         this.h = h;
     }
 
-    @Override
-    public void execute(){
+    public void execute(Land L){
         System.out.println("Draw one card from deck");
         if (d.isEmpty()){
             //LoseCommand.execute();
             System.out.println("Lost via Deck-out");
         } else {
             Card c = d.drawCard();
-            h.addCard(this.c);
+            h.addCard(c);
         }
     }
     /*

@@ -9,7 +9,7 @@ public class Hand extends CardCollection {
     }
 
     public int findCard(String name){
-        i = 0;
+        int i = 0;
 
         while ((i < this.getSize()) && (!this.getCard(i).getName().equals(name))){
             i++;
@@ -17,7 +17,7 @@ public class Hand extends CardCollection {
         if (this.getCard(i).getName().equals(name)){
             return i;
         } else {
-            return null;
+            return -999; // null can't converted to int
         }
     }
 
@@ -27,7 +27,7 @@ public class Hand extends CardCollection {
         int index = findCard(name);
 
         /* ALGORITMA */
-        Card C = this.getCard(i);
+        Card C = this.getCard(index);
         this.contents.remove(C);
         return C;
     }
@@ -36,7 +36,7 @@ public class Hand extends CardCollection {
         if(this.isEmpty()){
             System.out.println("Hand is Empty!");
         } else {
-            for(i = 0; i < this.getSize(); i++){
+            for(int i = 0; i < this.getSize(); i++){
                 System.out.println(this.getCard(i).getName());
             }
         }

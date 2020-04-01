@@ -1,4 +1,6 @@
+package com.avatarduel.model.cards;
+
 public interface CommandBase {
-    void execute();
+    public void execute(Land L);
     //void undo();
 }
