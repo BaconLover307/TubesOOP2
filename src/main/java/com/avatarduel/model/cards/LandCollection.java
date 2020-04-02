@@ -29,7 +29,7 @@ public class LandCollection extends CardCollection {
     public int getLands(Element element){
         int lands = 0;
 
-        for (int i = 0; i < this.getSize(); i++){
+        for (int i = 0; i < this.size(); i++){
             if (this.getCard(i).getElement() == element){
                 lands++;
             }
@@ -42,36 +42,52 @@ public class LandCollection extends CardCollection {
         this.addCard(L);
     }
 
-    public void onNewTurn(){
-        this.setWaterPower(getLands(WATER));
-        this.setFirePower(getLands(FIRE));
-        this.setAirPower(getLands(AIR));
-        this.setEarthPower(getLands(EARTH));
+    public void removeLand(Land L) {
+        this.removeCard(L);
     }
 
-    public void displayPower(){
-        System.out.println("WATER: " + this.getWaterPower() + "/" + this.getLands(WATER));
-        System.out.println("FIRE: " + this.getFirePower() + "/" + this.getLands(FIRE));
-        System.out.println("AIR: " + this.getAirPower() + "/" + this.getLands(AIR));
-        System.out.println("EARTH: " + this.getEarthPower() + "/" + this.getLands(EARTH));
+    public void onNewTurn(){
+        this.setWaterPower(getLands(Element.WATER));
+        this.setFirePower(getLands(Element.FIRE));
+        this.setAirPower(getLands(Element.AIR));
+        this.setEarthPower(getLands(Element.EARTH));
+    }
+
+    public void displayPower(Element elm) {
+        switch (elm) {
+            case WATER:
+                System.out.println(this.getWaterPower() + "/" + this.getLands(Element.WATER));
+                break;
+            case FIRE:
+                System.out.println(this.getFirePower() + "/" + this.getLands(Element.FIRE));
+                break;
+            case AIR:
+                System.out.println(this.getAirPower() + "/" + this.getLands(Element.AIR));
+                break;
+            case EARTH:
+                System.out.println(this.getEarthPower() + "/" + this.getLands(Element.EARTH));
+                break;
+            default:
+                break;
+        }
     }
 
     public boolean spendPower(Element element, int n){
-        if (element == WATER){
+        if (element == Element.WATER){
             if (n > this.getWaterPower()){
                 return false;
             } else {
                 this.waterPower -= n;
                 return true;
             }
-        } else if (element == FIRE){
+        } else if (element == Element.FIRE){
             if (n > this.getFirePower()){
                 return false;
             } else {
                 this.firePower -= n;
                 return true;
             }
-        } else if (element = AIR){
+        } else if (element == Element.AIR){
             if (n > this.getAirPower()){
                 return false;
             } else {

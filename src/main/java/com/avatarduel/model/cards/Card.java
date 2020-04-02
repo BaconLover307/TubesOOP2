@@ -20,6 +20,6 @@ public class Card {
     public String getName() {return this.name;}
     public String getDesc() {return this.description;}
     public Element getElement() {return this.element;}
-   // public boolean isTapped() {return this.tapped;} violate SRP
-   // public void setTapped() {this.tapped = true;} violate SRP
+   // public boolean isTapped() {return this.tapped;}  // ! violate SRP
+   // public void setTapped() {this.tapped = true;} // ! violate SRP
 }

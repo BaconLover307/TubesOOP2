@@ -11,7 +11,6 @@ public class SummonedCharacter implements ICharSummoned {
         this.isAttack = isAttack;
     }
 
-    @Override
     public void rotate() {
         if (this.isAttack) {
             this.isAttack = false;
@@ -20,7 +19,6 @@ public class SummonedCharacter implements ICharSummoned {
         }
     }
 
-    @Override
     public int getPositionValue() {
         if(isAttack){
             return CharCard.getAttack();

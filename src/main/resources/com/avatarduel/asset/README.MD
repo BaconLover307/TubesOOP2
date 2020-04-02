@@ -8,9 +8,11 @@
 * White   : #DFD7F1
 * Gray    : #BBB1AA
 * Black   : #393532
+
 * Blue    : #283148
 * Red     : #5A1E1E
 * Brown   : #4A3B2E
+
 * Light Blue  : #48B2FF
 * Light Red   : #FF5555
 * Light Brown : #D6A77E
@@ -43,4 +45,4 @@
   * Font Size : 56pt
 * Board :
   * Card size : 80x112px
-  * Element Font Size : 36pt
+  * Element Font Size : 36pt 

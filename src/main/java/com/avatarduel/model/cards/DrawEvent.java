@@ -1,7 +1,8 @@
 package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
-import com.avatarduel.model.cards.Deck;
-import com.avatarduel.model.cards.Hand;
+// import com.avatarduel.model.cards.Deck;
+// import com.avatarduel.model.cards.Hand;
+// import com.avatarduel.model.cards.BaseEvent;
 
 import java.util.ArrayList;
 
@@ -15,15 +16,15 @@ public class DrawEvent implements BaseEvent {
         this.h = h;
     }
 
-    @Override
-    public void execute(){
+    public void execute() {
         System.out.println("Draw one card from deck");
         if (d.isEmpty()){
-            //LoseCommand.execute();
+            // TODO LoseCommand.execute(); ????
+            // ? What if win on last card? Best to Check lose on changeTurn
             System.out.println("Lost via Deck-out");
         } else {
-            Card c = d.drawCard();
-            h.addCard(this.c);
+            Card c = d.drawCard(); 
+            h.addCard(c);
         }
     }
 }

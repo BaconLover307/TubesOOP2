@@ -6,23 +6,25 @@ public class UseLandEvent implements BaseEvent {
     
     private boolean used;
     private LandCollection lands;
+    private Land landUsed;
 
-    public UseLandEvent(LandCollection l){
+    public UseLandEvent(LandCollection landCol, Land land) {
         this.used = false;
-        this.lands = l;
+        this.lands = landCol;
+        this.landUsed = land;
     }
 
     public void onDrawPhase(){
         this.used = false;
     }
 
-    @Override
-    public void execute(Land L){
-        System.out.println("Use one Land");
+    public void execute() {
         if (this.used){
-            System.out.println("Already used a Land this turn");
+            System.out.println("Already used a Land card on this turn!");
         } else {
-            lands.addLand(L);
+            System.out.println("Use one Land card");
+            lands.removeLand(this.landUsed);
+            // TODO: tambah power ke player
             this.used = true;
         }
     }
