@@ -12,7 +12,7 @@ public class UseLandEvent implements BaseEvent {
         this.lands = l;
     }
 
-    public void onNewTurn(){
+    public void onDrawPhase(){
         this.used = false;
     }
 
