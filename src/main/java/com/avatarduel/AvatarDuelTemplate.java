@@ -15,8 +15,8 @@ import com.avatarduel.model.Element;
 import com.avatarduel.model.Land;
 import com.avatarduel.util.CSVReader;
 
-public class AvatarDuel extends Application {
-/*  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
+public class AvatarDuelTemplate extends Application {
+  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
 
   public void loadCards() throws IOException, URISyntaxException {
     File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
@@ -26,15 +26,12 @@ public class AvatarDuel extends Application {
     for (String[] row : landRows) {
       Land l = new Land(row[1], row[3], Element.valueOf(row[2]));
     }
-  } */
+  } 
 
   @Override
   public void start(Stage stage) {
 
-    HBox box = new HBox();
-    Scene scene = new Scene(box);
-    Image image = new Image("board.png");
-   /* Text text = new Text();
+    Text text = new Text();
     text.setText("Loading...");
     text.setX(50);
     text.setY(50);
@@ -53,7 +50,7 @@ public class AvatarDuel extends Application {
       text.setText("Avatar Duel!");
     } catch (Exception e) {
       text.setText("Failed to load cards: " + e);
-    } */
+    } 
   }
 
   public static void main(String[] args) {
