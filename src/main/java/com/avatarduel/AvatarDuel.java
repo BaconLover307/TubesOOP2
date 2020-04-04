@@ -13,6 +13,12 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
+import javafx.geometry.Orientation;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent; 
+import javafx.event.EventHandler; 
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +51,8 @@ public class AvatarDuel extends Application {
 
   @Override
   public void start(Stage stage) {
-    MainScreen(stage);
+    stage.setTitle("Avatar Duel");
+    InitScreen(stage);
    
     /*
     Scene scene = new Scene(root, 1280, 720);
@@ -62,6 +69,47 @@ public class AvatarDuel extends Application {
     } */
   }
 
+  public void InitScreen(Stage stage) {
+    Button startButton = new Button("START");
+    Button settingButton = new Button("SETTING");
+    Button exitButton = new Button("EXIT");
+
+    startButton.setStyle("-fx-font-size: 15pt;");
+    startButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    settingButton.setStyle("-fx-font-size: 15pt;");
+    settingButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    exitButton.setStyle("-fx-font-size: 15pt;");
+    exitButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
+        public void handle(ActionEvent e) 
+        {   stage.close();
+            MainScreen(stage);
+        } 
+    };
+    EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() { 
+        public void handle(ActionEvent e) 
+        {System.out.println("setting"); } 
+    }; 
+    EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() { 
+        public void handle(ActionEvent e) 
+        {stage.close();} 
+    };  
+    startButton.setOnAction(event1);
+    settingButton.setOnAction(event2);
+    exitButton.setOnAction(event3);
+
+    TilePane tileButtons = new TilePane(Orientation.VERTICAL);
+    tileButtons.setPadding(new Insets(50, 10, 10, 1200));
+    tileButtons.setHgap(12.0);
+    tileButtons.setVgap(10.0);
+    tileButtons.getChildren().addAll(startButton, settingButton, exitButton);
+
+    Scene s = new Scene(tileButtons);
+    stage.setScene(s);
+    stage.setMaximized(true);
+    stage.show();
+  } 
+
   public void MainScreen(Stage stage) {
     HBox hbox = new HBox();
     Scene scene = new Scene(hbox);
@@ -75,7 +123,6 @@ public class AvatarDuel extends Application {
     backgroundSize); 
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
-    stage.setTitle("Avatar Duel");
     stage.setScene(scene); 
     //stage.setFullScreen(true);
     stage.setMaximized(true); 
