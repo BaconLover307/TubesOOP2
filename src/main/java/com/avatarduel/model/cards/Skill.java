@@ -6,11 +6,14 @@ public abstract class Skill extends Card {
     // atribut
     protected int powVal;
 
-    //method
-    public Skill(String name, Element element, String description, int power) {
-        super(name,element,description);
+    //konstruktor
+    public Skill(String name, Element element, String description, String imagePath, int power) {
+        super(name,element,description,imagePath);
         this.powVal = power;
     }
+
+    // getter
+    public int getPowVal() {return this.powVal;}
     
-    public abstract void useSkill();
+    //public abstract void useSkill(); - kelas ini hanya blueprint kartu
 }

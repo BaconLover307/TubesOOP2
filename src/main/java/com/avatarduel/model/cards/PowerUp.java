@@ -3,11 +3,8 @@ import com.avatarduel.model.Element;
 
 public class PowerUp extends Skill {
 
-    //method
-    public PowerUp(String name, Element element,String description, int power){
-        super(name,element,description,power);
-    }
-    public void useSkill() {
-
+    //kontruktor
+    public PowerUp(String name, Element element,String description, String imagePath, int power){
+        super(name,element,description,imagePath,power);
     }
 }

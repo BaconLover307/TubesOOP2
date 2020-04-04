@@ -5,21 +5,23 @@ public class Card {
 
     // atributes
     protected String name;
-    protected String description;
     protected Element element;
-    // private boolean tapped; violate SRP
+    protected String description;
+    protected String imagePath;
     
-    // method
-    public Card(String name, Element element, String description){
+    
+    // konstruktor
+    public Card(String name, Element element, String description, String imagePath){
         this.name = name;
-        this.description = description;
         this.element = element;
-        //this.tapped = false;
+        this.description = description;
+        this.imagePath = imagePath;
     }
 
+    // getter
     public String getName() {return this.name;}
     public String getDesc() {return this.description;}
     public Element getElement() {return this.element;}
-   // public boolean isTapped() {return this.tapped;}  // ! violate SRP
-   // public void setTapped() {this.tapped = true;} // ! violate SRP
+    public String getImgPath() {return this.imagePath;}
+   
 }
