@@ -1,5 +1,5 @@
 /*
-public class Player {
+public class Player implements Subscriber, Publisher {
 	private int health
 	private Deck playerDeck
 	private Hand playerHand
@@ -26,6 +26,9 @@ public class Player {
 	public void setCharAttack(Character C)
 	public void setCharDefense(Character C)
 	public void useSkill(Skill S)
-	public void tapLands(String element, int n)
+    public void tapLands(String element, int n)
+    
+    public void onEvent(Event event);
+    public void publish (String topic, Event event);
 }
 */
