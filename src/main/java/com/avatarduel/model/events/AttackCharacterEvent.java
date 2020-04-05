@@ -2,10 +2,12 @@ package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 /*
-public class AttackCharacterEvent implements BaseEvent {
+public class AttackCharacterEvent extends AttackEvent implements BaseEvent {
     
-    public AttackCharacterEvent(){
-
+    private int target;
+    public AttackCharacterEvent(int atk){
+        super(atk);
+        this.target = target;
     }
 
     @Override

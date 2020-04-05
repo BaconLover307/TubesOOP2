@@ -1,19 +1,19 @@
 package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
-import com.avatarduel.model.cards.Deck;
-import com.avatarduel.model.cards.Hand;
-
 import java.util.ArrayList;
 /*
-public class DrawEvent implements BaseEvent {
+public class AuraEvent implements BaseEvent {
+    
+    private int target;
 
-    public DrawEvent(int player){
-
+    public AuraEvent(int target){
+        this.target = target;
     }
 
     @Override
     public void execute(){
 
+        }
     }
 }
 */
