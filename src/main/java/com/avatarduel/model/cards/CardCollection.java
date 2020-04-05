@@ -2,29 +2,30 @@ package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
-public class CardCollection extends ArrayList {
+public class CardCollection extends ArrayList<Card> {
 
-    protected ArrayList<Card> contents;
+    // protected ArrayList<Card> contents;
     
-	public CardCollection(){
-        this.contents = new ArrayList<Card>();
+	public CardCollection() {
+        super();
+        // this = new ArrayList<Card>();
     }
 
     public Card getCard(int i){
-        return this.contents.get(i);
+        return this.get(i);
     }
 
     public void addCard(Card C){
         // Adds one instance of C to collection 
-        this.contents.add(C);
+        this.add(C);
     }
     
     public void removeCard(Card C){
-        this.contents.remove(C);
+        this.remove(C);
     }
     /*    
     public int getSize(){
-        return this.contents.size();
+        return this.size();
     }
     
     public boolean isEmpty(){
