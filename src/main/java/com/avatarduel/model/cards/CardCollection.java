@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 public class CardCollection extends ArrayList<Card> {
 
-    // protected ArrayList<Card> contents;
-    
 	public CardCollection() {
         super();
-        // this = new ArrayList<Card>();
     }
 
     public Card getCard(int i){
