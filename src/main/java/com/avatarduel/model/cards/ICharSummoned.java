@@ -19,4 +19,6 @@ public interface ICharSummoned {
 
     public void onSkillAttached(Skill skillCard);
 
+    public void destroy();
+
 }

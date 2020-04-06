@@ -51,4 +51,9 @@ public class SummonedCharacter implements ICharSummoned {
 
     }
 
+    public void destroy() {
+        // TODO Auto-generated method stub
+
+    }
+
 }
