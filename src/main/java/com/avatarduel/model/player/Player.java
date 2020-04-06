@@ -4,13 +4,15 @@ import com.avatarduel.model.cards.Hand;
 
 
 public class Player {
+    protected String name;
     protected Deck deck;
     protected Hand hand;
     // protected Board board;
     protected int health;
     protected Power powers;
 
-    public Player(int health) {
+    public Player(String name, int health) {
+        this.name = name;
         this.deck = new Deck();
         this.hand = new Hand();
         // this.board = new Board();

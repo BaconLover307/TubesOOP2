@@ -1,12 +1,12 @@
 package com.avatarduel.model.player;
 import com.avatarduel.model.Element;
 
-public class Power {
-    protected ElementPower firePower;
-    protected ElementPower waterPower;
-    protected ElementPower earthPower;
-    protected ElementPower airPower;
-    protected Element elements[] = Element.values();
+public class Power {    
+    private ElementPower firePower;
+    private ElementPower waterPower;
+    private ElementPower earthPower;
+    private ElementPower airPower;
+    private Element elements[] = Element.values();
 
     public Power() {
         this.firePower = new ElementPower(Element.FIRE, 0, 0);

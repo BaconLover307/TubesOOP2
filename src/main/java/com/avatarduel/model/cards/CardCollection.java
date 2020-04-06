@@ -20,7 +20,6 @@ public class CardCollection extends ArrayList<Card> {
     public void removeCard(Card C){
         this.remove(C);
     }
-    /*    
     public int getSize(){
         return this.size();
     }

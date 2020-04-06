@@ -3,9 +3,9 @@ package com.avatarduel.model.player;
 import com.avatarduel.model.Element;
 
 public class ElementPower {
-    protected Element elm;
-    protected int capacity;
-    protected int size;
+    private Element elm;
+    private int capacity;
+    private int size;
 
     public ElementPower(Element elm, int capacity, int size) {
         this.elm = elm;
@@ -25,7 +25,7 @@ public class ElementPower {
         this.size = this.capacity; 
     }
 
-    public Boolean UsePower(int use) {
+    public boolean UsePower(int use) {
         if (this.size < use) {
             return false;
         } else {
