@@ -1,5 +1,5 @@
 package com.avatarduel.model.gameplay;
 
-interface Subscriber {
+public interface Subscriber {
   void onEvent(Event event);
 }

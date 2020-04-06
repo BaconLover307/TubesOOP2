@@ -1,5 +1,5 @@
 package com.avatarduel.model.gameplay;
 
-interface Event {
+public interface Event {
   public String toString();
 }
