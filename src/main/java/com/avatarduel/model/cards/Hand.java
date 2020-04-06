@@ -1,9 +1,11 @@
 package com.avatarduel.model.cards;
 
-public class Hand extends CardCollection {
+public class Hand extends CardCollection implements Flippable {
+    private boolean show;
 
 	public Hand(){
         super();
+        this.show = false;
     }
 
     public int findCard(String name){
@@ -39,4 +41,7 @@ public class Hand extends CardCollection {
             }
         }
     }
+
+    public void flipOpen() {this.show == true;}
+    public void flipClose() {this.show == false;}
 }

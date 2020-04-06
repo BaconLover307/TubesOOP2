@@ -1,14 +1,15 @@
 package com.avatarduel.model.cards;
+import com.avatarduel.model.gameplay.SummonedCharacter;
 import java.util.Map;
 import java.util.HashMap;
 
 public class Board {
     
-    Map<Integer, Character> charBoard;
+    Map<Integer, SummonedCharacter> charBoard;
     Map<Integer, Skill> skillBoard;
 
     public Board() {
-        this.charBoard = new HashMap<Integer, Character>();
+        this.charBoard = new HashMap<Integer, SummonedCharacter>();
         this.skillBoard = new HashMap<Integer, Skill>();
     }
 
@@ -16,11 +17,11 @@ public class Board {
         this.charBoard.put(id, C);
     }
 
-    public Character getCharwithId(int id) {
+    public SummonedCharacter getCharwithId(int id) {
         return this.charBoard.get(id);
     }
 
-    public void addSkilltoBoard(int id, Skill s, Character target) {
+    public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {
         // 1. Harus ada tempat kosong
         // 2. Harus ada karakter yg ditarget
         this.skillBoard.put(id, s);
