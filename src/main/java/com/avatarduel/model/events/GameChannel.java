@@ -1,14 +1,12 @@
-/*
-public class Game implements EventChannel {
-  // tambahkan properties jika perlu
+public class GameChannel implements EventChannel {
   final int topicMax = 100;
-  final int subscriberMax = 1000;
+  final int subscriberMax = 100;
   private String[] topics;
   private int topicNum;
   private Subscriber[][] subscribers;
   private int[] topicSubscribers;
 
-  public Game() {
+  public GameChannel() {
     this.topics = new String[topicMax];
     this.topicNum = 0;
     this.subscribers = new Subscriber[topicMax][subscriberMax];
@@ -30,7 +28,7 @@ public class Game implements EventChannel {
         i++;
       }
     }
-
+    //if topic doesn't exist, add it in
     if (!found){
       this.topics[i] = topic; 
       this.topicNum++;
@@ -60,4 +58,3 @@ public class Game implements EventChannel {
     }
   }
 }
-*/

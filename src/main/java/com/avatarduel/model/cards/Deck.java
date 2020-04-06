@@ -1,12 +1,18 @@
 package com.avatarduel.model.cards;
+import com.avatarduel.model.events;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Deck extends CardCollection {
+public class Deck extends CardCollection implements
+    DrawEvent,
+    DrawEvent.Handler, 
+    EndGameEvent, 
+    Publisher,
+    Subscriber {
 
-	public Deck(){
-        super();
+	public Deck(GameChannel channel, String player){
+        super(channel, player);
     }
 
 	public void shuffle(){
@@ -50,4 +56,34 @@ public class Deck extends CardCollection {
             return C;
         }
     }
+
+    /*
+    public UseCard(Character C, String target){
+        this.gc.publish(target, new SummonCharacterEvent(C));
+    }
+
+    public UseCard(Land C, String target){
+        this.gc.publish(target, new UseLandEvent(C));
+    }
+
+    public UseCard(Skill C, String target){
+        this.gc.publish(target, new UseSkillEvent(C));
+    }
+    */
+    public void onDrawEvent(DrawEvent e){
+        if (this.isEmpty()){
+            this.gc.publish(EndGameEvent(this.getPlayer()));
+        } else {
+            Card drawn = this.drawCard();
+            String target = this.getPlayer() + " Hand";
+            this.gc.publish(target, new DrawEvent.Handler(drawn));
+        }
+    }
+    
+    public void onEvent(BaseEvent e){
+        /*
+        this.onDrawEvent(e);
+        */
+    } 
+    
 }
