@@ -10,6 +10,7 @@ public class CardCollection extends ArrayList<Card> {
 
 	public CardCollection(GameChannel channel, String player){
         //this = new ArrayList<Card>();
+        super();
         this.channel = channel;
         this.player = player;
     }
@@ -26,7 +27,7 @@ public class CardCollection extends ArrayList<Card> {
     public void removeCard(Card C){
         this.remove(C);
     }
-        
+    
     public int getSize(){
         return this.size();
     }

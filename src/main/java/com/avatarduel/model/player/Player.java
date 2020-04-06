@@ -1,0 +1,22 @@
+package com.avatarduel.model.player;
+import com.avatarduel.model.cards.Deck;
+import com.avatarduel.model.cards.Hand;
+
+
+public class Player {
+    protected String name;
+    protected Deck deck;
+    protected Hand hand;
+    // protected Board board;
+    protected int health;
+    protected Power powers;
+
+    public Player(String name, int health) {
+        this.name = name;
+        this.deck = new Deck();
+        this.hand = new Hand();
+        // this.board = new Board();
+        this.health = health;
+        this.powers = new Power();
+    }
+}
