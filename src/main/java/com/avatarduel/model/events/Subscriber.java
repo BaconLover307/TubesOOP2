@@ -1,5 +1,5 @@
 package com.avatarduel.model.events;
 
-interface Subscriber {
-  void onEvent(Event event);
+public interface Subscriber {
+  void onEvent(BaseEvent event);
 }

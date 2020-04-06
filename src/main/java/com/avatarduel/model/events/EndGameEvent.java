@@ -1,5 +1,4 @@
-package com.avatarduel.model.cards;
-import com.avatarduel.model.Element;
+package com.avatarduel.model.events;
 import java.util.ArrayList;
 
 public class EndGameEvent implements BaseEvent {
@@ -8,12 +7,11 @@ public class EndGameEvent implements BaseEvent {
     public EndGameEvent(String target){
         this.target = target;
     }
-    /*
-    @Override
-    public void execute(Land L){
+    
+    public void execute(){
 
     }
-
+    /*
     public class Handler implements BaseEvent {
         
         private String msg;

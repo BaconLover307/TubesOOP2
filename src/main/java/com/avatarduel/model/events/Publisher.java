@@ -1,3 +1,5 @@
-interface Publisher {
-  void publish(String topic, Event event);
+package com.avatarduel.model.events;
+
+public interface Publisher {
+  void publish(String topic, BaseEvent event);
 }

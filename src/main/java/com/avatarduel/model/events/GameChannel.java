@@ -1,3 +1,5 @@
+package com.avatarduel.model.events;
+
 public class GameChannel implements EventChannel {
   final int topicMax = 100;
   final int subscriberMax = 100;
@@ -37,7 +39,7 @@ public class GameChannel implements EventChannel {
     this.topicSubscribers[i]++;
   }
 
-  public void sendEvent(String topic, Event event) {
+  public void sendEvent(String topic, BaseEvent event) {
     // untuk setiap subscriber s yang sudah subscribe ke topic yang diberikan,
     // panggil s.onEvent(event)
     int i = 0;

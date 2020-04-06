@@ -1,13 +1,15 @@
 package com.avatarduel.model.cards;
-import com.avatarduel.model.events;
+import com.avatarduel.model.events.GameChannel;
+import com.avatarduel.model.events.BaseEvent;
+import com.avatarduel.model.events.DrawEvent;
+import com.avatarduel.model.events.EndGameEvent;
+import com.avatarduel.model.events.Publisher;
+import com.avatarduel.model.events.Subscriber;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck extends CardCollection implements
-    DrawEvent,
-    DrawEvent.Handler, 
-    EndGameEvent, 
     Publisher,
     Subscriber {
 
@@ -59,27 +61,31 @@ public class Deck extends CardCollection implements
 
     /*
     public UseCard(Character C, String target){
-        this.gc.publish(target, new SummonCharacterEvent(C));
+        this.channel.sendEvent(target, new SummonCharacterEvent(C));
     }
 
     public UseCard(Land C, String target){
-        this.gc.publish(target, new UseLandEvent(C));
+        this.channel.sendEvent(target, new UseLandEvent(C));
     }
 
     public UseCard(Skill C, String target){
-        this.gc.publish(target, new UseSkillEvent(C));
+        this.channel.sendEvent(target, new UseSkillEvent(C));
     }
     */
     public void onDrawEvent(DrawEvent e){
         if (this.isEmpty()){
-            this.gc.publish(EndGameEvent(this.getPlayer()));
+            this.channel.sendEvent("Gamestate", new EndGameEvent(this.getPlayer()));
         } else {
             Card drawn = this.drawCard();
             String target = this.getPlayer() + " Hand";
-            this.gc.publish(target, new DrawEvent.Handler(drawn));
+            this.channel.sendEvent(target, e.new Handler(drawn));
         }
     }
     
+    public void publish(String topic, BaseEvent event){
+        //
+    }
+
     public void onEvent(BaseEvent e){
         /*
         this.onDrawEvent(e);

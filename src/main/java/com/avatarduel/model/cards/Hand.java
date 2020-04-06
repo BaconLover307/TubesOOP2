@@ -1,11 +1,13 @@
 package com.avatarduel.model.cards;
-import com.avatarduel.model.events;
+import com.avatarduel.model.events.BaseEvent;
+import com.avatarduel.model.events.DrawEvent;
+import com.avatarduel.model.events.Publisher;
+import com.avatarduel.model.events.Subscriber;
+import com.avatarduel.model.events.GameChannel;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
-public class Hand extends CardCollection implements
-    DrawEvent.Handler,
-    Subscriber {
+public class Hand extends CardCollection implements Subscriber {
 
 	public Hand(GameChannel channel, String player){
         super(channel, player);
@@ -45,13 +47,11 @@ public class Hand extends CardCollection implements
         }
     }
 
-    void onDrawEvent(DrawEvent.Handler e){
+    public void onDrawEvent(DrawEvent.Handler e){
         this.addCard(e.getCard());
     }
 
-    void onEvent(BaseEvent e){
-        /*
-        this.onDrawEvent(e);
-        */
+    public void onEvent(BaseEvent e){
+
     }
 }

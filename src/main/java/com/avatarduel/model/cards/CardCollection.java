@@ -1,4 +1,5 @@
 package com.avatarduel.model.cards;
+import com.avatarduel.model.events.GameChannel;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class CardCollection extends ArrayList<Card> {
     public void removeCard(Card C){
         this.remove(C);
     }
-    
+
     public int getSize(){
         return this.size();
     }

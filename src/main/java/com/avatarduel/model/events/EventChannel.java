@@ -1,4 +1,6 @@
-interface EventChannel {
+package com.avatarduel.model.events;
+
+public interface EventChannel {
   // Mengirimkan event ke semua subscriber yang subscribe pada sebuah topic
   public void sendEvent(String topic, BaseEvent event);
 

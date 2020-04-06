@@ -1,4 +1,4 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.events;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 /*
@@ -10,7 +10,6 @@ public class DefendEvent implements BaseEvent {
         this.def = def;
     }
 
-    @Override
     public void execute(){
 
     }
