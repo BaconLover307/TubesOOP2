@@ -1,5 +1,6 @@
-package com.avatarduel.view.events;
+package com.avatarduel.model.gameplay.events;
 
+import com.avatarduel.model.gameplay.BaseEvent;
 
 public class SummonCharacterEvent implements BaseEvent {
     

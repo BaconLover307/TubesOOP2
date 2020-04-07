@@ -1,4 +1,4 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 /*

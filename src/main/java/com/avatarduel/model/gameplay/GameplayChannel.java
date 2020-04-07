@@ -18,7 +18,7 @@ public class GameplayChannel implements EventChannel {
     this.listSubscriber.get(topic).add(s);
     }
 
-    public void sendEvent(String topic, Event event) {
+    public void sendEvent(String topic, BaseEvent event) {
       ArrayList<Subscriber> list = this.listSubscriber.get(topic);
       if(list != null)
         for (Subscriber subscriber : list) {
