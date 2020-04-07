@@ -4,9 +4,13 @@ import com.avatarduel.model.events.GameChannel;
 import com.avatarduel.model.events.BaseEvent;
 import com.avatarduel.model.events.ResetPowerEvent;
 import com.avatarduel.model.events.SpendPowerEvent;
+import com.avatarduel.model.events.Publisher;
 import com.avatarduel.model.events.Subscriber;
 
-public class Power implements Subscriber {
+public class Power implements 
+    Publisher, 
+    Subscriber {
+    
     private GameChannel channel;
     private String player;
     private ElementPower firePower;
@@ -49,6 +53,14 @@ public class Power implements Subscriber {
         this.ResetAllPower();
     }
 
+    public void publish(String topic, BaseEvent event){
+        this.channel.sendEvent(topic, event);
+    }
+
+    public void onEvent(BaseEvent e){
+        //
+    }
+
     public void onSpendPowerEvent(SpendPowerEvent e){
         boolean success;
 
@@ -57,11 +69,7 @@ public class Power implements Subscriber {
         else if (e.getElement() == Element.EARTH) success = this.earthPower.UsePower(e.getVal());
         else success = this.airPower.UsePower(e.getVal());
 
-        this.channel.sendEvent(e.getSender(), e.new Handler(success));
+        this.publish(e.getSender(), e.new Handler(success));
         
-    }
-
-    public void onEvent(BaseEvent e){
-        //
     }
 }

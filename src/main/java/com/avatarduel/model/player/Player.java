@@ -29,7 +29,7 @@ public class Player implements
     }
 
     public void publish(String topic, BaseEvent event){
-        //
+        this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){

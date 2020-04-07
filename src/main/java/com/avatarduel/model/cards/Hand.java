@@ -7,7 +7,9 @@ import com.avatarduel.model.events.GameChannel;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
-public class Hand extends CardCollection implements Subscriber {
+public class Hand extends CardCollection implements 
+    Publisher,
+    Subscriber {
 
 	public Hand(GameChannel channel, String player){
         super(channel, player);
@@ -49,6 +51,10 @@ public class Hand extends CardCollection implements Subscriber {
 
     public void onDrawEvent(DrawEvent.Handler e){
         this.addCard(e.getCard());
+    }
+
+    public void publish(String topic, BaseEvent event){
+        this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){

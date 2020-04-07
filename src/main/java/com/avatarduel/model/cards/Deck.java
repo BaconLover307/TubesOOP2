@@ -72,18 +72,8 @@ public class Deck extends CardCollection implements
         this.channel.sendEvent(target, new UseSkillEvent(C));
     }
     */
-    public void onDrawEvent(DrawEvent e){
-        if (this.isEmpty()){
-            this.channel.sendEvent("Gamestate", new EndGameEvent(this.getPlayer()));
-        } else {
-            Card drawn = this.drawCard();
-            String target = this.getPlayer() + " Hand";
-            this.channel.sendEvent(target, e.new Handler(drawn));
-        }
-    }
-    
     public void publish(String topic, BaseEvent event){
-        //
+        this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){
@@ -91,5 +81,14 @@ public class Deck extends CardCollection implements
         this.onDrawEvent(e);
         */
     } 
-    
+
+    public void onDrawEvent(DrawEvent e){
+        if (this.isEmpty()){
+            this.publish("Gamestate", new EndGameEvent(this.getPlayer()));
+        } else {
+            Card drawn = this.drawCard();
+            String target = this.getPlayer() + " Hand";
+            this.publish(target, e.new Handler(drawn));
+        }
+    }
 }
