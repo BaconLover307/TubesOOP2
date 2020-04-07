@@ -33,6 +33,10 @@ public class Player implements
     }
 
     public void onEvent(BaseEvent e){
-        //
+        /*
+        if (e instanceof EventClass){
+            //call function
+        } 
+        */
     }
 }

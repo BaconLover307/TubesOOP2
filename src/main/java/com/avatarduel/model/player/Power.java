@@ -49,16 +49,20 @@ public class Power implements
         getPower(elm).UsePower(use);
     }
 
-    public void onResetPowerEvent(ResetPowerEvent e){
-        this.ResetAllPower();
-    }
-
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){
-        //
+        if (e instanceof ResetPowerEvent){
+            this.onResetPowerEvent((ResetPowerEvent)e);
+        } else if (e instanceof SpendPowerEvent){
+            this.onSpendPowerEvent((SpendPowerEvent)e);
+        }
+    }
+
+    public void onResetPowerEvent(ResetPowerEvent e){
+        this.ResetAllPower();
     }
 
     public void onSpendPowerEvent(SpendPowerEvent e){

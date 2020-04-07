@@ -61,15 +61,15 @@ public class Deck extends CardCollection implements
 
     /*
     public UseCard(Character C, String target){
-        this.channel.sendEvent(target, new SummonCharacterEvent(C));
+        this.publish(target, new SummonCharacterEvent(C));
     }
 
     public UseCard(Land C, String target){
-        this.channel.sendEvent(target, new UseLandEvent(C));
+        this.publish(target, new UseLandEvent(C));
     }
 
     public UseCard(Skill C, String target){
-        this.channel.sendEvent(target, new UseSkillEvent(C));
+        this.publish(target, new UseSkillEvent(C));
     }
     */
     public void publish(String topic, BaseEvent event){
@@ -77,9 +77,9 @@ public class Deck extends CardCollection implements
     }
 
     public void onEvent(BaseEvent e){
-        /*
-        this.onDrawEvent(e);
-        */
+        if (e instanceof DrawEvent){
+            this.onDrawEvent((DrawEvent)e);
+        } 
     } 
 
     public void onDrawEvent(DrawEvent e){

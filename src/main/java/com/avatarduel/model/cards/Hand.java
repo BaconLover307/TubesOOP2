@@ -58,6 +58,8 @@ public class Hand extends CardCollection implements
     }
 
     public void onEvent(BaseEvent e){
-
+        if (e instanceof DrawEvent.Handler){
+            this.onDrawEvent((DrawEvent.Handler)e);
+        } 
     }
 }

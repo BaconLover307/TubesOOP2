@@ -10,17 +10,6 @@ public class SkillCollection extends CardCollection {
         super(channel, player);
         this.type = CardType.SKILL;
     }
-/* 
-    public int getLands(Element element){
-        int lands = 0;
-
-        for (int i = 0; i < this.size(); i++){
-            if (this.getCard(i).getElement() == element){
-                lands++;
-            }
-        }
-        return lands;
-    } */
 
     public void addSkill(Skill S){
         this.addCard(S);
