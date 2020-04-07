@@ -1,7 +1,9 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.Element;
+import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.Subscriber;
 
 import java.util.ArrayList;

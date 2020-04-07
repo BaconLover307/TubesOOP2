@@ -1,6 +1,8 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.cardcollection;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
+
+import com.avatarduel.model.cards.card.Card;
 
 public class CardCollection extends ArrayList<Card> {
 

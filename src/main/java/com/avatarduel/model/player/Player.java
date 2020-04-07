@@ -1,9 +1,9 @@
 package com.avatarduel.model.player;
-import com.avatarduel.model.cards.Deck;
-import com.avatarduel.model.cards.Hand;
 
+import com.avatarduel.model.cards.cardcollection.Deck;
+import com.avatarduel.model.cards.cardcollection.Hand;
 
-public class Player implements IPlayer{
+public class Player implements IPlayer {
     protected String name;
     protected Deck deck;
     protected Hand hand;

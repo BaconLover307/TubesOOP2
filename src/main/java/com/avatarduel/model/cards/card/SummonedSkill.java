@@ -1,7 +1,5 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.card;
 
-import com.avatarduel.model.cards.Character;
-import com.avatarduel.model.cards.Skill;
 
 public class SummonedSkill implements ISkillSummoned {
     private Skill SkillCard;

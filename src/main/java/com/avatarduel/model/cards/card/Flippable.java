@@ -1,4 +1,4 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.card;
 
 public interface Flippable {
     public void flipOpen();

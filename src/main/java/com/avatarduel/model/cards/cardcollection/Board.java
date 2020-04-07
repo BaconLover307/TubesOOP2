@@ -1,5 +1,9 @@
-package com.avatarduel.model.cards;
-import com.avatarduel.model.cards.SummonedCharacter;
+package com.avatarduel.model.cards.cardcollection;
+
+import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.SummonedCharacter;
+import com.avatarduel.model.cards.card.Skill;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -13,7 +17,7 @@ public class Board {
         this.skillBoard = new HashMap<Integer, Skill>();
     }
 
-    public void addChartoBoard(int id, Character C) {
+    public void addChartoBoard(int id, SummonedCharacter C) {
         this.charBoard.put(id, C);
     }
 

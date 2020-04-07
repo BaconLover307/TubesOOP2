@@ -1,5 +1,8 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.cardcollection;
+
 import com.avatarduel.model.Element;
+import com.avatarduel.model.cards.card.Land;
+
 import java.util.ArrayList;
 
 public class LandCollection extends CardCollection {

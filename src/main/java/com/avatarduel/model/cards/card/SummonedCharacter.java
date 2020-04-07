@@ -1,8 +1,6 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.card;
 import java.util.ArrayList;
 
-import com.avatarduel.model.cards.Character;
-import com.avatarduel.model.cards.Skill;
 
 public class SummonedCharacter implements ICharSummoned {
 

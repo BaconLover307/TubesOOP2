@@ -1,6 +1,8 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.cardcollection;
 import java.util.ArrayList;
 import java.util.Random;
+
+import com.avatarduel.model.cards.card.Card;
 
 public class Deck extends CardCollection {
 

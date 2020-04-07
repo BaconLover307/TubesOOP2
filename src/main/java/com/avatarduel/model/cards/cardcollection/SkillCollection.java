@@ -1,6 +1,7 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.CardType;
+import com.avatarduel.model.cards.card.Skill;
 
 public class SkillCollection extends CardCollection {
     

@@ -1,4 +1,4 @@
-package com.avatarduel.model.cards;
+package com.avatarduel.model.cards.card;
 import com.avatarduel.model.Element;
 
 public class Card {
