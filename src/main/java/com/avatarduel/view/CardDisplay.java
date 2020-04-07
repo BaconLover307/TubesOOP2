@@ -15,6 +15,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 
 import com.avatarduel.model.cards.Card;
+import javafx.scene.text.TextAlignment;
 
 
 public class CardDisplay {
@@ -26,6 +27,9 @@ public class CardDisplay {
     private Text attr;
     private double cardH;
     private double cardW;
+    private double nameSz;
+    private double nameX;
+    private double nameY;
     private double elmSz;
     private double elmX;
     private double elmY;
@@ -34,7 +38,7 @@ public class CardDisplay {
     private double imgX;
     private double imgY;
     private double descW;
-    private double descH;
+    private double descSz;
     private double descX;
     private double descY;
 
@@ -46,7 +50,7 @@ public class CardDisplay {
         box.relocate(posX, posY);
         Image img = new Image("com/avatarduel/asset/card-character.png");
         BackgroundSize backgroundSize = new BackgroundSize(cardW, cardH, false, false, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage(img,  
+        BackgroundImage backgroundImage = new BackgroundImage(img,
             BackgroundRepeat.NO_REPEAT,
             BackgroundRepeat.NO_REPEAT,
             BackgroundPosition.DEFAULT,
@@ -54,11 +58,14 @@ public class CardDisplay {
         Background background = new Background(backgroundImage);
         box.setBackground(background);
 
+        nameSz = 0.075 * cardH;
+        nameX = 0.0875 * cardW;
+        nameY = 0.11 * cardH;
         name = new Text();
         name.setText(C.getName());
-        name.setFont(Font.font(java.awt.Font.SERIF, 0.075 * cardH));
-        name.setX(0.0875 * cardW);
-        name.setY(0.11 * cardH);
+        name.setFont(Font.font(java.awt.Font.SERIF, nameSz));
+        name.setX(nameX);
+        name.setY(nameY);
 
         String elpath;
         switch (C.getElement()) {
@@ -87,10 +94,17 @@ public class CardDisplay {
         image.setX(imgX);
         image.setY(imgY);
 
+        descX = 0.08 * cardW;
+        descY = 0.735 * cardH;
+        descW = 0.85 * cardW;
+        descSz = 0.034 * cardH;
         desc = new Text();
         desc.setText(C.getDesc());
-        desc.setX(150);
-        desc.setY(300);
+        desc.setFont(Font.font(java.awt.Font.SERIF, descSz));
+        desc.setTextAlignment(TextAlignment.JUSTIFY);
+        desc.wrappingWidthProperty().set(descW);
+        desc.setX(descX);
+        desc.setY(descY);
 
         box.getChildren().addAll(name,element,image,desc);
         hbox.getChildren().add(box);

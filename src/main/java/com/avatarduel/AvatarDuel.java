@@ -122,7 +122,7 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
-    Card card = new Card("Aang",Element.AIR,"lulu","com/avatarduel/card/image/character/Aang.png");
+    Card card = new Card("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png");
     CardDisplay DCard = new CardDisplay(card,hbox, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);
