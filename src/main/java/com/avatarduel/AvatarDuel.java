@@ -17,8 +17,14 @@ import javafx.scene.layout.TilePane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+<<<<<<< HEAD
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+=======
+import javafx.event.ActionEvent; 
+import javafx.event.EventHandler; 
+import javafx.scene.layout.*;
+>>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +41,9 @@ import com.avatarduel.model.Element;
 //import com.avatarduel.model.Land;
 import com.avatarduel.util.CSVReader;
 
+import com.avatarduel.model.cards.Card;
+import com.avatarduel.CardDisplay;
+
 public class AvatarDuel extends Application {
 
   final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,8 +51,27 @@ public class AvatarDuel extends Application {
 
   @Override
   public void start(Stage stage) {
+<<<<<<< HEAD
     stage.setTitle("Avatar Duel - K3 G08");
     InitScreen(stage);
+=======
+    stage.setTitle("Avatar Duel");
+    MainScreen(stage);
+   
+    /*
+    Scene scene = new Scene(root, 1280, 720);
+
+    stage.setTitle("Avatar Duel");
+    stage.setScene(scene);
+    stage.show();
+
+    try {
+      this.loadCards();
+      text.setText("Avatar Duel!");
+    } catch (Exception e) {
+      text.setText("Failed to load cards: " + e);
+    } */
+>>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
   }
 
   public void InitScreen(Stage stage) {
@@ -96,7 +124,7 @@ public class AvatarDuel extends Application {
   }
 
   public void MainScreen(Stage stage) {
-    HBox hbox = new HBox();
+    Pane hbox = new Pane();
     Scene scene = new Scene(hbox);
     Image image = new Image("com/avatarduel/asset/board.png");
     BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -106,7 +134,14 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
+<<<<<<< HEAD
     stage.setScene(scene);
+=======
+    Card card = new Card("Aaang",Element.AIR,"lulu","none");
+    CardDisplay DCard = new CardDisplay(card,hbox);
+    stage.setTitle("Avatar Duel");
+    stage.setScene(scene); 
+>>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
     //stage.setFullScreen(true);
     stage.setMaximized(true);
     stage.show();
