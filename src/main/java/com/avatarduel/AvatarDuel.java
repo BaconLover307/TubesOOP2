@@ -17,8 +17,8 @@ import javafx.scene.layout.TilePane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent; 
-import javafx.event.EventHandler; 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,41 +32,18 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.avatarduel.model.Element;
-import com.avatarduel.model.Land;
+//import com.avatarduel.model.Land;
 import com.avatarduel.util.CSVReader;
 
 public class AvatarDuel extends Application {
-/*  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
 
-
-  public void loadCards() throws IOException, URISyntaxException {
-    File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
-    CSVReader landReader = new CSVReader(landCSVFile, "\t");
-    landReader.setSkipHeader(true);
-    List<String[]> landRows = landReader.read();
-    for (String[] row : landRows) {
-      Land l = new Land(row[1], row[3], Element.valueOf(row[2]));
-    }
-  } */
+  final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+  final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), true, true, false, false);
 
   @Override
   public void start(Stage stage) {
-    stage.setTitle("Avatar Duel");
+    stage.setTitle("Avatar Duel - K3 G08");
     InitScreen(stage);
-   
-    /*
-    Scene scene = new Scene(root, 1280, 720);
-
-    stage.setTitle("Avatar Duel");
-    stage.setScene(scene);
-    stage.show();
-
-    try {
-      this.loadCards();
-      text.setText("Avatar Duel!");
-    } catch (Exception e) {
-      text.setText("Failed to load cards: " + e);
-    } */
   }
 
   public void InitScreen(Stage stage) {
@@ -80,52 +57,58 @@ public class AvatarDuel extends Application {
     settingButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     exitButton.setStyle("-fx-font-size: 15pt;");
     exitButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-    EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
-        public void handle(ActionEvent e) 
-        {   stage.close();
-            MainScreen(stage);
-        } 
+    EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e)
+      {   stage.close();
+        MainScreen(stage);
+      }
     };
-    EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() { 
-        public void handle(ActionEvent e) 
-        {System.out.println("setting"); } 
-    }; 
-    EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() { 
-        public void handle(ActionEvent e) 
-        {stage.close();} 
-    };  
+    EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e)
+      {System.out.println("setting"); }
+    };
+    EventHandler<ActionEvent> event3 = new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent e)
+      {stage.close();}
+    };
     startButton.setOnAction(event1);
     settingButton.setOnAction(event2);
     exitButton.setOnAction(event3);
 
-    TilePane tileButtons = new TilePane(Orientation.VERTICAL);
-    tileButtons.setPadding(new Insets(50, 10, 10, 1200));
-    tileButtons.setHgap(12.0);
-    tileButtons.setVgap(10.0);
-    tileButtons.getChildren().addAll(startButton, settingButton, exitButton);
+    TilePane mainmenu = new TilePane(Orientation.VERTICAL);
+    mainmenu.setPadding(new Insets(screenSize.getHeight()/2 - 50, 10, 10,screenSize.getWidth()/2 - 75));
+    mainmenu.setHgap(12.0);
+    mainmenu.setVgap(10.0);
+    mainmenu.getChildren().addAll(startButton, settingButton, exitButton);
+    Image image = new Image("com/avatarduel/asset/main-menu.png");
+    BackgroundImage backgroundImage = new BackgroundImage(image,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.DEFAULT,
+            backgroundSize);
+    Background background = new Background(backgroundImage);
+    mainmenu.setBackground(background);
 
-    Scene s = new Scene(tileButtons);
+    Scene s = new Scene(mainmenu);
     stage.setScene(s);
     stage.setMaximized(true);
     stage.show();
-  } 
+  }
 
   public void MainScreen(Stage stage) {
     HBox hbox = new HBox();
     Scene scene = new Scene(hbox);
     Image image = new Image("com/avatarduel/asset/board.png");
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), false, false, false, false);
-    BackgroundImage backgroundImage = new BackgroundImage(image,  
-    BackgroundRepeat.NO_REPEAT,  
-    BackgroundRepeat.NO_REPEAT,  
-    BackgroundPosition.DEFAULT,  
-    backgroundSize); 
+    BackgroundImage backgroundImage = new BackgroundImage(image,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.DEFAULT,
+            backgroundSize);
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
-    stage.setScene(scene); 
+    stage.setScene(scene);
     //stage.setFullScreen(true);
-    stage.setMaximized(true); 
+    stage.setMaximized(true);
     stage.show();
   }
 
