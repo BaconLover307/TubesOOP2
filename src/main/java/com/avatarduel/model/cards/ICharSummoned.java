@@ -1,4 +1,6 @@
-package com.avatarduel.model.gameplay;
+package com.avatarduel.model.cards;
+
+import com.avatarduel.model.cards.Skill;
 
 public interface ICharSummoned {
 
@@ -8,4 +10,15 @@ public interface ICharSummoned {
     // bila dalam posisi menyerang, mengembalikan attack.
     // bila dalam posisi bertahan, mengembalikan defense
     public int getPositionValue();
+
+    public void onBeingAttacked();
+
+    public void onAttachedSkillCard();
+
+    public void doAttack(SummonedCharacter target);
+
+    public void onSkillAttached(Skill skillCard);
+
+    public void destroy();
+
 }

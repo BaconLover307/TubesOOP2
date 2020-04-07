@@ -1,5 +1,5 @@
 package com.avatarduel.model.cards;
-import com.avatarduel.model.gameplay.SummonedCharacter;
+import com.avatarduel.model.cards.SummonedCharacter;
 import java.util.Map;
 import java.util.HashMap;
 

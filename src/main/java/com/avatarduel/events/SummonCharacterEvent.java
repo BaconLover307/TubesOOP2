@@ -1,8 +1,7 @@
-package com.avatarduel.model.cards;
-import com.avatarduel.model.Element;
-import java.util.ArrayList;
-/*
-public class SummonCharacteEvent implements BaseEvent {
+package com.avatarduel.view.events;
+
+
+public class SummonCharacterEvent implements BaseEvent {
     
     private Character C;
 
@@ -10,9 +9,12 @@ public class SummonCharacteEvent implements BaseEvent {
         this.C = C;
     }
 
+    public interface SummonCharacterEventHandler {
+        void onSummonCharacterEvent(SummonCharacterEvent e);
+    }
+
     @Override
     public void execute(){
 
     }
 }
-*/

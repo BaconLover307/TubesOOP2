@@ -3,7 +3,7 @@ import com.avatarduel.model.cards.Deck;
 import com.avatarduel.model.cards.Hand;
 
 
-public class Player {
+public class Player implements IPlayer{
     protected String name;
     protected Deck deck;
     protected Hand hand;
@@ -18,5 +18,10 @@ public class Player {
         // this.board = new Board();
         this.health = health;
         this.powers = new Power();
+    }
+
+    public void onBeingAttacked(int damageValue) {
+        // TODO Auto-generated method stub
+
     }
 }

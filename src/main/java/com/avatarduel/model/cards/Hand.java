@@ -1,10 +1,17 @@
 package com.avatarduel.model.cards;
+import com.avatarduel.view.events.BaseEvent;
+import com.avatarduel.view.events.DrawEvent;
+import com.avatarduel.view.events.Publisher;
+import com.avatarduel.view.events.Subscriber;
+import com.avatarduel.view.events.GameChannel;
+import com.avatarduel.model.Element;
+import java.util.ArrayList;
 
-public class Hand extends CardCollection implements Flippable {
-    private boolean show;
+public class Hand extends CardCollection implements Flippable, Subscriber {
+    private boolean show; // Jika kartu terbuka, maka true
 
-	public Hand(){
-        super();
+	public Hand(GameChannel channel, String player){
+        super(channel, player);
         this.show = false;
     }
 
@@ -42,6 +49,15 @@ public class Hand extends CardCollection implements Flippable {
         }
     }
 
-    public void flipOpen() {this.show == true;}
-    public void flipClose() {this.show == false;}
+    // Untuk menutup kartu
+    public void flipOpen() {this.show = true;}
+    public void flipClose() {this.show = false;}
+
+    public void onDrawEvent(DrawEvent.Handler e){
+        this.addCard(e.getCard());
+    }
+
+    public void onEvent(BaseEvent e){
+
+    }
 }
