@@ -3,16 +3,15 @@ package com.avatarduel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 //import javafx.application.Application;
-//import javafx.scene.Scene; 
+//import javafx.scene.Scene;
+import com.avatarduel.view.CardDisplay;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 //import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
@@ -20,33 +19,28 @@ import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 import javafx.scene.layout.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
+import javafx.scene.text.*;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import com.avatarduel.model.Element;
 //import com.avatarduel.model.Land;
-import com.avatarduel.util.CSVReader;
 
 import com.avatarduel.model.cards.Card;
-import com.avatarduel.CardDisplay;
 
 public class AvatarDuel extends Application {
 
   final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), true, true, false, false);
-  final int cardDisH = 560;
+  final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), false, false, false, false);
   final int cardDisW = 400;
-  final int cardDisPosX = 0;
-  final int cardDisPosY = 0;
+  final int cardDisH = 560;
+  final int cardDisPosX = 120;
+  final int cardDisPosY = 260;
+  final int cardSummonedW = 80;
+  final int cardSummonedH = 112;
+
   @Override
   public void start(Stage stage) {
     stage.setTitle("Avatar Duel - K3 G08");
@@ -111,6 +105,7 @@ public class AvatarDuel extends Application {
     mainmenu.setBackground(background);
 
     Scene s = new Scene(mainmenu);
+    s.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
     stage.setScene(s);
     stage.setMaximized(true);
     stage.show();
@@ -127,8 +122,8 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
-    Card card = new Card("Aang",Element.AIR,"lulu","none");
-    CardDisplay DCard = new CardDisplay(card,hbox, cardDisW, cardDisH);
+    Card card = new Card("Aang",Element.AIR,"lulu","com/avatarduel/card/image/character/Aang.png");
+    CardDisplay DCard = new CardDisplay(card,hbox, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);
     stage.setTitle("Avatar Duel");
