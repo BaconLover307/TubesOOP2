@@ -21,12 +21,12 @@ public class CardDisplay {
     private Text desc;
     private Text attr;
 
-    public CardDisplay(Card C, Pane hbox) {
+    public CardDisplay(Card C, Pane hbox, int cardW, int cardH) {
 
         Pane box = new Pane();
-        box.setPrefSize(300,400);
+        box.setPrefSize(cardW,cardH);
         Image img = new Image("com/avatarduel/asset/card-character.png");
-        BackgroundSize backgroundSize = new BackgroundSize(300, 400, false, false, false, false);
+        BackgroundSize backgroundSize = new BackgroundSize(cardW, cardH, false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(img,  
         BackgroundRepeat.NO_REPEAT,  
         BackgroundRepeat.NO_REPEAT,  
@@ -38,17 +38,20 @@ public class CardDisplay {
         name = new Text();
         name.setText(C.getName());
         String elpath;
-        if (C.getElement() == Element.AIR) {
-            elpath = "com/avatarduel/asset/elm-air.png";
-        }
-        else if (C.getElement() == Element.WATER) {
-            elpath = "com/avatarduel/asset/elm-water.png";
-        }
-        else if (C.getElement() ==  Element.FIRE) {
-            elpath = "com/avatarduel/asset/elm-fire.png";
-        }
-        else {
-            elpath = "com/avatarduel/asset/elm-earth.png";
+        switch (C.getElement()) {
+            case AIR:
+                elpath = "com/avatarduel/asset/elm-air.png";
+                break;
+            case WATER:
+                elpath = "com/avatarduel/asset/elm-water.png";
+                break;
+            case FIRE:
+                elpath = "com/avatarduel/asset/elm-fire.png";
+                break;
+            default:
+                elpath = "com/avatarduel/asset/elm-earth.png";
+                break;
+
         }
         Image image = new Image(elpath);
         element = new ImageView(image);

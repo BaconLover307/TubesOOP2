@@ -17,14 +17,9 @@ import javafx.scene.layout.TilePane;
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-<<<<<<< HEAD
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-=======
-import javafx.event.ActionEvent; 
 import javafx.event.EventHandler; 
 import javafx.scene.layout.*;
->>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
 
 import java.io.File;
 import java.io.IOException;
@@ -48,14 +43,14 @@ public class AvatarDuel extends Application {
 
   final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), true, true, false, false);
-
+  final int cardDisH = 560;
+  final int cardDisW = 400;
+  final int cardDisPosX = 0;
+  final int cardDisPosY = 0;
   @Override
   public void start(Stage stage) {
-<<<<<<< HEAD
     stage.setTitle("Avatar Duel - K3 G08");
-    InitScreen(stage);
-=======
-    stage.setTitle("Avatar Duel");
+//    InitScreen(stage);
     MainScreen(stage);
    
     /*
@@ -71,9 +66,7 @@ public class AvatarDuel extends Application {
     } catch (Exception e) {
       text.setText("Failed to load cards: " + e);
     } */
->>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
   }
-
   public void InitScreen(Stage stage) {
     Button startButton = new Button("START");
     Button settingButton = new Button("SETTING");
@@ -134,14 +127,12 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
-<<<<<<< HEAD
-    stage.setScene(scene);
-=======
-    Card card = new Card("Aaang",Element.AIR,"lulu","none");
-    CardDisplay DCard = new CardDisplay(card,hbox);
+    Card card = new Card("Aang",Element.AIR,"lulu","none");
+    CardDisplay DCard = new CardDisplay(card,hbox, cardDisW, cardDisH);
+//    DCard.setX(100);
+//    DCard.setY(100);
     stage.setTitle("Avatar Duel");
     stage.setScene(scene); 
->>>>>>> bfbd55d13e5bbf07c0a05814f325360d1b486a2f
     //stage.setFullScreen(true);
     stage.setMaximized(true);
     stage.show();
