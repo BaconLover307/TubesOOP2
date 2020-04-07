@@ -19,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent; 
 import javafx.event.EventHandler; 
+import javafx.scene.layout.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,9 @@ import javafx.stage.Stage;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Land;
 import com.avatarduel.util.CSVReader;
+
+import com.avatarduel.model.cards.Card;
+import com.avatarduel.CardDisplay;
 
 public class AvatarDuel extends Application {
 /*  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
@@ -52,7 +56,7 @@ public class AvatarDuel extends Application {
   @Override
   public void start(Stage stage) {
     stage.setTitle("Avatar Duel");
-    InitScreen(stage);
+    MainScreen(stage);
    
     /*
     Scene scene = new Scene(root, 1280, 720);
@@ -111,7 +115,7 @@ public class AvatarDuel extends Application {
   } 
 
   public void MainScreen(Stage stage) {
-    HBox hbox = new HBox();
+    Pane hbox = new Pane();
     Scene scene = new Scene(hbox);
     Image image = new Image("com/avatarduel/asset/board.png");
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -123,6 +127,9 @@ public class AvatarDuel extends Application {
     backgroundSize); 
     Background background = new Background(backgroundImage);
     hbox.setBackground(background);
+    Card card = new Card("Aaang",Element.AIR,"lulu","none");
+    CardDisplay DCard = new CardDisplay(card,hbox);
+    stage.setTitle("Avatar Duel");
     stage.setScene(scene); 
     //stage.setFullScreen(true);
     stage.setMaximized(true); 
