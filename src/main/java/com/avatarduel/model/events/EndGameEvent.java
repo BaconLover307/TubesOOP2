@@ -11,7 +11,7 @@ public class EndGameEvent implements BaseEvent {
     public void execute(){
 
     }
-    /*
+    
     public class Handler implements BaseEvent {
         
         private String msg;
@@ -22,6 +22,10 @@ public class EndGameEvent implements BaseEvent {
         public String getMessage(){
             return this.msg;
         }
+
+        public void execute(){
+            
+        }
     }
-    */
+    
 }

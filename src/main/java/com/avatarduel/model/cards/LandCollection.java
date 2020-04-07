@@ -1,5 +1,6 @@
 package com.avatarduel.model.cards;
 import com.avatarduel.model.Element;
+import com.avatarduel.model.events.GameChannel;
 import java.util.ArrayList;
 
 public class LandCollection extends CardCollection {
@@ -9,8 +10,8 @@ public class LandCollection extends CardCollection {
     private int airPower;
     private int earthPower;
 
-	public LandCollection() {
-        super();
+	public LandCollection(GameChannel channel, String player){
+        super(channel, player);
         this.waterPower = 0;
         this.firePower = 0;
         this.airPower = 0;

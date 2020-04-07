@@ -17,17 +17,15 @@ public class Player implements
     protected int health;
     protected Power powers;
     protected GameChannel channel;
-    protected String player;
 
-    public Player(String name, int health, GameChannel channel, String player) {
+    public Player(String name, int health, GameChannel channel) {
         this.name = name;
-        this.deck = new Deck(channel, player);
-        this.hand = new Hand(channel, player);
+        this.deck = new Deck(channel, name);
+        this.hand = new Hand(channel, name);
         // this.board = new Board();
         this.health = health;
-        this.powers = new Power();
+        this.powers = new Power(channel, name);
         this.channel = channel;
-        this.player = player;
     }
 
     public void publish(String topic, BaseEvent event){

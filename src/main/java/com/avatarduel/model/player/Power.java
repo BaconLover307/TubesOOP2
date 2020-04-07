@@ -1,14 +1,23 @@
 package com.avatarduel.model.player;
 import com.avatarduel.model.Element;
+import com.avatarduel.model.events.GameChannel;
+import com.avatarduel.model.events.BaseEvent;
+import com.avatarduel.model.events.ResetPowerEvent;
+import com.avatarduel.model.events.SpendPowerEvent;
+import com.avatarduel.model.events.Subscriber;
 
-public class Power {    
+public class Power implements Subscriber {
+    private GameChannel channel;
+    private String player;
     private ElementPower firePower;
     private ElementPower waterPower;
     private ElementPower earthPower;
     private ElementPower airPower;
     private Element elements[] = Element.values();
 
-    public Power() {
+    public Power(GameChannel channel, String player) {
+        this.channel = channel;
+        this.player = player;
         this.firePower = new ElementPower(Element.FIRE, 0, 0);
         this.waterPower = new ElementPower(Element.WATER, 0, 0);
         this.earthPower = new ElementPower(Element.EARTH, 0, 0);
@@ -36,4 +45,23 @@ public class Power {
         getPower(elm).UsePower(use);
     }
 
+    public void onResetPowerEvent(ResetPowerEvent e){
+        this.ResetAllPower();
+    }
+
+    public void onSpendPowerEvent(SpendPowerEvent e){
+        boolean success;
+
+        if (e.getElement() == Element.FIRE) success = this.firePower.UsePower(e.getVal());
+        else if (e.getElement() == Element.WATER) success = this.waterPower.UsePower(e.getVal());
+        else if (e.getElement() == Element.EARTH) success = this.earthPower.UsePower(e.getVal());
+        else success = this.airPower.UsePower(e.getVal());
+
+        this.channel.sendEvent(e.getSender(), e.new Handler(success));
+        
+    }
+
+    public void onEvent(BaseEvent e){
+        //
+    }
 }
