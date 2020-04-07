@@ -27,5 +27,4 @@ public class CardCollection extends ArrayList<Card> {
     public boolean isEmpty(){
         return (this.getSize() == 0);
     }
-    */
 }

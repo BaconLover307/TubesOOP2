@@ -1,6 +1,6 @@
 package com.avatarduel.model.cards;
 
-import com.avatarduel.model.cards.Skill;
+// import com.avatarduel.model.cards.Skill;
 
 public interface ICharSummoned {
 
