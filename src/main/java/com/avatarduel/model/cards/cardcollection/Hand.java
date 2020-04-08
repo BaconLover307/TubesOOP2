@@ -1,14 +1,15 @@
 package com.avatarduel.model.cards.cardcollection;
-
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 
 import java.util.ArrayList;
 
-public class Hand extends CardCollection implements Flippable, Subscriber {
+public class Hand extends CardCollection implements Flippable, Publisher, Subscriber {
     private boolean show; // Jika kartu terbuka, maka true
 
     // public Hand(GameChannel channel, String player) {
@@ -59,12 +60,31 @@ public class Hand extends CardCollection implements Flippable, Subscriber {
         this.show = false;
     }
 
-    // public void onDrawEvent(DrawEvent.Handler e) {
-    //     this.addCard(e.getCard());
-    // }
-
-    public void onEvent(BaseEvent e) {
-
+    /*
+    public UseCard(Character C, String target){
+        this.publish(target, new SummonCharacterEvent(C));
     }
 
+    public UseCard(Land C, String target){
+        this.publish(target, new UseLandEvent(C));
+    }
+
+    public UseCard(Skill C, String target){
+        this.publish(target, new UseSkillEvent(C));
+    }
+    */
+
+    public void onDrawEvent(DrawEvent.Handler e){
+        this.addCard(e.getCard());
+    }
+
+    public void publish(String topic, BaseEvent event){
+        this.channel.sendEvent(topic, event);
+    }
+
+    public void onEvent(BaseEvent e){
+        if (e instanceof DrawEvent.Handler){
+            this.onDrawEvent((DrawEvent.Handler)e);
+        } 
+    }
 }
