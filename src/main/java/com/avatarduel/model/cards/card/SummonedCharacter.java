@@ -39,6 +39,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         }
     }
 
+    public Character getCharCard() {return this.CharCard;}
+
     public void doAttack(SummonedCharacter target) {
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
     }
