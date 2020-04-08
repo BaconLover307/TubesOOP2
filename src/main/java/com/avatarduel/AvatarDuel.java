@@ -25,7 +25,12 @@ import javafx.scene.text.*;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Character;
 
+import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.cards.card.SummonedCharacter;
+
 public class AvatarDuel extends Application {
+
+  private GameplayChannel gameplay;
 
   final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), false, false, false, false);
@@ -39,6 +44,7 @@ public class AvatarDuel extends Application {
   @Override
   public void start(Stage stage) {
     stage.setTitle("Avatar Duel - K3 G08");
+    gameplay = new GameplayChannel();
 //    InitScreen(stage);
     MainScreen(stage);
    
@@ -118,10 +124,10 @@ public class AvatarDuel extends Application {
     Background background = new Background(backgroundImage);
     pane.setBackground(background);
     Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
-    CardDisplay DCard = new CharDisplay(card, pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
+    SummonedCharacter cardS = new SummonedCharacter(card, false, gameplay);
+    CardDisplay DCard = new CharDisplay(cardS.getCharCard(), pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);
-    stage.setTitle("Avatar Duel");
     stage.setScene(scene); 
     //stage.setFullScreen(true);
     stage.setMaximized(true);
