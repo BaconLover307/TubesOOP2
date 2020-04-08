@@ -1,19 +1,30 @@
+/*
 package com.avatarduel;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.text.Text;
+import com.avatarduel.view.*;
+
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.TilePane;
+import javafx.geometry.Orientation;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.layout.*;
+import javafx.scene.text.*;
 
 import com.avatarduel.model.Element;
-import com.avatarduel.model.Land;
-import com.avatarduel.util.CSVReader;
+import com.avatarduel.model.cards.card.Character;
 
 public class AvatarDuelTemplate extends Application {
   private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
@@ -56,4 +67,4 @@ public class AvatarDuelTemplate extends Application {
   public static void main(String[] args) {
     launch();
   }
-}
+}*/

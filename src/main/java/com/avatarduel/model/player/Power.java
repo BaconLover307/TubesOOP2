@@ -1,17 +1,18 @@
 package com.avatarduel.model.player;
+import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.Element;
-import com.avatarduel.model.events.GameChannel;
-import com.avatarduel.model.events.BaseEvent;
-import com.avatarduel.model.events.ResetPowerEvent;
-import com.avatarduel.model.events.SpendPowerEvent;
-import com.avatarduel.model.events.Publisher;
-import com.avatarduel.model.events.Subscriber;
 
-public class Power implements 
+public class Power implements
     Publisher, 
     Subscriber {
-    
-    private GameChannel channel;
+
+    private GameplayChannel channel;
     private String player;
     private ElementPower firePower;
     private ElementPower waterPower;
@@ -19,7 +20,7 @@ public class Power implements
     private ElementPower airPower;
     private Element elements[] = Element.values();
 
-    public Power(GameChannel channel, String player) {
+    public Power(GameplayChannel channel, String player) {
         this.channel = channel;
         this.player = player;
         this.firePower = new ElementPower(Element.FIRE, 0, 0);
@@ -46,6 +47,7 @@ public class Power implements
     }
 
     public void UsePower(Element elm, int use) {
+        //kok ini void tapi use power jadi boolean?
         getPower(elm).UsePower(use);
     }
 
@@ -58,7 +60,10 @@ public class Power implements
             this.onResetPowerEvent((ResetPowerEvent)e);
         } else if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
+        } else if (e instanceof UseLandEvent){
+            this.onUseLandEvent((UseLandEvent)e);
         }
+
     }
 
     public void onResetPowerEvent(ResetPowerEvent e){
@@ -66,14 +71,11 @@ public class Power implements
     }
 
     public void onSpendPowerEvent(SpendPowerEvent e){
-        boolean success;
-
-        if (e.getElement() == Element.FIRE) success = this.firePower.UsePower(e.getVal());
-        else if (e.getElement() == Element.WATER) success = this.waterPower.UsePower(e.getVal());
-        else if (e.getElement() == Element.EARTH) success = this.earthPower.UsePower(e.getVal());
-        else success = this.airPower.UsePower(e.getVal());
-
+        boolean success = this.getPower(e.getElement()).UsePower(e.getVal());
         this.publish(e.getSender(), e.new Handler(success));
-        
+    }
+
+    public void onUseLandEvent(UseLandEvent e){
+        this.AddCapacity(e.getLand().getElement(), 1);
     }
 }

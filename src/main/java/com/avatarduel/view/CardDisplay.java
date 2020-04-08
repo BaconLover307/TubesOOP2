@@ -16,7 +16,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 
-import com.avatarduel.model.cards.Card;
+import com.avatarduel.model.cards.card.Card;
 import javafx.scene.text.TextAlignment;
 
 import java.awt.event.MouseAdapter;

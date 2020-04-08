@@ -2,12 +2,12 @@ package com.avatarduel;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-//import javafx.application.Application;
-//import javafx.scene.Scene;
+import javafx.application.Application;
+import javafx.scene.Scene;
 import com.avatarduel.view.*;
 
 import javafx.scene.image.Image;
-//import javafx.stage.Stage;
+import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundSize;
@@ -22,16 +22,8 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import com.avatarduel.model.Element;
-//import com.avatarduel.model.Land;
-
-import com.avatarduel.model.cards.Card;
-import com.avatarduel.model.cards.Character;
-import com.avatarduel.model.cards.PowerUp;
+import com.avatarduel.model.cards.card.Character;
 
 public class AvatarDuel extends Application {
 

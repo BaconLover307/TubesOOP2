@@ -5,7 +5,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import java.util.Map;
-import com.avatarduel.model.cards.Hand;
+import com.avatarduel.model.cards.cardcollection.Hand;
 
 public class HandDisplay {
     private Hand hand;

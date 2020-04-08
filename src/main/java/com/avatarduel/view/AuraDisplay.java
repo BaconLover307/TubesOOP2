@@ -3,7 +3,7 @@ package com.avatarduel.view;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.layout.*;
-import com.avatarduel.model.cards.Aura;
+import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.view.CardDisplay;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.image.Image;
