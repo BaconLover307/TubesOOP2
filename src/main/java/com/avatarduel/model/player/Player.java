@@ -44,6 +44,8 @@ public class Player implements Publisher, Subscriber,
         } 
     }
 
+    public Deck getDeck() {return this.deck;}
+
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
         if(this == e.target){

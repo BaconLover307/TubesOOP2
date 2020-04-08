@@ -33,8 +33,8 @@ public class Deck extends CardCollection implements
 
         while (stackTemp.size()>0){
             randomNumber = r.nextInt(2*stackTemp.size()/3+1)+stackTemp.size()/3;
-            int sizze = stackTemp.size();
-            for (int i = randomNumber; i < sizze; i++) {
+            int size = stackTemp.size();
+            for (int i = randomNumber; i < size; i++) {
                 cardTemp = stackTemp.get(randomNumber);
                 stackTemp.remove(cardTemp);
                 this.add(cardTemp);

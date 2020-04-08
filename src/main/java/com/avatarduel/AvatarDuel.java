@@ -2,7 +2,10 @@ package com.avatarduel;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
+import com.avatarduel.model.player.Player;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import com.avatarduel.view.cards.*;
 
@@ -123,8 +126,9 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     pane.setBackground(background);
+    Player p1 = new Player("Hojun", 80, gameplay);
     Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
-    SummonedCharacter cardS = new SummonedCharacter(card, false, gameplay);
+    SummonedCharacter cardS = new SummonedCharacter(card, true, p1, gameplay);
     CardDisplay DCard = new CharDisplay(cardS.getCharCard(), pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);

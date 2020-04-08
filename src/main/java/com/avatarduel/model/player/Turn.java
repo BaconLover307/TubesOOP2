@@ -1,4 +1,4 @@
-package com.avatarduel.model.gameplay;
+package com.avatarduel.model.player;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Land;
@@ -6,6 +6,7 @@ import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.player.Player;
@@ -16,7 +17,7 @@ public class Turn implements Publisher {
     private Player player;
     private boolean usedLand;
     
-	public Turn (GameplayChannel channel, Player player){
+	public Turn(GameplayChannel channel, Player player){
         this.channel = channel;
         this.player = player;
         this.usedLand = false;
@@ -24,8 +25,8 @@ public class Turn implements Publisher {
 
 	public void drawPhase(){
         System.out.println("Draw Phase");
-        String draw = this.player.getName() + " Deck";
-        this.publish(draw, new DrawEvent());
+        // String draw = this.player.getName() + " Deck";
+        this.player.getDeck().doDraw();
         String reset = this.player.getName() + " Power";
         this.publish(reset, new ResetPowerEvent());
     }

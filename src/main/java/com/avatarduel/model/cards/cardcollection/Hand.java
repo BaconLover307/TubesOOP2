@@ -10,7 +10,7 @@ import com.avatarduel.model.gameplay.Subscriber;
 
 import java.util.ArrayList;
 
-public class Hand extends CardCollection implements Flippable, Publisher, Subscriber, DrawEvent.DrawEventHandler {
+public class Hand extends CardCollection implements Publisher, Subscriber, DrawEvent.DrawEventHandler {
 
     private boolean show; // Jika kartu terbuka, maka true
     private boolean usedLand; // true if UseCard(Land) was used this turn
@@ -58,14 +58,6 @@ public class Hand extends CardCollection implements Flippable, Publisher, Subscr
         }
     }
 
-    // Untuk menutup kartu
-    public void flipOpen() {
-        this.show = true;
-    }
-
-    public void flipClose() {
-        this.show = false;
-    }
 
 
     public void publish(String topic, BaseEvent event){
