@@ -5,6 +5,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.Element;
 
 public class Power implements
@@ -59,7 +60,10 @@ public class Power implements
             this.onResetPowerEvent((ResetPowerEvent)e);
         } else if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
+        } else if (e instanceof UseLandEvent){
+            this.onUseLandEvent((UseLandEvent)e);
         }
+
     }
 
     public void onResetPowerEvent(ResetPowerEvent e){
@@ -69,5 +73,9 @@ public class Power implements
     public void onSpendPowerEvent(SpendPowerEvent e){
         boolean success = this.getPower(e.getElement()).UsePower(e.getVal());
         this.publish(e.getSender(), e.new Handler(success));
+    }
+
+    public void onUseLandEvent(UseLandEvent e){
+        this.AddCapacity(e.getLand().getElement(), 1);
     }
 }

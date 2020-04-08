@@ -1,18 +1,13 @@
 package com.avatarduel.model.gameplay.events;
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
-/*
+
+// sender: ???
+// target: Board
 public class DiscardSkillEvent implements BaseEvent {
-    
-    private Card C;
 
-    public DiscardSkillEvent(Card C){
-        this.C = C;
-    }
+    public DiscardSkillEvent(){}
 
-    @Override
-    public void execute(Land L){
-
-    }
+    public void execute(){}
 }
-*/

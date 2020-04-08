@@ -2,6 +2,7 @@ package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.SummonedCharacter;
+import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.cards.card.Skill;
 
 import java.util.Map;
@@ -13,6 +14,7 @@ public class Board {
     Map<Integer, Skill> skillBoard;
 
     public Board() {
+        super();
         this.charBoard = new HashMap<Integer, SummonedCharacter>();
         this.skillBoard = new HashMap<Integer, Skill>();
     }

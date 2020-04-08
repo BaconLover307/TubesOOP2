@@ -1,20 +1,19 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Card;
 
 import java.util.ArrayList;
 
+// sender: Phase
+// target: Hand
 public class DrawEvent implements BaseEvent {
 
-    public DrawEvent(int player){
+    public DrawEvent(){}
 
-    }
-
-    public void execute(){
-
-    }
+    public void execute(){}
 
     public class Handler implements BaseEvent {
 
@@ -24,12 +23,10 @@ public class DrawEvent implements BaseEvent {
             this.drawnCard = C;
         }
 
-        public void execute(){
-
-        }
-
         public Card getCard(){
             return this.drawnCard;
         }
+
+        public void execute(){}
     }
 }

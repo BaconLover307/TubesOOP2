@@ -3,6 +3,8 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
+// Sent to Power to call UsePower, remembers the Element and number of Power required, remembers the sender for return address
+// returns handler with boolean, true if there was enough power of the required element
 public class SpendPowerEvent implements BaseEvent {
     
     private String sender;
@@ -27,9 +29,7 @@ public class SpendPowerEvent implements BaseEvent {
         return this.val;
     }
 
-    public void execute(){
-        //
-    }
+    public void execute(){}
 
     public class Handler implements BaseEvent {
 
@@ -43,8 +43,6 @@ public class SpendPowerEvent implements BaseEvent {
             return this.success;
         }
 
-        public void execute(){
-            //
-        }
+        public void execute(){}
     }
 }

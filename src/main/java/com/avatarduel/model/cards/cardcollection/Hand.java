@@ -2,6 +2,7 @@ package com.avatarduel.model.cards.cardcollection;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.Publisher;
@@ -11,11 +12,13 @@ import java.util.ArrayList;
 
 public class Hand extends CardCollection implements Flippable, Publisher, Subscriber {
     private boolean show; // Jika kartu terbuka, maka true
+    private boolean usedLand; // true if UseCard(Land) was used this turn
 
-    // public Hand(GameChannel channel, String player) {
-    //     super(channel, player);
-    //     this.show = false;
-    // }
+    public Hand(GameplayChannel channel, String player) {
+        super(channel, player);
+        this.show = false;
+        this.usedLand = false;
+    }
 
     public int findCard(String name) {
         int i = 0;
@@ -65,12 +68,17 @@ public class Hand extends CardCollection implements Flippable, Publisher, Subscr
         this.publish(target, new SummonCharacterEvent(C));
     }
 
-    public UseCard(Land C, String target){
-        this.publish(target, new UseLandEvent(C));
+    public UseCard(Land L, String target){
+        this.publish(target, new UseLandEvent(L));
+        this.usedLand = true;
     }
 
-    public UseCard(Skill C, String target){
-        this.publish(target, new UseSkillEvent(C));
+    public UseCard(Skill S, String target){
+        this.publish(target, new UseSkillEvent(S));
+    }
+
+    public onNewTurn(NewTurnEvent e){
+        this.usedLand = false;
     }
     */
 

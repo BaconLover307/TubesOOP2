@@ -11,7 +11,7 @@ public class AttackPlayerEvent implements BaseEvent {
         this.atk = atk;
     }
 
-    public int getAttack(){
+    public int getDamage(){
         return this.atk;
     }
 

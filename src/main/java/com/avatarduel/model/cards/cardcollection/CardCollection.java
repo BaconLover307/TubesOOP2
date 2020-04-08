@@ -7,7 +7,7 @@ import com.avatarduel.model.cards.card.Card;
 
 public class CardCollection extends ArrayList<Card> {
 
-    protected GameChannel channel;
+    protected GameplayChannel channel;
     protected String player;
 
 	public CardCollection(GameplayChannel channel, String player){

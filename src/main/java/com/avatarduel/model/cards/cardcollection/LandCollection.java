@@ -2,6 +2,7 @@ package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Land;
+import com.avatarduel.model.gameplay.GameplayChannel;
 
 import java.util.ArrayList;
 
@@ -12,8 +13,8 @@ public class LandCollection extends CardCollection {
     private int airPower;
     private int earthPower;
 
-	public LandCollection() {
-        super();
+	public LandCollection(GameplayChannel channel, String player) {
+        super(channel, player);
         this.waterPower = 0;
         this.firePower = 0;
         this.airPower = 0;

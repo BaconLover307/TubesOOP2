@@ -6,13 +6,16 @@ import java.util.ArrayList;
 public class EndGameEvent implements BaseEvent {
     
     private String target;
+    
     public EndGameEvent(String target){
         this.target = target;
     }
-    
-    public void execute(){
 
+    public String getLoser(){
+        return this.target;
     }
+    
+    public void execute(){}
     
     public class Handler implements BaseEvent {
         
