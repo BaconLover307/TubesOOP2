@@ -1,6 +1,8 @@
 package com.avatarduel.view;
 
 
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
@@ -17,6 +19,8 @@ import javafx.scene.layout.BackgroundPosition;
 import com.avatarduel.model.cards.Card;
 import javafx.scene.text.TextAlignment;
 
+import java.awt.event.MouseAdapter;
+
 
 public class CardDisplay {
     
@@ -24,9 +28,8 @@ public class CardDisplay {
     private ImageView element;
     private ImageView image;
     private Text desc;
-    private Text attr;
-    private double cardH;
     private double cardW;
+    private double cardH;
     private double nameSz;
     private double nameX;
     private double nameY;
@@ -38,11 +41,14 @@ public class CardDisplay {
     private double imgX;
     private double imgY;
     private double descW;
+    private double descH;
     private double descSz;
     private double descX;
     private double descY;
+    private int n;
 
     public CardDisplay(Card C, Pane hbox, double cardW, double cardH, int posX, int posY) {
+        this.n = 0;
         this.cardW = cardW;
         this.cardH = cardH;
         Pane box = new Pane();
@@ -108,7 +114,12 @@ public class CardDisplay {
 
         box.getChildren().addAll(name,element,image,desc);
         hbox.getChildren().add(box);
-        
+        box.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
+
+            name.setText("MOVED " + Integer.toString(n));
+
+        });
+
     }
     
 
