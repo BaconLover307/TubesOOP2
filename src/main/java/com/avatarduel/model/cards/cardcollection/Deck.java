@@ -49,14 +49,13 @@ public class Deck extends CardCollection implements
         }
     }
 
-	public Card drawCard(){
+	public void doDraw(){
         if(this.isEmpty()){
-            //lose
-            return null;
+            this.publish("GAMESTATE", new EndGameEvent(this.getPlayer()));
         } else {
             Card C = this.get(this.size() - 1);
             this.remove(C);
-            return C;
+            this.publish("DRAW_EVENT",new DrawEvent(C, this.getPlayer()));
         }
     }
 
@@ -65,18 +64,5 @@ public class Deck extends CardCollection implements
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof DrawEvent){
-            this.onDrawEvent((DrawEvent)e);
-        } 
     } 
-
-    public void onDrawEvent(DrawEvent e){
-        if (this.isEmpty()){
-            this.publish("Gamestate", new EndGameEvent(this.getPlayer()));
-        } else {
-            Card drawn = this.drawCard();
-            String target = this.getPlayer() + " Hand";
-            this.publish(target, e.new Handler(drawn));
-        }
-    }
 }

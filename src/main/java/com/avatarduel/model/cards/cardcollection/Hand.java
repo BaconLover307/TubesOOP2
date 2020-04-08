@@ -10,14 +10,18 @@ import com.avatarduel.model.gameplay.Subscriber;
 
 import java.util.ArrayList;
 
-public class Hand extends CardCollection implements Flippable, Publisher, Subscriber {
+public class Hand extends CardCollection implements Flippable, Publisher, Subscriber, DrawEvent.DrawEventHandler {
+
     private boolean show; // Jika kartu terbuka, maka true
     private boolean usedLand; // true if UseCard(Land) was used this turn
+    private GameplayChannel channel;
 
     public Hand(GameplayChannel channel, String player) {
         super(channel, player);
         this.show = false;
         this.usedLand = false;
+        this.channel = channel;
+        channel.addSubscriber("DRAW_EVENT", this);
     }
 
     public int findCard(String name) {
@@ -63,36 +67,21 @@ public class Hand extends CardCollection implements Flippable, Publisher, Subscr
         this.show = false;
     }
 
-    /*
-    public UseCard(Character C, String target){
-        this.publish(target, new SummonCharacterEvent(C));
-    }
-
-    public UseCard(Land L, String target){
-        this.publish(target, new UseLandEvent(L));
-        this.usedLand = true;
-    }
-
-    public UseCard(Skill S, String target){
-        this.publish(target, new UseSkillEvent(S));
-    }
-
-    public onNewTurn(NewTurnEvent e){
-        this.usedLand = false;
-    }
-    */
-
-    public void onDrawEvent(DrawEvent.Handler e){
-        this.addCard(e.getCard());
-    }
 
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof DrawEvent.Handler){
-            this.onDrawEvent((DrawEvent.Handler)e);
+        if (e.getClass() == DrawEvent.class){
+            this.onDrawEvent((DrawEvent) e);
         } 
+    }
+
+    @Override
+    public void onDrawEvent(DrawEvent e) {
+        if(this.getPlayer().equals(e.h)){
+            this.add(e.c);
+        }
     }
 }
