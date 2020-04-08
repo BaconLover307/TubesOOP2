@@ -42,7 +42,7 @@ public class CardDisplay {
     private double descX;
     private double descY;
 
-    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, int posX, int posY) {
+    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, double posX, double posY) {
         this.cardW = cardW;
         this.cardH = cardH;
         Pane box = new Pane();
