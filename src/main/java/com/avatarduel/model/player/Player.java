@@ -1,23 +1,24 @@
 package com.avatarduel.model.player;
-import com.avatarduel.model.gameplay.GameplayChannel;
-import com.avatarduel.model.gameplay.Publisher;
-import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
-import com.avatarduel.model.gameplay.events.EndGameEvent;
-import com.avatarduel.model.cards.cardcollection.Deck;
-import com.avatarduel.model.cards.cardcollection.Hand;
+import com.avatarduel.model.cards.Deck;
+import com.avatarduel.model.cards.Hand;
+import com.avatarduel.model.events.BaseEvent;
+import com.avatarduel.model.events.GameChannel;
+import com.avatarduel.model.events.Publisher;
+import com.avatarduel.model.events.Subscriber;
 
-public class Player implements IPlayer, Publisher, Subscriber {
+public class Player implements 
+    Publisher,
+    Subscriber{
+    
     protected String name;
     protected Deck deck;
     protected Hand hand;
     // protected Board board;
     protected int health;
     protected Power powers;
-    protected GameplayChannel channel;
+    protected GameChannel channel;
 
-    public Player(String name, int health, GameplayChannel channel) {
+    public Player(String name, int health, GameChannel channel) {
         this.name = name;
         this.deck = new Deck(channel, name);
         this.hand = new Hand(channel, name);
@@ -27,24 +28,15 @@ public class Player implements IPlayer, Publisher, Subscriber {
         this.channel = channel;
     }
 
-    public void damage(int damageVal){
-        this.health -= damageVal;
-    }
-
-    public void onBeingAttacked(AttackPlayerEvent e) {
-        this.damage(e.getDamage());
-        if (this.health <= 0){
-            this.publish("Gamestate", new EndGameEvent(this.name));
-        }
-    }
-
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof AttackPlayerEvent){
-            this.onBeingAttacked((AttackPlayerEvent) e);
+        /*
+        if (e instanceof EventClass){
+            //call function
         } 
+        */
     }
 }
