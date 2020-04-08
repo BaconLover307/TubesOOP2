@@ -10,11 +10,11 @@ import java.util.ArrayList;
 public class AttackPlayerEvent implements BaseEvent {
 
     public int amount;
-    public Player attacker;
+    public Player target;
 
-    public AttackPlayerEvent(int amount, Player attacker){
+    public AttackPlayerEvent(int amount, Player target){
         this.amount = amount;
-        this.attacker = attacker;
+        this.target = target;
     }
 
     public interface AttackPlayerEventHandler {
