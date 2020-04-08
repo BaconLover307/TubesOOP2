@@ -4,7 +4,10 @@ import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.events.DrawEvent;
+import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
+import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 
@@ -67,11 +70,19 @@ public class Hand extends CardCollection implements Flippable, Publisher, Subscr
         this.show = false;
     }
 
+    public void selectChar(Character C) {
+        this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
+    }
+
+    public void selectSkill(Skill S) {
+        this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
+    }
 
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }
 
+    @Override
     public void onEvent(BaseEvent e){
         if (e.getClass() == DrawEvent.class){
             this.onDrawEvent((DrawEvent) e);

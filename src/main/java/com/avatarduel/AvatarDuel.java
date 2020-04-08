@@ -27,6 +27,7 @@ import com.avatarduel.model.cards.card.Character;
 
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.cards.card.SummonedCharacter;
+import com.avatarduel.model.player.Player;
 
 public class AvatarDuel extends Application {
 
@@ -124,7 +125,7 @@ public class AvatarDuel extends Application {
     Background background = new Background(backgroundImage);
     pane.setBackground(background);
     Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
-    SummonedCharacter cardS = new SummonedCharacter(card, false, gameplay);
+    SummonedCharacter cardS = new SummonedCharacter(card, false, new Player("hengky",80,gameplay), gameplay);
     CardDisplay DCard = new CharDisplay(cardS.getCharCard(), pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);

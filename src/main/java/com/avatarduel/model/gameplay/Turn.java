@@ -25,7 +25,7 @@ public class Turn implements Publisher {
 	public void drawPhase(){
         System.out.println("Draw Phase");
         String draw = this.player.getName() + " Deck";
-        this.publish(draw, new DrawEvent());
+        // this.publish(draw, new DrawEvent()); TODO Kurang parameter c sama h
         String reset = this.player.getName() + " Power";
         this.publish(reset, new ResetPowerEvent());
     }
