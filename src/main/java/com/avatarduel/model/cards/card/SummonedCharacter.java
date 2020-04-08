@@ -37,12 +37,11 @@ public class SummonedCharacter implements ICharSummoned,
 
 
     public void doAttack(SummonedCharacter target) {
-        // TODO Auto-generated method stub
-
+        // TODO publish new AttackCharacterEvent(this, target)
     }
 
     public void destroy() {
-        // TODO Auto-generated method stub
+        // TODO remove this card
 
     }
 
