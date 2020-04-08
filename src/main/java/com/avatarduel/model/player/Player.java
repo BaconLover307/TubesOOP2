@@ -31,6 +31,10 @@ public class Player implements IPlayer, Publisher, Subscriber {
         this.health -= damageVal;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void onBeingAttacked(AttackPlayerEvent e) {
         this.damage(e.getDamage());
         if (this.health <= 0){

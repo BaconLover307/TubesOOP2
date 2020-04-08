@@ -60,16 +60,6 @@ public class Deck extends CardCollection implements
         }
     }
 
-    public void publish(String topic, BaseEvent event){
-        this.channel.sendEvent(topic, event);
-    }
-
-    public void onEvent(BaseEvent e){
-        if (e instanceof DrawEvent){
-            this.onDrawEvent((DrawEvent)e);
-        } 
-    } 
-
     public void onDrawEvent(DrawEvent e){
         if (this.isEmpty()){
             this.publish("Gamestate", new EndGameEvent(this.getPlayer()));
@@ -79,4 +69,14 @@ public class Deck extends CardCollection implements
             this.publish(target, e.new Handler(drawn));
         }
     }
+
+    public void publish(String topic, BaseEvent event){
+        this.channel.sendEvent(topic, event);
+    }
+
+    public void onEvent(BaseEvent e){
+        if (e instanceof DrawEvent){
+            this.onDrawEvent((DrawEvent)e);
+        } 
+    } 
 }
