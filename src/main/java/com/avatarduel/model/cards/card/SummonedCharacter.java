@@ -1,6 +1,9 @@
 package com.avatarduel.model.cards.card;
+
 import java.util.ArrayList;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
+import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
+import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
@@ -9,17 +12,25 @@ import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
-        SkillCardAttachedEvent.SummonCharacterEventHandler, AttackCharacterEvent.AttackCharacterEventHandler {
+        SkillCardAttachedEvent.SummonCharacterEventHandler, 
+        AttackCharacterEvent.AttackCharacterEventHandler
+        {
 
     private Character CharCard;
     private boolean isAttack; // true jika dalam keadaan attack dan false bila dalam keadaan defense
     private ArrayList<Skill> attachedSkill;
+    private Player owner;
+    private boolean isPowerUp;
+    private int auraValue;
     private GameplayChannel gameplayChannel;
 
-    public SummonedCharacter(Character charCard, boolean isAttack, GameplayChannel gameplayChannel) {
+    public SummonedCharacter(Character charCard, boolean isAttack, Player player, GameplayChannel gameplayChannel) {
         this.CharCard = charCard;
         this.isAttack = isAttack;
+        this.owner = player;
         this.gameplayChannel = gameplayChannel;
+        this.auraValue = 0;
+        this.isPowerUp = false;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
     }
 
@@ -33,9 +44,9 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public int getPositionValue() {
         if (isAttack) {
-            return CharCard.getAttack();
+            return CharCard.getAttack() + auraValue;
         } else {
-            return CharCard.getDefense();
+            return CharCard.getDefense() + auraValue;
         }
     }
 
@@ -46,6 +57,9 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void doAttack(SummonedCharacter target) {
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
     }
+    public void doAttackPlayer(Player target) {
+        this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(this.CharCard.getAttack(), target));
+    }
 
     public void destroy() {
         // TODO remove this card
@@ -55,29 +69,45 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void onSkillCardAttached(SkillCardAttachedEvent e) {
         if (this == e.charCard) {
             this.attachedSkill.add(e.skillCard);
+            if(e.skillCard.getClass() == Aura.class){
+                this.auraValue = ((Aura) e.skillCard).powVal;
+            }
+            
+            if(e.skillCard.getClass() == Destroy.class){
+                this.destroy();
+            }
+            
+            if(e.skillCard.getClass() == PowerUp.class){
+                this.isPowerUp = true;
+            }
         }
     }
 
     @Override
     public void onAttackCharacter(AttackCharacterEvent e) {
         if (this == e.toCard) {
-            // TODO : if this posisi attack or e. has power up then do damage to player
             if (e.fromCard.getPosition()) { // karakter yg menyerang harus dalam posisi attack
                 if (e.toCard.getPositionValue() < e.fromCard.getPositionValue()) // attack/defense value this < attack fromCard
                 {
                     if (e.toCard.getPosition()){ // karakter this dalam posisi attack (isAttack == true)
 
-                        // TO DO : selisih attack ngurangin HP lawan 
+                        this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(
+                            e.fromCard.getPositionValue() - e.toCard.getPositionValue(), 
+                            e.toCard.owner
+                            ));
                     
                     }
-                    else { // karakter this dalam posisi defense (isAttack == false)
+                    else if(e.fromCard.isPowerUp){ 
 
-                        // TO DO : tidak mengurangi HP
+                        this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(
+                            e.fromCard.getPositionValue() - e.toCard.getPositionValue(), 
+                            e.toCard.owner
+                            ));
                     
                     }     
                 }
+                this.destroy();
             }
-            this.destroy(); // karakter lawan mati
         }
     }
 
@@ -96,5 +126,6 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void publish(String topic, BaseEvent event) {
         this.gameplayChannel.sendEvent(topic, event);
     }
+
 
 }

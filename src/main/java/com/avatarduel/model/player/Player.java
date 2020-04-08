@@ -8,7 +8,9 @@ import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 
-public class Player implements IPlayer, Publisher, Subscriber {
+public class Player implements Publisher, Subscriber,
+    AttackPlayerEvent.AttackPlayerEventHandler {
+
     protected String name;
     protected Deck deck;
     protected Hand hand;
@@ -25,21 +27,11 @@ public class Player implements IPlayer, Publisher, Subscriber {
         this.health = health;
         this.powers = new Power(channel, name);
         this.channel = channel;
-    }
-
-    public void damage(int damageVal){
-        this.health -= damageVal;
+        channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
     }
 
     public String getName(){
         return this.name;
-    }
-
-    public void onBeingAttacked(AttackPlayerEvent e) {
-        this.damage(e.getDamage());
-        if (this.health <= 0){
-            this.publish("Gamestate", new EndGameEvent(this.name));
-        }
     }
 
     public void publish(String topic, BaseEvent event){
@@ -47,8 +39,19 @@ public class Player implements IPlayer, Publisher, Subscriber {
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof AttackPlayerEvent){
-            this.onBeingAttacked((AttackPlayerEvent) e);
+        if (e.getClass() == AttackPlayerEvent.class){
+            this.onAttackPlayer((AttackPlayerEvent) e);
         } 
     }
+
+    @Override
+    public void onAttackPlayer(AttackPlayerEvent e) {
+        if(this == e.target){
+            this.health -= e.amount;
+            if (this.health <= 0){
+                this.publish("GAMESTATE", new EndGameEvent(this.name));
+            }
+        }
+    }
+
 }
