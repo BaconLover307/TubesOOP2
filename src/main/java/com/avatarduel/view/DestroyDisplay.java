@@ -36,7 +36,7 @@ public class DestroyDisplay extends SkillDisplay {
 
         attrX = 0.08 * cardW;
         attrY = 0.95 * cardH;
-        attrSz = 0.05 * cardH;
+        attrSz = 0.035 * cardH;
         attrW = 0.85 * cardW;
         atr = "POW/" + Integer.toString(C.getPowVal());
         atribut = new Text();
