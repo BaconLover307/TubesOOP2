@@ -1,14 +1,14 @@
 package com.avatarduel.model.cards.cardcollection;
-
 import com.avatarduel.model.CardType;
 import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.gameplay.GameplayChannel;
 
 public class SkillCollection extends CardCollection {
     
     private CardType type;
 
-	public SkillCollection() {
-        super();
+	public SkillCollection(GameplayChannel channel, String player) {
+        super(channel, player);
         this.type = CardType.SKILL;
     }
 /* 
