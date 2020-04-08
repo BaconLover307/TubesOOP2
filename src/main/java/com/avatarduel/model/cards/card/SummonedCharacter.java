@@ -1,8 +1,10 @@
 package com.avatarduel.model.cards.card;
 import java.util.ArrayList;
+import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
+import com.avatarduel.model.cards.card.Character;
 
 
-public class SummonedCharacter implements ICharSummoned {
+public class SummonedCharacter implements ICharSummoned,SkillCardAttachedEvent.SummonCharacterEventHandler {
 
     private Character CharCard;
     private boolean isAttack; // true jika dalam keadaan attack dan false bila dalam keadaan defense
@@ -29,22 +31,8 @@ public class SummonedCharacter implements ICharSummoned {
         }
     }
 
-    public void onBeingAttacked() {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void onAttachedSkillCard() {
-        // TODO Auto-generated method stub
-
-    }
 
     public void doAttack(SummonedCharacter target) {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void onSkillAttached(Skill skillCard) {
         // TODO Auto-generated method stub
 
     }
@@ -52,6 +40,13 @@ public class SummonedCharacter implements ICharSummoned {
     public void destroy() {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void onSkillCardAttached(SkillCardAttachedEvent e) {
+        if(this == e.charCard){
+            this.attachedSkill.add(e.skillCard);
+        }
     }
 
 }
