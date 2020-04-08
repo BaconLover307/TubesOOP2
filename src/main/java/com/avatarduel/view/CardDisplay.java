@@ -35,15 +35,16 @@ public class CardDisplay {
     private double imgW, imgH, imgX, imgY;
     private double descW, descH, descSz, descX, descY;
     private int n;
+    protected Pane box;
 
-    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, double posX, double posY) {
+    public CardDisplay(Card C, Pane pane, double cardW, double cardH, double posX, double posY) {
         this.n = 0;
         this.cardW = cardW;
         this.cardH = cardH;
-        Pane box = new Pane();
+        box = new Pane();
         box.setPrefSize(cardW,cardH);
         box.relocate(posX, posY);
-        Image img = new Image("com/avatarduel/asset/card-character.png");
+/*        Image img = new Image("com/avatarduel/asset/card-character.png");
         BackgroundSize backgroundSize = new BackgroundSize(cardW, cardH, false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(img,
             BackgroundRepeat.NO_REPEAT,
@@ -51,7 +52,7 @@ public class CardDisplay {
             BackgroundPosition.DEFAULT,
             backgroundSize);
         Background background = new Background(backgroundImage);
-        box.setBackground(background);
+        box.setBackground(background); */
 
         nameSz = 0.075 * cardH;
         nameX = 0.0875 * cardW;
@@ -103,7 +104,7 @@ public class CardDisplay {
 
         box.getChildren().addAll(name,element,image,desc);
         box.setVisible(true);
-        hbox.getChildren().add(box);
+        pane.getChildren().add(box);
         box.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
             n++;
             name.setText("MOVED " + Integer.toString(n));
@@ -116,7 +117,9 @@ public class CardDisplay {
         });
 
     }
-    
+
+    public Pane getBox() {return this.box;}
+
 
 
 }
