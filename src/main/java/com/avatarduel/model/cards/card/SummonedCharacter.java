@@ -41,6 +41,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public Character getCharCard() {return this.CharCard;}
 
+    public boolean getPosition() {return this.isAttack;}
+
     public void doAttack(SummonedCharacter target) {
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
     }
@@ -60,7 +62,21 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void onAttackCharacter(AttackCharacterEvent e) {
         if (this == e.toCard) {
             // TODO : if this posisi attack or e. has power up then do damage to player
-            this.destroy();
+            if (e.fromCard.getPosition()) { // karakter yg menyerang harus dalam posisi attack
+                if (e.toCard.getPosition()){ // karakter this dalam posisi attack (isAttack == true)
+                    if (e.toCard.getPositionValue() < e.fromCard.getPositionValue())
+                    {
+                        // TO DO : selisih attack ngurangin HP lawan
+                    }
+                }
+                else { // karakter this dalam posisi defense (isAttack == false)
+                    if (e.toCard.getPositionValue() < e.fromCard.getPositionValue())
+                    {
+                        // TO DO : tidak mengurangi HP
+                    }
+                }
+            } 
+            this.destroy(); // karakter lawan mati
         }
     }
 

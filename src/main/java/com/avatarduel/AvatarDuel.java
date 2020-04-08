@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import com.avatarduel.view.*;
+import com.avatarduel.view.cards.*;
 
 import javafx.scene.image.Image;
 import javafx.stage.Stage;

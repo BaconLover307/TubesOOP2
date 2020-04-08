@@ -4,7 +4,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.layout.*;
 import com.avatarduel.model.cards.card.Destroy;
-import com.avatarduel.view.SkillDisplay;
+import com.avatarduel.view.cards.SkillDisplay;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.image.Image;
 
