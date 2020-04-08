@@ -1,7 +1,8 @@
 package com.avatarduel.model.gameplay.events;
+
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.cards.Card;
 import com.avatarduel.model.Element;
+import com.avatarduel.model.cards.card.Card;
 
 import java.util.ArrayList;
 

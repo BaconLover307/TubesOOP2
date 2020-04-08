@@ -1,6 +1,7 @@
 package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
+import com.avatarduel.model.cards.card.Land;
 import java.util.ArrayList;
 
 public class UseLandEvent implements BaseEvent {
