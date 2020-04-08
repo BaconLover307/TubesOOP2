@@ -2,9 +2,13 @@ package com.avatarduel.model.cards.card;
 import java.util.ArrayList;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 
 
-public class SummonedCharacter implements ICharSummoned,SkillCardAttachedEvent.SummonCharacterEventHandler {
+public class SummonedCharacter implements ICharSummoned,
+    SkillCardAttachedEvent.SummonCharacterEventHandler,
+    AttackCharacterEvent.AttackCharacterEventHandler
+     {
 
     private Character CharCard;
     private boolean isAttack; // true jika dalam keadaan attack dan false bila dalam keadaan defense
@@ -46,6 +50,14 @@ public class SummonedCharacter implements ICharSummoned,SkillCardAttachedEvent.S
     public void onSkillCardAttached(SkillCardAttachedEvent e) {
         if(this == e.charCard){
             this.attachedSkill.add(e.skillCard);
+        }
+    }
+
+    @Override
+    public void onAttackCharacter(AttackCharacterEvent e) {
+        if(this == e.toCard){
+            //TODO : if this posisi attack or e. has power up then do damage to player
+            this.destroy();
         }
     }
 
