@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 //import javafx.application.Application;
 //import javafx.scene.Scene;
 import com.avatarduel.view.CardDisplay;
+import com.avatarduel.view.CharDisplay;
+
 import javafx.scene.image.Image;
 //import javafx.stage.Stage;
 import javafx.scene.layout.Background;
@@ -29,6 +31,7 @@ import com.avatarduel.model.Element;
 //import com.avatarduel.model.Land;
 
 import com.avatarduel.model.cards.Card;
+import com.avatarduel.model.cards.Character;
 
 public class AvatarDuel extends Application {
 
@@ -112,8 +115,8 @@ public class AvatarDuel extends Application {
   }
 
   public void MainScreen(Stage stage) {
-    Pane hbox = new Pane();
-    Scene scene = new Scene(hbox);
+    Pane pane = new Pane();
+    Scene scene = new Scene(pane);
     Image image = new Image("com/avatarduel/asset/board.png");
     BackgroundImage backgroundImage = new BackgroundImage(image,
             BackgroundRepeat.NO_REPEAT,
@@ -121,9 +124,9 @@ public class AvatarDuel extends Application {
             BackgroundPosition.DEFAULT,
             backgroundSize);
     Background background = new Background(backgroundImage);
-    hbox.setBackground(background);
-    Card card = new Card("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png");
-    CardDisplay DCard = new CardDisplay(card,hbox, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
+    pane.setBackground(background);
+    Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",1,1,1);
+    CardDisplay DCard = new CharDisplay(card, pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);
     stage.setTitle("Avatar Duel");

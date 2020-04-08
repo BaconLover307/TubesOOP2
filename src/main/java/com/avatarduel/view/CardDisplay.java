@@ -20,32 +20,32 @@ import javafx.scene.text.TextAlignment;
 
 public class CardDisplay {
     
-    private Text name;
-    private ImageView element;
-    private ImageView image;
-    private Text desc;
-    private Text attr;
-    private double cardH;
-    private double cardW;
-    private double nameSz;
-    private double nameX;
-    private double nameY;
-    private double elmSz;
-    private double elmX;
-    private double elmY;
-    private double imgW;
-    private double imgH;
-    private double imgX;
-    private double imgY;
-    private double descW;
-    private double descSz;
-    private double descX;
-    private double descY;
+    protected Text name;
+    protected ImageView element;
+    protected ImageView image;
+    protected Text desc;
+    protected double cardH;
+    protected double cardW;
+    protected double nameSz;
+    protected double nameX;
+    protected double nameY;
+    protected double elmSz;
+    protected double elmX;
+    protected double elmY;
+    protected double imgW;
+    protected double imgH;
+    protected double imgX;
+    protected double imgY;
+    protected double descW;
+    protected double descSz;
+    protected double descX;
+    protected double descY;
+    protected Pane box;
 
-    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, double posX, double posY) {
+    public CardDisplay(Card C, Pane pane, double cardW, double cardH, double posX, double posY) {
         this.cardW = cardW;
         this.cardH = cardH;
-        Pane box = new Pane();
+        box = new Pane();
         box.setPrefSize(cardW,cardH);
         box.relocate(posX, posY);
         Image img = new Image("com/avatarduel/asset/card-character.png");
@@ -107,9 +107,11 @@ public class CardDisplay {
         desc.setY(descY);
 
         box.getChildren().addAll(name,element,image,desc);
-        hbox.getChildren().add(box);
+        pane.getChildren().add(box);
         
     }
+
+    public Pane getBox() {return this.box;}
     
 
 
