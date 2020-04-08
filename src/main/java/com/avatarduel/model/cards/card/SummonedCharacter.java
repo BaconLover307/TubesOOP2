@@ -63,19 +63,20 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if (this == e.toCard) {
             // TODO : if this posisi attack or e. has power up then do damage to player
             if (e.fromCard.getPosition()) { // karakter yg menyerang harus dalam posisi attack
-                if (e.toCard.getPosition()){ // karakter this dalam posisi attack (isAttack == true)
-                    if (e.toCard.getPositionValue() < e.fromCard.getPositionValue())
-                    {
-                        // TO DO : selisih attack ngurangin HP lawan
+                if (e.toCard.getPositionValue() < e.fromCard.getPositionValue()) // attack/defense value this < attack fromCard
+                {
+                    if (e.toCard.getPosition()){ // karakter this dalam posisi attack (isAttack == true)
+
+                        // TO DO : selisih attack ngurangin HP lawan 
+                    
                     }
-                }
-                else { // karakter this dalam posisi defense (isAttack == false)
-                    if (e.toCard.getPositionValue() < e.fromCard.getPositionValue())
-                    {
+                    else { // karakter this dalam posisi defense (isAttack == false)
+
                         // TO DO : tidak mengurangi HP
-                    }
+                    
+                    }     
                 }
-            } 
+            }
             this.destroy(); // karakter lawan mati
         }
     }
