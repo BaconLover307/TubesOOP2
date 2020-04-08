@@ -1,4 +1,4 @@
-package com.avatarduel.view;
+package com.avatarduel.view.cards;
 
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -11,13 +11,8 @@ import javafx.scene.image.Image;
 public class DestroyDisplay extends SkillDisplay {
 
     private Text atribut;
-    private double attrX;
-    private double attrY;
-    private double attrSz;
-    private double attrW;
-    private double effX;
-    private double effY;
-    private double effSz;
+    private double attrX, attrY, attrSz, attrW;
+    private double effX, effY, effSz;
     private String atr;
     private Text effect;
 

@@ -1,20 +1,21 @@
-package com.avatarduel.view;
+package com.avatarduel.view.cards;
+
 
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.layout.*;
-import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.view.CardDisplay;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.image.Image;
 
-public class SkillDisplay extends CardDisplay {
+public class LandDisplay extends CardDisplay {
 
-    public SkillDisplay(Skill C, Pane pane, double cardW, double cardH, double posX, double posY){
-        
+    public LandDisplay(Land C, Pane pane, double cardW, double cardH, double posX, double posY){
+
         super(C,pane,cardW,cardH,posX,posY);
 
-        Image img = new Image("com/avatarduel/asset/card-skill.png");
+        Image img = new Image("com/avatarduel/asset/card-land.png");
         BackgroundSize backgroundSize = new BackgroundSize(cardW, cardH, false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(img,
             BackgroundRepeat.NO_REPEAT,

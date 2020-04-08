@@ -1,4 +1,4 @@
-package com.avatarduel.view;
+package com.avatarduel.view.cards;
 
 
 import javafx.scene.text.Font;
@@ -12,10 +12,7 @@ import javafx.scene.image.Image;
 public class CharDisplay extends CardDisplay {
 
     private Text atribut;
-    private double attrX;
-    private double attrY;
-    private double attrSz;
-    private double attrW;
+    private double attrX, attrY, attrSz, attrW;
     private String atr;
 
     public CharDisplay(Character C, Pane pane, double cardW, double cardH, double posX, double posY){

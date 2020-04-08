@@ -1,4 +1,4 @@
-package com.avatarduel.view;
+package com.avatarduel.view.cards;
 
 
 import javafx.scene.control.ScrollPane;
@@ -28,8 +28,7 @@ public class CardDisplay {
     private ImageView element;
     private ImageView image;
     private Text desc;
-    private double cardW;
-    private double cardH;
+    private double cardW, cardH;
     private double nameSz, nameX, nameY;
     private double elmSz, elmX, elmY;
     private double imgW, imgH, imgX, imgY;
