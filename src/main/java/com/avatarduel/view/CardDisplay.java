@@ -48,7 +48,7 @@ public class CardDisplay {
         box = new Pane();
         box.setPrefSize(cardW,cardH);
         box.relocate(posX, posY);
-        Image img = new Image("com/avatarduel/asset/card-character.png");
+/*        Image img = new Image("com/avatarduel/asset/card-character.png");
         BackgroundSize backgroundSize = new BackgroundSize(cardW, cardH, false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(img,
             BackgroundRepeat.NO_REPEAT,
@@ -56,7 +56,7 @@ public class CardDisplay {
             BackgroundPosition.DEFAULT,
             backgroundSize);
         Background background = new Background(backgroundImage);
-        box.setBackground(background);
+        box.setBackground(background); */
 
         nameSz = 0.075 * cardH;
         nameX = 0.0875 * cardW;

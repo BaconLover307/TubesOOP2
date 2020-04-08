@@ -4,8 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 //import javafx.application.Application;
 //import javafx.scene.Scene;
-import com.avatarduel.view.CardDisplay;
-import com.avatarduel.view.CharDisplay;
+import com.avatarduel.view.*;
 
 import javafx.scene.image.Image;
 //import javafx.stage.Stage;
@@ -32,6 +31,7 @@ import com.avatarduel.model.Element;
 
 import com.avatarduel.model.cards.Card;
 import com.avatarduel.model.cards.Character;
+import com.avatarduel.model.cards.PowerUp;
 
 public class AvatarDuel extends Application {
 
@@ -125,7 +125,7 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     pane.setBackground(background);
-    Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",1,1,1);
+    Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
     CardDisplay DCard = new CharDisplay(card, pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 //    DCard.setX(100);
 //    DCard.setY(100);
