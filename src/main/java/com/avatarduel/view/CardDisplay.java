@@ -30,24 +30,13 @@ public class CardDisplay {
     private Text desc;
     private double cardW;
     private double cardH;
-    private double nameSz;
-    private double nameX;
-    private double nameY;
-    private double elmSz;
-    private double elmX;
-    private double elmY;
-    private double imgW;
-    private double imgH;
-    private double imgX;
-    private double imgY;
-    private double descW;
-    private double descH;
-    private double descSz;
-    private double descX;
-    private double descY;
+    private double nameSz, nameX, nameY;
+    private double elmSz, elmX, elmY;
+    private double imgW, imgH, imgX, imgY;
+    private double descW, descH, descSz, descX, descY;
     private int n;
 
-    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, int posX, int posY) {
+    public CardDisplay(Card C, Pane hbox, double cardW, double cardH, double posX, double posY) {
         this.n = 0;
         this.cardW = cardW;
         this.cardH = cardH;
@@ -113,10 +102,16 @@ public class CardDisplay {
         desc.setY(descY);
 
         box.getChildren().addAll(name,element,image,desc);
+        box.setVisible(true);
         hbox.getChildren().add(box);
         box.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
-
+            n++;
             name.setText("MOVED " + Integer.toString(n));
+            box.setVisible(true);
+
+        });
+        box.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            box.setVisible(false);
 
         });
 

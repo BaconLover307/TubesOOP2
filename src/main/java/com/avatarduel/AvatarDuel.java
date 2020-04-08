@@ -34,12 +34,12 @@ public class AvatarDuel extends Application {
 
   final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), false, false, false, false);
-  final int cardDisW = 400;
-  final int cardDisH = 560;
-  final int cardDisPosX = 120;
-  final int cardDisPosY = 260;
-  final int cardSummonedW = 80;
-  final int cardSummonedH = 112;
+  final double cardDisW = (400*screenSize.getWidth()/1920);
+  final double cardDisH = (560*screenSize.getHeight()/1080);
+  final double cardDisPosX = (120*screenSize.getWidth()/1920);
+  final double cardDisPosY = (260*screenSize.getHeight()/1080);
+  final double cardSummonedW = (80*screenSize.getWidth()/1920);
+  final double cardSummonedH = (112*screenSize.getHeight()/1080);
 
   @Override
   public void start(Stage stage) {
