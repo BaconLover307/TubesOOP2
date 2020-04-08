@@ -1,14 +1,18 @@
 package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.SummonedCharacter;
-import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.SummonedCharacter;
+import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.UseSkillEvent;
 
 import java.util.Map;
 import java.util.HashMap;
 
-public class Board {
+public class Board implements Subscriber {
     
     Map<Integer, SummonedCharacter> charBoard;
     Map<Integer, Skill> skillBoard;
@@ -34,7 +38,17 @@ public class Board {
         // TODO s arahin ke target 
     }
 
+    public void onUseSkillEvent(UseSkillEvent e){
+        // this.addSkilltoBoard(id, e.getSkill(), target);
+    }
 
+    public void onEvent(BaseEvent e){
+        /*
+        if (e instanceof UseSkillEvent){
+            this.onUseSkillEvent((UseSkillEvent)e);
+        }
+        */
+    } 
 }
 
 

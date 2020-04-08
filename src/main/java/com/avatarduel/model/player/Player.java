@@ -30,6 +30,10 @@ public class Player implements Publisher, Subscriber,
         channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }

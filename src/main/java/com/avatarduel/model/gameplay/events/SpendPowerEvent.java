@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 // Sent to Power to call UsePower, remembers the Element and number of Power required, remembers the sender for return address
 // returns handler with boolean, true if there was enough power of the required element
+// source: Hand
+// target: Power
 public class SpendPowerEvent implements BaseEvent {
     
     private String sender;
