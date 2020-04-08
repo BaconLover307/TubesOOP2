@@ -13,6 +13,10 @@ public class ElementPower {
         this.size = size;
     }
 
+    public int getSize() {return this.size;}
+
+    public int getCapacity() {return this.capacity;}
+
     public void AddCapacity(int capacity){
         this.capacity += capacity;
     }
