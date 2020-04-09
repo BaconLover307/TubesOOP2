@@ -1,17 +1,23 @@
 package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.SummonedCharacter;
 
 /**
  * Kelas untuk event discard skill saat main phase
  */
 public class DiscardSkillEvent implements BaseEvent {
 
-    public DiscardSkillEvent(){
+    private SummonedCharacter SC;
+    private Skill S;
 
+    public DiscardSkillEvent(SummonedCharacter SC, Skill S){
+        this.SC = SC;
+        this.S = S;
     }
 
     public interface DiscardSkillEventHandler {
-        public void onDiscardSkill(DiscardSkillEvent e);
+        public void onDiscardSkillEvent(DiscardSkillEvent e);
     }
 
     public void execute() {

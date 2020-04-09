@@ -8,6 +8,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.UseSkillEvent;
+import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 
@@ -15,7 +16,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Board implements Subscriber, 
-    SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler {
+    SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
+    DiscardSkillEvent.DiscardSkillEventHandler {
     
     Map<Integer, SummonedCharacter> charBoard;
     Map<Integer, Skill> skillBoard;
@@ -28,6 +30,7 @@ public class Board implements Subscriber,
         this.channel = channel;
         channel.addSubscriber("SUMMON_CHARACTER",this);
         channel.addSubscriber("SUMMON_SKILL",this);
+        channel.addSubscriber("DISCARD_SKILL",this);
     }
 
     public void addChartoBoard(int id, SummonedCharacter C) {
@@ -56,6 +59,9 @@ public class Board implements Subscriber,
         }
         else if (e.getClass() == SummonSkillEvent.class) {
             this.onSummonSkillEvent((SummonSkillEvent) e);
+        }
+        else if (e.getClass() == DiscardSkillEvent.class) {
+            this.onDiscardSkillEvent((DiscardSkillEvent) e);
         } 
     }
     
@@ -66,7 +72,12 @@ public class Board implements Subscriber,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        // TODO Masukin e.S ke map skill
+        // TODO Masukin e.S ke map skill dan targetin ke summoned char mana
+    }
+
+    @Override
+    public void onDiscardSkillEvent(DiscardSkillEvent e) {
+        // TODO hapus skill dari summonedchar
     }
 }
 
