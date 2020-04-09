@@ -3,7 +3,7 @@ package com.avatarduel.model.gameplay;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.player.Player;
 
 public class GameplayChannel implements EventChannel {
@@ -11,7 +11,7 @@ public class GameplayChannel implements EventChannel {
     private HashMap<String, ArrayList<Subscriber>> listSubscriber;
     public String phase;
     public Player activePlayer;
-    public Card lastClickedCard;
+    public SummonedCharacter lastClickedCard;
 
     public GameplayChannel() {
         this.listSubscriber = new HashMap<>();
