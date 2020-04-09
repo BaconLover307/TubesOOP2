@@ -9,6 +9,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.player.Player;
 
 public class Turn implements Publisher {
@@ -58,7 +59,7 @@ public class Turn implements Publisher {
         }
         
     }
-
+/* TO DO : Di compile dulu itu new event masi ada yang gaada parameter masukannya  
     public void onSummonCharacter(Character C){
         this.publish("SUMMON_CHARACTER_EVENT", new SummonCharacterEvent());
     }
@@ -76,13 +77,13 @@ public class Turn implements Publisher {
     }
 
     public void onUseSkill(Skill S){
-        this.publish("USE_SKILL_EVENT", new UseSkillEvent());
+        this.publish("USE_SKILL_EVENT", new UseSkillEvent()); 
     }
 
     public void onDiscardSkill(Skill S){
         this.publish("DISCARD_SKILL_EVENT", new DiscardSkillEvent());
     }
-    
+ */   
 	public void battlePhase(){
         System.out.println("Battle Phase");
         boolean nextPhase = false;

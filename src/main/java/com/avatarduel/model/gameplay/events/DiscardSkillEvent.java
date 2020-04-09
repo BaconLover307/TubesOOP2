@@ -1,13 +1,20 @@
 package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.Element;
-import java.util.ArrayList;
 
-// sender: ???
-// target: Board
+/**
+ * Kelas untuk event discard skill saat main phase
+ */
 public class DiscardSkillEvent implements BaseEvent {
 
-    public DiscardSkillEvent(){}
+    public DiscardSkillEvent(){
 
-    public void execute(){}
+    }
+
+    public interface DiscardSkillEventHandler {
+        public void onDiscardSkill(DiscardSkillEvent e);
+    }
+
+    public void execute() {
+        System.out.println("Skill discarded!");
+    }
 }
