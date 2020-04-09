@@ -34,6 +34,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.auraValue = 0;
         this.isPowerUp = false;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
+        this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
     }
 
     public void rotate() {
@@ -121,6 +122,10 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         
         if(event.getClass() == SkillCardAttachedEvent.class){
             this.onSkillCardAttached((SkillCardAttachedEvent) event);
+        }
+        
+        if(event.getClass() == CardClickedEvent.class){
+            this.onCardClicked((CardClickedEvent) event);
         }
     }
 
