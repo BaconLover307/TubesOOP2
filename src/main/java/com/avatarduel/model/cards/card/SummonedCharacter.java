@@ -136,7 +136,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onCardClicked(CardClickedEvent e) {
-        if((this.gameplayChannel.phase.equals("MAIN_PHASE_1") || this.gameplayChannel.phase.equals("MAIN_PHASE_2"))
+        if((this.gameplayChannel.phase.equals("MAIN_PHASE_1"))
              && this.gameplayChannel.activePlayer == this.owner){
             this.rotate();
             // TODO publish
