@@ -6,7 +6,7 @@ import com.avatarduel.model.cards.card.Skill;
 
 public class SummonSkillEvent implements BaseEvent {
     
-    private Skill S;
+    public Skill S;
 
     public SummonSkillEvent(Skill S){
         this.S = S;

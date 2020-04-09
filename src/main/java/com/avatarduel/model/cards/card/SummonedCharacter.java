@@ -36,6 +36,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.isPowerUp = false;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
         this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
+        this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
     }
 
     public void rotate() {

@@ -4,7 +4,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 
 public class SummonCharacterEvent implements BaseEvent {
     
-    private Character C;
+    public Character C;
 
     public SummonCharacterEvent(Character C){
         this.C = C;
@@ -15,6 +15,6 @@ public class SummonCharacterEvent implements BaseEvent {
     }
 
     public void execute(){
-
+        System.out.println("Character Summoned!");
     }
 }
