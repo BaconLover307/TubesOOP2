@@ -39,7 +39,7 @@ public class CardCollection extends ArrayList<Card> {
         return (this.getSize() == 0);
     }
 
-    public String getPlayer(){
+    public Player getPlayer(){
         return this.player;
     }
 }

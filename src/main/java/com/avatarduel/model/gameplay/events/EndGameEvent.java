@@ -1,17 +1,19 @@
 package com.avatarduel.model.gameplay.events;
+
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.player.Player;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
 public class EndGameEvent implements BaseEvent {
     
-    private String target;
+    private Player target;
     
-    public EndGameEvent(String target){
+    public EndGameEvent(Player target){
         this.target = target;
     }
 
-    public String getLoser(){
+    public Player getLoser(){
         return this.target;
     }
     
