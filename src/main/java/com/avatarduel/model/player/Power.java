@@ -18,6 +18,7 @@ public class Power implements
     private ElementPower waterPower;
     private ElementPower earthPower;
     private ElementPower airPower;
+    private ElementPower energyPower;
     private Element elements[] = Element.values();
 
     public Power(GameplayChannel channel, String player) {
@@ -27,13 +28,15 @@ public class Power implements
         this.waterPower = new ElementPower(Element.WATER, 0, 0);
         this.earthPower = new ElementPower(Element.EARTH, 0, 0);
         this.airPower = new ElementPower(Element.AIR, 0, 0);
+        this.energyPower = new ElementPower(Element.ENERGY, 0, 0);
     }
 
     public ElementPower getPower(Element elm) {
         if (elm == Element.FIRE) return this.firePower;
         else if (elm == Element.WATER) return this.waterPower;
         else if (elm == Element.EARTH) return this.earthPower;
-        else return this.airPower;
+        else if (elm - Element.AIR) return this.airPower;
+        else return this.energyPower;
     }
 
     public void ResetAllPower() {
