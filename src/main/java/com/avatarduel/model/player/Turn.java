@@ -59,7 +59,7 @@ public class Turn implements Publisher {
         }
         
     }
-/* TO DO : Di compile dulu itu new event masi ada yang gaada parameter masukannya  
+    /* TO DO : Di compile dulu itu new event masi ada yang gaada parameter masukannya  
     public void onSummonCharacter(Character C){
         this.publish("SUMMON_CHARACTER_EVENT", new SummonCharacterEvent());
     }
@@ -83,7 +83,7 @@ public class Turn implements Publisher {
     public void onDiscardSkill(Skill S){
         this.publish("DISCARD_SKILL_EVENT", new DiscardSkillEvent());
     }
- */   
+    */   
 	public void battlePhase(){
         System.out.println("Battle Phase");
         boolean nextPhase = false;
@@ -107,9 +107,8 @@ public class Turn implements Publisher {
     public void startTurn(){
         this.usedLand = false;
 		this.drawPhase();
-		this.mainPhase(); // main phase 1
+		this.mainPhase();
 		this.battlePhase();
-		this.mainPhase(); // main phase 2
 		this.endPhase();
     }
 
