@@ -1,4 +1,5 @@
 package com.avatarduel.model.cards.cardcollection;
+
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -6,6 +7,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
+import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.gameplay.Publisher;
@@ -19,7 +21,7 @@ public class Hand extends CardCollection implements Publisher, Subscriber, DrawE
     private boolean usedLand; // true if UseCard(Land) was used this turn
     private GameplayChannel channel;
 
-    public Hand(GameplayChannel channel, String player) {
+    public Hand(GameplayChannel channel, Player player) {
         super(channel, player);
         this.show = false;
         this.usedLand = false;

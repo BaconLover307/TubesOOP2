@@ -1,5 +1,7 @@
 package com.avatarduel.model.cards.cardcollection;
+
 import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.player.Player;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
@@ -8,9 +10,9 @@ import com.avatarduel.model.cards.card.Card;
 public class CardCollection extends ArrayList<Card> {
 
     protected GameplayChannel channel;
-    protected String player;
+    protected Player player;
 
-	public CardCollection(GameplayChannel channel, String player){
+	public CardCollection(GameplayChannel channel, Player player){
         //this = new ArrayList<Card>();
         super();
         this.channel = channel;

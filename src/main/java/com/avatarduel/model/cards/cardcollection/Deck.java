@@ -1,10 +1,14 @@
 package com.avatarduel.model.cards.cardcollection;
+
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
+import com.avatarduel.model.player.Player;
+import com.avatarduel.model.gameplay.events.CardClickedEvent;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,9 +16,10 @@ import com.avatarduel.model.cards.card.Card;
 
 public class Deck extends CardCollection implements
     Publisher,
-    Subscriber {
+    Subscriber,
+    CardClickedEvent.CardClickedEventHandler {
 
-    public Deck(GameplayChannel channel, String player){
+    public Deck(GameplayChannel channel, Player player){
         super(channel, player);
     }
 
@@ -64,5 +69,17 @@ public class Deck extends CardCollection implements
     }
 
     public void onEvent(BaseEvent e){
-    } 
+        if(e.getClass() == CardClickedEvent.class){
+            this.onCardClicked((CardClickedEvent) e);
+        }
+    }
+
+    @Override
+    public void onCardClicked(CardClickedEvent e) {
+        if(this.channel.activePlayer == this.player && this.channel.phase.equals("DRAW_PHASE")){
+            this.doDraw();
+            this.channel.phase = "MAIN_PHASE_1";
+        }
+
+    }
 }
