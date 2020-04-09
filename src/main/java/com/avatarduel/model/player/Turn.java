@@ -60,50 +60,47 @@ public class Turn implements Publisher {
     }
 
     public void onSummonCharacter(Character C){
-        // String summon = this.player.getName() + " Board";
-        // this.publish(summon, new SummonCharacterEvent());
+        this.publish("SUMMON_CHARACTER_EVENT", new SummonCharacterEvent());
     }
 
     public void onRepositionCharacter(Character C) {
-        // String reposition = this.player.getName() + " Board";
-        // this.publish(reposition, new RepositionCharacterEvent());
+        this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent());
     }
 
     public void onUseLand(Land L){
-        // if (this.usedLand){
-        //      System.out.println("Already Used Land This Turn");   
-        // } else {
-        //      String land =  this.player.getName() + " Power";
-        //      this.publish(land, new UseLandEvent());
-        // }
+        if (this.usedLand){
+            System.out.println("Already Used Land This Turn");   
+        } else {
+            this.publish("USE_LAND_EVENT", new UseLandEvent());
+        }
     }
 
     public void onUseSkill(Skill S){
-        // String skill =  this.player.getName() + " Board";
-        // this.publish(land, new UseSkillEvent());
+        this.publish("USE_SKILL_EVENT", new UseSkillEvent());
     }
 
     public void onDiscardSkill(Skill S){
-        // String skill =  this.player.getName() + " Board";
-        // this.publish(land, new DiscardSkillEvent());
+        this.publish("DISCARD_SKILL_EVENT", new DiscardSkillEvent());
     }
     
 	public void battlePhase(){
         System.out.println("Battle Phase");
-        // boolean nextPhase = false;
-        // while (!nextPhase){}
-        //     input attacker
-        // }
+        boolean nextPhase = false;
+        while (!nextPhase){
+            //input attacker
+            //input target
+            /*
+                if (target instanceof SummonedCharacter){
+                    attacker.doAttack(target);
+                } else if (target instanceof Player){
+                    attacker.doAttackPlayer(target);
+                }
+            */
+        }
     }
-    
-    public void onAttack(){
-        // attack =
-        // this.publish(attack, new AttackEvent());
-    }
-    
+
     public void endPhase(){
         System.out.println("End Phase");
-        //
 	}
     
     public void startTurn(){

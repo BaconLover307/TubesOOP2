@@ -14,7 +14,6 @@ public class AttackCharacterEvent implements BaseEvent {
         this.toCard = toCard;
     }
 
-
     public interface AttackCharacterEventHandler {
         void onAttackCharacter(AttackCharacterEvent e);
     }
