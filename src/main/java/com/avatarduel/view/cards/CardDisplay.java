@@ -67,6 +67,7 @@ public class CardDisplay {
             case AIR: elpath = "com/avatarduel/asset/elm-air.png"; break;
             case WATER: elpath = "com/avatarduel/asset/elm-water.png"; break;
             case FIRE: elpath = "com/avatarduel/asset/elm-fire.png"; break;
+            case ENERGY: elpath = "com/avatarduel/asset/elm-energy.png"; break;
             default: elpath = "com/avatarduel/asset/elm-earth.png"; break;
         }
         elmX = 0.8225 * cardW;

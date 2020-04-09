@@ -29,7 +29,7 @@ public class ElementPower {
         this.size = this.capacity; 
     }
 
-    public boolean UsePower(int use) {
+    public boolean usePower(int use) {
         if (this.size < use) {
             return false;
         } else {

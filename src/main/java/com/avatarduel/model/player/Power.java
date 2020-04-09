@@ -39,19 +39,19 @@ public class Power implements
         else return this.energyPower;
     }
 
-    public void ResetAllPower() {
+    public void resetAllPower() {
         for(Element e : elements) {
             getPower(e).ResetPower();
         }
     }
 
-    public void AddCapacity(Element elm, int cap) {
+    public void addCapacity(Element elm, int cap) {
         getPower(elm).AddCapacity(cap);
     }
 
-    public void UsePower(Element elm, int use) {
+    public void usePower(Element elm, int use) {
         //kok ini void tapi use power jadi boolean?
-        getPower(elm).UsePower(use);
+        getPower(elm).usePower(use);
     }
 
     public void publish(String topic, BaseEvent event){
@@ -66,19 +66,18 @@ public class Power implements
         } else if (e instanceof UseLandEvent){
             this.onUseLandEvent((UseLandEvent)e);
         }
-
     }
 
     public void onResetPowerEvent(ResetPowerEvent e){
-        this.ResetAllPower();
+        this.resetAllPower();
     }
 
     public void onSpendPowerEvent(SpendPowerEvent e){
-        boolean success = this.getPower(e.getElement()).UsePower(e.getVal());
+        boolean success = this.getPower(e.getElement()).usePower(e.getVal());
         this.publish(e.getSender(), e.new Handler(success));
     }
 
     public void onUseLandEvent(UseLandEvent e){
-        this.AddCapacity(e.getLand().getElement(), 1);
+        this.addCapacity(e.getLand().getElement(), 1);
     }
 }
