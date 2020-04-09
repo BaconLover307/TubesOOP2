@@ -11,11 +11,12 @@ import com.avatarduel.model.gameplay.events.UseSkillEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
+import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
 import java.util.Map;
 import java.util.HashMap;
 
-public class Board implements Subscriber, 
+public class Board implements Subscriber, Publisher,
     SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
     DiscardSkillEvent.DiscardSkillEventHandler {
     
@@ -73,12 +74,19 @@ public class Board implements Subscriber,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        // TODO Masukin e.S ke map skill dan targetin skill ke summoned char mana pakai SkillCardAttachedEvent
+        // TODO Masukin e.S ke map skill 
+        // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
+        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
     }
 
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
         // TODO hapus skill dari summonedchar dan destroy dari board
+    }
+
+    @Override
+    public void publish(String topic, BaseEvent event) {
+        this.channel.sendEvent(topic, event);
     }
 }
 
