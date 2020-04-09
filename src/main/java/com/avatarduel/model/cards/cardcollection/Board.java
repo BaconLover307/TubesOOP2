@@ -67,17 +67,18 @@ public class Board implements Subscriber,
     
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        // TODO Masukin e.C ke map summonedchar
+        // SummonedCharacter C = SummonedCharacter(e.C, boolean isAttack, Player player, channel)
+        // TODO Masukin C ke map summonedchar dan parameter yg blm (isAttack,player)
     }
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        // TODO Masukin e.S ke map skill dan targetin ke summoned char mana
+        // TODO Masukin e.S ke map skill dan targetin skill ke summoned char mana 
     }
 
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
-        // TODO hapus skill dari summonedchar
+        // TODO hapus skill dari summonedchar dan destroy dari board
     }
 }
 

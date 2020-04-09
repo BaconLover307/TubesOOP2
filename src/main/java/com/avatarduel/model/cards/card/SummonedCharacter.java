@@ -65,8 +65,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(this.CharCard.getAttack(), target));
     }
 
-    public void doDiscardSkill(SummonedCharacter SC, Skill S) {
-        this.publish("DISCARD_SKILL", new DiscardSkillEvent(SC, S));
+    public void doDiscardSkill(Skill S) {
+        this.publish("DISCARD_SKILL", new DiscardSkillEvent(this, S));
     }
 
     public void destroy() {
