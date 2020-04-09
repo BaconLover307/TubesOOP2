@@ -2,6 +2,7 @@ package com.avatarduel.model.cards.card;
 
 import java.util.ArrayList;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
+import com.avatarduel.model.gameplay.events.CardClickedEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Character;
@@ -13,7 +14,8 @@ import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SummonCharacterEventHandler, 
-        AttackCharacterEvent.AttackCharacterEventHandler
+        AttackCharacterEvent.AttackCharacterEventHandler,
+        CardClickedEvent.CardClickedEventHandler
         {
 
     private Character CharCard;
@@ -125,6 +127,27 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     @Override
     public void publish(String topic, BaseEvent event) {
         this.gameplayChannel.sendEvent(topic, event);
+    }
+
+    @Override
+    public void onCardClicked(CardClickedEvent e) {
+        if((this.gameplayChannel.phase.equals("MAIN_PHASE_1") || this.gameplayChannel.phase.equals("MAIN_PHASE_2"))
+             && this.gameplayChannel.activePlayer == this.owner){
+            this.rotate();
+            // TODO publish
+        }
+
+        if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
+            if (this.gameplayChannel.activePlayer == this.owner){
+                this.gameplayChannel.lastClickedCard = this;
+                // TODO publish
+            }else{
+                if(this.gameplayChannel.lastClickedCard != null){
+                    this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this.gameplayChannel.lastClickedCard, this));
+                    this.gameplayChannel.lastClickedCard = null;
+                }
+            }
+        }
     }
 
 
