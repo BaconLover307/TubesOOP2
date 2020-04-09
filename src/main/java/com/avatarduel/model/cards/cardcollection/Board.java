@@ -73,7 +73,7 @@ public class Board implements Subscriber,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        // TODO Masukin e.S ke map skill dan targetin skill ke summoned char mana 
+        // TODO Masukin e.S ke map skill dan targetin skill ke summoned char mana pakai SkillCardAttachedEvent
     }
 
     @Override

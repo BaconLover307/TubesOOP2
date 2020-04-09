@@ -32,10 +32,10 @@ public class Power implements
     }
 
     public ElementPower getPower(Element elm) {
-        if (elm == Element.FIRE) return this.firePower;
-        else if (elm == Element.WATER) return this.waterPower;
-        else if (elm == Element.EARTH) return this.earthPower;
-        else if (elm - Element.AIR) return this.airPower;
+        if (elm.equals(Element.FIRE)) return this.firePower;
+        else if (elm.equals(Element.WATER)) return this.waterPower;
+        else if (elm.equals(Element.EARTH)) return this.earthPower;
+        else if (elm.equals(Element.AIR)) return this.airPower;
         else return this.energyPower;
     }
 
