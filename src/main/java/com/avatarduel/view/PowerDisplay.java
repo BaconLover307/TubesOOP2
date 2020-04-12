@@ -12,7 +12,7 @@ import javafx.scene.Node;
 public class PowerDisplay {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private Pane box,airbox,earthbox,firebox,waterbox,energyBox;
+    private Pane box,airbox,earthbox,firebox,waterbox,energybox;
     private Power P;
     private String air,earth,fire,water,energy;
     private Text airText,earthText,fireText,waterText,energyText;
@@ -76,7 +76,7 @@ public class PowerDisplay {
         energybox = new Pane();
         energybox.getChildren().add(energyText);
 
-        box.getChildren().addAll(waterbox,earthbox,firebox,airbox);
+        box.getChildren().addAll(waterbox,earthbox,firebox,airbox,energybox);
         box.setVisible(true);
         pane.getChildren().add(box);
 

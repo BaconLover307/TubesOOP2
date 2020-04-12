@@ -7,7 +7,6 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.UseSkillEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
@@ -47,10 +46,6 @@ public class Board implements Subscriber, Publisher,
         // 2. Harus ada karakter yg ditarget
         this.skillBoard.put(id, s);
         // TODO s arahin ke target 
-    }
-
-    public void onUseSkillEvent(UseSkillEvent e){
-        // this.addSkilltoBoard(id, e.getSkill(), target);
     }
 
     @Override

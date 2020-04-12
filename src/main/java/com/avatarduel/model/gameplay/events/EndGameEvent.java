@@ -5,6 +5,7 @@ import com.avatarduel.model.player.Player;
 import com.avatarduel.model.Element;
 import java.util.ArrayList;
 
+// TODO sesuaiin format
 public class EndGameEvent implements BaseEvent {
     
     private Player target;

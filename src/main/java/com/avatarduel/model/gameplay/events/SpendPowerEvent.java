@@ -7,6 +7,7 @@ import java.util.ArrayList;
 // returns handler with boolean, true if there was enough power of the required element
 // source: Hand
 // target: Power
+//TODO sesuaiin format
 public class SpendPowerEvent implements BaseEvent {
     
     private String sender;

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 // called by Hand to add one power, usable once per turn
 // source: Hand
 // target: Power
+// TODO sesuaiin format
 public class UseLandEvent implements BaseEvent {
     
     private Land land;
