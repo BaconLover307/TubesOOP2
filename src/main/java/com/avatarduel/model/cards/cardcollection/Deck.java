@@ -6,6 +6,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
 
@@ -78,6 +79,7 @@ public class Deck extends CardCollection implements
     public void onCardClicked(CardClickedEvent e) {
         if(this.channel.activePlayer == this.player && this.channel.phase.equals("DRAW_PHASE")){
             this.doDraw();
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
             this.channel.phase = "MAIN_PHASE_1";
         }
 

@@ -6,7 +6,7 @@ public class ResetPowerEvent implements BaseEvent {
 
     public ResetPowerEvent(){}
 
-    public interface ReserPowerEventHandler {
+    public interface ResetPowerEventHandler {
         void onResetPowerEvent(ResetPowerEvent e);
     }
 

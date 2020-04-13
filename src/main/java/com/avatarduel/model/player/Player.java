@@ -5,11 +5,12 @@ import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 
 public class Player implements Publisher, Subscriber,
-    AttackPlayerEvent.AttackPlayerEventHandler {
+    AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler {
 
     protected String name;
     protected Deck deck;
@@ -27,6 +28,7 @@ public class Player implements Publisher, Subscriber,
         this.powers = new Power(channel, name);
         this.channel = channel;
         channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
+        channel.addSubscriber("RESET_POWER_EVENT", this);
     }
 
     public String getName(){
@@ -41,6 +43,9 @@ public class Player implements Publisher, Subscriber,
         if (e.getClass() == AttackPlayerEvent.class){
             this.onAttackPlayer((AttackPlayerEvent) e);
         } 
+        else if (e.getClass() == ResetPowerEvent.class){
+            this.onResetPowerEvent((ResetPowerEvent) e);
+        } 
     }
 
     public Deck getDeck() {return this.deck;}
@@ -53,6 +58,11 @@ public class Player implements Publisher, Subscriber,
                 this.publish("GAMESTATE", new EndGameEvent(this));
             }
         }
+    }
+
+    @Override
+    public void onResetPowerEvent(ResetPowerEvent e) {
+        this.powers.resetAllPower();
     }
 
 }

@@ -39,9 +39,9 @@ public class Power implements
         else return this.energyPower;
     }
 
-    public void ResetAllPower() {
+    public void resetAllPower() {
         for(Element e : elements) {
-            getPower(e).ResetPower();
+            getPower(e).resetPower();
         }
     }
 
@@ -59,18 +59,11 @@ public class Power implements
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof ResetPowerEvent){
-            this.onResetPowerEvent((ResetPowerEvent)e);
-        } else if (e instanceof SpendPowerEvent){
+        if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
         } else if (e instanceof UseLandEvent){
             this.onUseLandEvent((UseLandEvent)e);
         }
-
-    }
-
-    public void onResetPowerEvent(ResetPowerEvent e){
-        this.ResetAllPower();
     }
 
     public void onSpendPowerEvent(SpendPowerEvent e){

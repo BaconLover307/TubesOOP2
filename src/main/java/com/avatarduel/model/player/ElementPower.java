@@ -25,7 +25,7 @@ public class ElementPower {
         this.size += size;
     }
 
-    public void ResetPower() {
+    public void resetPower() {
         this.size = this.capacity; 
     }
 
