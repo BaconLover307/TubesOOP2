@@ -79,7 +79,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if (this == e.charCard) {
             this.attachedSkill.add(e.skillCard);
             if(e.skillCard.getClass() == Aura.class){
-                this.auraValue = ((Aura) e.skillCard).powVal;
+                this.auraValue = ((Aura) e.skillCard).getPowVal();
             }
             
             if(e.skillCard.getClass() == Destroy.class){

@@ -1,14 +1,16 @@
 package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.Element;
-import java.util.ArrayList;
 
-// sent to Power from Phase to reset power values
-// source: Phase
-// target: Power
+// TODO implementasi
 public class ResetPowerEvent implements BaseEvent {
 
     public ResetPowerEvent(){}
 
-    public void execute(){}
+    public interface ReserPowerEventHandler {
+        void onResetPower(ResetPowerEvent e);
+    }
+
+    public void execute(){
+        System.out.println("Reset Power!");
+    }
 }
