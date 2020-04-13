@@ -3,6 +3,7 @@ package com.avatarduel.model.cards.card;
 import java.util.ArrayList;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
+import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.player.Player;
@@ -72,6 +73,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public void destroy() {
         // TODO remove this card
+        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
     }
 
     @Override

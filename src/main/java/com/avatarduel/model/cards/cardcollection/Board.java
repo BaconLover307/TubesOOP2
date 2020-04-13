@@ -7,6 +7,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 
 public class Board implements Subscriber, Publisher,
     SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
-    DiscardSkillEvent.DiscardSkillEventHandler {
+    DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler {
     
     Map<Integer, SummonedCharacter> charBoard;
     Map<Integer, Skill> skillBoard;
@@ -31,6 +32,7 @@ public class Board implements Subscriber, Publisher,
         channel.addSubscriber("SUMMON_CHARACTER",this);
         channel.addSubscriber("SUMMON_SKILL",this);
         channel.addSubscriber("DISCARD_SKILL",this);
+        channel.addSubscriber("DESTROY_CHARACTER_EVENT",this);
     }
 
     public void addChartoBoard(int id, SummonedCharacter C) {
@@ -58,7 +60,10 @@ public class Board implements Subscriber, Publisher,
         }
         else if (e.getClass() == DiscardSkillEvent.class) {
             this.onDiscardSkillEvent((DiscardSkillEvent) e);
-        } 
+        }
+        else if (e.getClass() == DestroyCharacterEvent.class) {
+            this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
+        }
     }
     
     @Override
@@ -77,6 +82,11 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
         // TODO hapus skill dari summonedchar dan destroy dari board
+    }
+
+    @Override
+    public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
+        // TODO remove e.SC dari list summonedchar board (dan skill yg di attach di removed juga)
     }
 
     @Override

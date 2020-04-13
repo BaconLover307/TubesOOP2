@@ -1,18 +1,20 @@
 package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.Element;
-import java.util.ArrayList;
+import com.avatarduel.model.cards.card.SummonedCharacter;
 
-// sender: Character, Skill
-// target: Board
-// TODO apakah ini skill ?
 public class DestroyCharacterEvent implements BaseEvent {
     
-    public DestroyCharacterEvent(){}
+    public SummonedCharacter SC;
 
-    public void execute(){}
+    public DestroyCharacterEvent(SummonedCharacter SC) {
+        this.SC = SC;
+    }
+
+    public void execute(){
+        System.out.println("Character Destroyed!");
+    }
 
     public interface DestroyCharacterEventHandler {
-        void onDestroyCharacter(DestroyCharacterEvent e);
+        void onDestroyCharacterEvent(DestroyCharacterEvent e);
     }
 }
