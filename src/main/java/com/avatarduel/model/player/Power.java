@@ -66,6 +66,7 @@ public class Power implements
         }
     }
 
+    // TODO ini seharusnya di player (?)
     public void onSpendPowerEvent(SpendPowerEvent e){
         boolean success = this.getPower(e.getElement()).UsePower(e.getVal());
         this.publish(e.getSender(), e.new Handler(success));
