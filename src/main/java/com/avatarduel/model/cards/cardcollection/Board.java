@@ -9,6 +9,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
+import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
@@ -18,7 +19,8 @@ import java.util.HashMap;
 
 public class Board implements Subscriber, Publisher,
     SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
-    DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler {
+    DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler,
+    RepositionCharacterEvent.RepositionCharacterEventHandler {
     
     Map<Integer, SummonedCharacter> charBoard;
     Map<Integer, Skill> skillBoard;
@@ -64,6 +66,9 @@ public class Board implements Subscriber, Publisher,
         else if (e.getClass() == DestroyCharacterEvent.class) {
             this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
         }
+        else if (e.getClass() == RepositionCharacterEvent.class) {
+            this.onRepositionCharacterEvent((RepositionCharacterEvent) e);
+        }
     }
     
     @Override
@@ -92,6 +97,11 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
+    }
+
+    @Override
+    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
+        // TODO rotate tampilan e.SC
     }
 }
 

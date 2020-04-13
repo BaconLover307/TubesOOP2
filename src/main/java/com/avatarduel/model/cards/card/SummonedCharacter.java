@@ -5,6 +5,7 @@ import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
+import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Character;
@@ -147,7 +148,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if((this.gameplayChannel.phase.equals("MAIN_PHASE_1"))
              && this.gameplayChannel.activePlayer == this.owner){
             this.rotate();
-            // TODO publish
+            this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(this));
         }
 
         if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
