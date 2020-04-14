@@ -7,7 +7,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 
 public class RepositionCharacterEvent implements BaseEvent {
     
-    SummonedCharacter SC;
+    public SummonedCharacter SC;
 
     public RepositionCharacterEvent(SummonedCharacter SC) {
         this.SC = SC;
