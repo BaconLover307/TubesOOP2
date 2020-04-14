@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.MainPageController">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.MainPageController">
    <children>
       <Pane fx:id="cardPane" layoutX="120.0" layoutY="261.0" prefHeight="560.0" prefWidth="400.0" />
       <Label fx:id="Name1" layoutX="62.0" layoutY="886.0" prefHeight="61.0" prefWidth="345.0" textFill="#dfd7d1">

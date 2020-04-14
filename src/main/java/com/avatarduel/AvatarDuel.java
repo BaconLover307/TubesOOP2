@@ -24,6 +24,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 
 import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.view.Settings;
+import com.avatarduel.view.InputPlayer;
 
 public class AvatarDuel extends Application {
 
@@ -40,6 +42,7 @@ public class AvatarDuel extends Application {
   final double cardSummonedW = (80*screenSize.getWidth()/1920);
   final double cardSummonedH = (112*screenSize.getHeight()/1080);
   private int cardAmount = 60;
+  private String playerName1, playerName2;
 
 
   @Override
@@ -47,6 +50,10 @@ public class AvatarDuel extends Application {
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
+
+    // Main Menu Layout
+//    InitScreen(mainMenu);
+
 
     Button btnStart = new Button("START");
     Button btnSetting = new Button("SETTING");
@@ -57,6 +64,12 @@ public class AvatarDuel extends Application {
       @Override
       public void handle(ActionEvent e) {
         try {
+          InputPlayer inpP1 = new InputPlayer(1);
+          inpP1.showInputPlayer();
+          playerName1 = inpP1.getName();
+          InputPlayer inpP2 = new InputPlayer(2);
+          inpP2.showInputPlayer();
+          playerName1 = inpP2.getName();
           MainScreen(window);
         } catch (Exception err) {
           err.printStackTrace();
@@ -104,59 +117,16 @@ public class AvatarDuel extends Application {
     } */
   }
 
-  class Settings {
 
-    private int amount;
 
-    void showSettings(int n) {
-      Stage settings = new Stage();
-      settings.initModality(Modality.APPLICATION_MODAL);
-      settings.setTitle("Settings");
-
-      amount = n;
-      String txt = "Cards on Deck: ";
-      Label cardLabel = new Label(txt + amount);
-      Slider cardSlider = new Slider(40, 60, amount);
-      cardSlider.setShowTickLabels(true);
-      cardSlider.setShowTickMarks(true);
-      cardSlider.setSnapToTicks(true);
-      cardSlider.setMajorTickUnit(5);
-      cardSlider.setBlockIncrement(1);
-      cardSlider.setMaxWidth(250);
-      cardSlider.valueProperty().addListener(
-              (observable, oldValue, newValue) -> cardLabel.setText(txt + newValue.intValue())
-      );
-
-      Button btnSet = new Button("Set");
-      Button btnCancel = new Button("Cancel");
-      btnSet.setOnAction(e -> {
-        amount = cardSlider.valueProperty().getValue().intValue();
-        settings.close();
-      });
-      btnCancel.setOnAction(e -> settings.close());
-
-      HBox confirm = new HBox(15);
-      confirm.setAlignment(Pos.CENTER);
-      confirm.getChildren().addAll(btnSet,btnCancel);
-      VBox settingsBox = new VBox(10);
-      settingsBox.setAlignment(Pos.CENTER);
-      settingsBox.getChildren().addAll(cardLabel,cardSlider, confirm);
-      Scene s = new Scene(settingsBox, 300, 150);
-      settings.setScene(s);
-      settings.showAndWait();
-    }
-
-    public int getCardAmount() {return amount;}
-  }
-
-  public void InitScreen(Stage stage) {
+  public void InitScreen(Scene scene) {
 
   }
 
   public void MainScreen(Stage stage) throws Exception{
     Pane pane = new Pane();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
-    loader.setControllerFactory(c -> new MainPageController(this.gameplay));
+    loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
@@ -167,7 +137,7 @@ public class AvatarDuel extends Application {
             BackgroundPosition.DEFAULT,
             backgroundSize);
     Background background = new Background(backgroundImage);
-    pane.setBackground(background);
+//    pane.setBackground(background);
 
     stage.setScene(scene);
     stage.setMaximized(true);

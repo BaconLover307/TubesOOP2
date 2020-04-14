@@ -50,11 +50,18 @@ public class MainPageController{
     private Label contoh1;
 
     private GameplayChannel channel;
+    private int cardAmount;
 
-    public MainPageController(GameplayChannel channel) {
+    private Player player1;
+    private Player player2;
+
+    public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
 
         this.channel = channel;
-        System.out.println(getClass());
+        this.cardAmount = cardAmount;
+
+//        this.player1 = new Player()
+
 
 //        //stage.setFullScreen(true);
 //        Player p1 = new Player("Hojun", 80, channel);

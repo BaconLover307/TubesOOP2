@@ -61,7 +61,8 @@ public class CardDisplay {
             case AIR: elpath = "com/avatarduel/asset/elm-air.png"; break;
             case WATER: elpath = "com/avatarduel/asset/elm-water.png"; break;
             case FIRE: elpath = "com/avatarduel/asset/elm-fire.png"; break;
-            default: elpath = "com/avatarduel/asset/elm-earth.png"; break;
+            case EARTH: elpath = "com/avatarduel/asset/elm-earth.png"; break;
+            default: elpath = "com/avatarduel/asset/elm-energy.png"; break;
         }
         this.card_element.setImage(new Image(elpath));
         this.card_desc.setText(card.getDesc());
