@@ -1,0 +1,35 @@
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.cards.CardDisplay">
+    <children>
+        <ImageView fx:id="card_bg" fitHeight="560.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+        </ImageView>
+        <ImageView fx:id="card_image" fitHeight="240.0" fitWidth="300.0" layoutX="50.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+        </ImageView>
+        <ImageView fx:id="card_element" fitHeight="46.0" fitWidth="46.0" layoutX="329.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+        </ImageView>
+        <Label fx:id="card_name" layoutX="30.0" layoutY="23.0" prefHeight="48.0" prefWidth="280.0" text="">
+            <font>
+                <Font name="Serif Regular" size="36.0" />
+            </font>
+        </Label>
+        <Label fx:id="card_desc" alignment="TOP_LEFT" layoutX="30.0" layoutY="394.0" prefHeight="110.0" prefWidth="340.0" textAlignment="JUSTIFY" textOverrun="CLIP" wrapText="true" text="">
+            <font>
+                <Font name="Serif Regular" size="19.0" />
+            </font>
+        </Label>
+        <Label fx:id="card_attribute" alignment="CENTER" layoutX="25.0" layoutY="505.0" prefHeight="34.0" prefWidth="350.0">
+            <font>
+                <Font name="Serif Regular" size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="card_skillType" alignment="CENTER" layoutX="50.0" layoutY="82.0" prefHeight="48.0" prefWidth="82.0">
+            <font>
+                <Font name="Serif Regular" size="18.0" />
+            </font>
+        </Label>
+    </children>
+</Pane>

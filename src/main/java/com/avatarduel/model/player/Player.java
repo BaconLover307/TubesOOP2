@@ -35,7 +35,7 @@ public class Player implements Publisher, Subscriber,
         return this.name;
     }
 
-    public void publish(String topic, BaseEvent event){
+    public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
     }
 

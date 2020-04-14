@@ -12,11 +12,11 @@ import javafx.scene.Node;
 public class PowerDisplay {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private Pane box,airbox,earthbox,firebox,waterbox,energybox;
+    private Pane box, airbox, earthbox, firebox, waterbox, energyBox;
     private Power P;
-    private String air,earth,fire,water,energy;
-    private Text airText,earthText,fireText,waterText,energyText;
-    private double width,height,posX,posY;
+    private String air, earth, fire, water, energy;
+    private Text airText, earthText, fireText, waterText, energyText;
+    private double width, height, posX, posY;
 
     public PowerDisplay(Power P, Pane pane) {
 
@@ -73,10 +73,10 @@ public class PowerDisplay {
         energyText.setFont(Font.font(java.awt.Font.SERIF, Size));
         energyText.setX(posX);
         energyText.setY(posY);
-        energybox = new Pane();
-        energybox.getChildren().add(energyText);
+        energyBox = new Pane();
+        energyBox.getChildren().add(energyText);
 
-        box.getChildren().addAll(waterbox,earthbox,firebox,airbox,energybox);
+        box.getChildren().addAll(waterbox,earthbox,firebox,airbox);
         box.setVisible(true);
         pane.getChildren().add(box);
 

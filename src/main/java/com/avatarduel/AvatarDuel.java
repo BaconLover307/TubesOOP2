@@ -4,8 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import com.avatarduel.model.player.Player;
+import com.avatarduel.view.MainPageController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import com.avatarduel.view.cards.*;
 
@@ -52,7 +54,11 @@ public class AvatarDuel extends Application {
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
 //    InitScreen(stage);
-    MainScreen(stage);
+    try {
+      MainScreen(stage);
+    } catch (Exception err) {
+      err.printStackTrace();
+    }
    
     /*
     Scene scene = new Scene(root, 1280, 720);
@@ -82,7 +88,11 @@ public class AvatarDuel extends Application {
     EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e)
       {   stage.close();
+      try {
         MainScreen(stage);
+      } catch (Exception err) {
+        err.printStackTrace();
+      }
       }
     };
     EventHandler<ActionEvent> event2 = new EventHandler<ActionEvent>() {
@@ -118,8 +128,12 @@ public class AvatarDuel extends Application {
     stage.show();
   }
 
-  public void MainScreen(Stage stage) {
+  public void MainScreen(Stage stage) throws Exception{
     Pane pane = new Pane();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
+    loader.setControllerFactory(c -> new MainPageController(this.gameplay));
+    Pane main = loader.load();
+    pane.getChildren().add(main);
     Scene scene = new Scene(pane);
     Image image = new Image("com/avatarduel/asset/board.png");
     BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -129,17 +143,11 @@ public class AvatarDuel extends Application {
             backgroundSize);
     Background background = new Background(backgroundImage);
     pane.setBackground(background);
-    Player p1 = new Player("Hojun", 80, gameplay);
-    Character card = new Character("Aang",Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
-    SummonedCharacter cardS = new SummonedCharacter(card, false, new Player("hengky",80,gameplay), gameplay);
-    CardDisplay DCard = new CharDisplay(cardS.getCharCard(), pane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
 
-    Power powlist = new Power(gameplay,"hengky");
-    PowerDisplay P = new PowerDisplay(powlist,pane);
 //    DCard.setX(100);
 //    DCard.setY(100);
-    stage.setScene(scene); 
     //stage.setFullScreen(true);
+    stage.setScene(scene);
     stage.setMaximized(true);
     stage.show();
   }
