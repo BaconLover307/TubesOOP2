@@ -1,7 +1,0 @@
-@font-face {
-src: url("com/avatarduel/asset/Herculanum.ttf");
-}
-
-.label {
--fx-font-family: 'Herculanum';
-}

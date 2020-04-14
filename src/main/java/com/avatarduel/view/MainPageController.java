@@ -72,6 +72,7 @@ public class MainPageController{
     }
 
     public void handleButtonClick() {
+
         System.out.println(getClass());
     }
     public Pane getCardPane() {return cardPane;}
