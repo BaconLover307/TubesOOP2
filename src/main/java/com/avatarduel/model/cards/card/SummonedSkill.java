@@ -10,8 +10,7 @@ import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent.DestroyCharacterEventHandler;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent.DiscardSkillEventHandler;
 
-public class SummonedSkill implements ISkillSummoned, Publisher, Subscriber,
-        DiscardSkillEvent.DiscardSkillEventHandler {
+public class SummonedSkill implements ISkillSummoned, Publisher, Subscriber{
     private Skill SkillCard;
     private SummonedCharacter attachedChar;
     private String owner;
@@ -30,12 +29,13 @@ public class SummonedSkill implements ISkillSummoned, Publisher, Subscriber,
     public SummonedCharacter getTarget() {return this.attachedChar;}
     public String getOwnerName() {return this.owner;}
 
+    //TODO NGGA DIPAKE KARENA SI SUMMONCHAR UDAH NYIMPEN ARRAY SKILL 
     @Override
     public void doAttach(SummonedCharacter charTarget) {
-        this.attachedChar = charTarget;
-        this.publish("SKILL_CARD_ATTACHED_EVENT", new SkillCardAttachedEvent(this.getSkillCard(), charTarget));
+        //this.attachedChar = charTarget;
+        //this.publish("SKILL_CARD_ATTACHED_EVENT", new SkillCardAttachedEvent(this.getSkillCard(), charTarget));
     }
-
+/*
     // $ RECEIVE EVENT
     @Override
     public void onDiscardSkill(DiscardSkillEvent e) {
@@ -43,13 +43,11 @@ public class SummonedSkill implements ISkillSummoned, Publisher, Subscriber,
             this.attachedChar = null;
             this.owner = null;
         }
-    }
+    } */
 
     @Override
     public void onEvent(BaseEvent event) {
-        if (event.getClass() == DiscardSkillEvent.class) {
-            this.onDiscardSkill((DiscardSkillEvent) event);
-        }
+     
     }
 
     @Override

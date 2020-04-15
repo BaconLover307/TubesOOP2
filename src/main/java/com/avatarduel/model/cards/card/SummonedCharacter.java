@@ -41,6 +41,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     
     public Character getCharCard() {return this.CharCard;}
     public boolean getPosition() {return this.isAttack;}
+    public ArrayList<Skill> getAttachedSkill() {return this.attachedSkill;}
 
     public void rotate() {
         if (this.isAttack) {

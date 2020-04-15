@@ -1,6 +1,7 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.cards.card.Character;
 
 public class SummonCharacterEvent implements BaseEvent {
     

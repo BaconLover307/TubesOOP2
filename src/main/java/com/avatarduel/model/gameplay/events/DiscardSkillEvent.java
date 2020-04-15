@@ -17,7 +17,7 @@ public class DiscardSkillEvent implements BaseEvent {
     }
 
     public interface DiscardSkillEventHandler {
-        public void onDiscardSkill(DiscardSkillEvent e);
+        public void onDiscardSkillEvent(DiscardSkillEvent e);
     }
 
     public void execute() {

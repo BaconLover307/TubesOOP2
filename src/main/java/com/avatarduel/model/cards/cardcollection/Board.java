@@ -1,6 +1,9 @@
 package com.avatarduel.model.cards.cardcollection;
 
+import java.util.ArrayList;
+
 import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.cards.card.SummonedSkill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -20,11 +23,15 @@ public class Board implements Subscriber, Publisher,
     RepositionCharacterEvent.RepositionCharacterEventHandler {
     
     private SummonedCharacter charBoard[];
-    private SummonedSkill skillBoard[];
+    private Skill skillBoard[];
     private GameplayChannel channel;
 
     public Board(GameplayChannel channel) {
         this.channel = channel;
+        charBoard = new SummonedCharacter[6];
+        skillBoard = new Skill[6];
+        for (int i=0;i<6;i++) {charBoard[i] = null;}
+        for (int j=0;j<6;j++) {skillBoard[j] = null;}
         channel.addSubscriber("SUMMON_CHARACTER",this);
         channel.addSubscriber("SUMMON_SKILL",this);
         channel.addSubscriber("DISCARD_SKILL",this);
@@ -44,6 +51,11 @@ public class Board implements Subscriber, Publisher,
         // 2. Harus ada karakter yg ditarget
         this.skillBoard[id] = s;
         // TODO s arahin ke target 
+    }
+
+    @Override
+    public void publish(String topic, BaseEvent event) {
+        this.channel.sendEvent(topic, event);
     }
 
     @Override
@@ -67,8 +79,8 @@ public class Board implements Subscriber, Publisher,
     
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        // SummonedCharacter C = SummonedCharacter(e.C, boolean isAttack, String player, channel)
-        // TODO Masukin C ke array SummonedChar dan parameter yg blm (isAttack,player)
+        SummonedCharacter C = new SummonedCharacter(e.C, true, channel.activePlayer, channel);
+        // TODO Masukin C ke array SummonedChar
     }
 
     @Override
@@ -80,17 +92,13 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
-        // TODO hapus skill dari summonedchar dan destroy dari board
+        // TODO remove skill dari skill board
+        e.SC.getAttachedSkill().remove(e.S); 
     }
 
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
-        // TODO remove e.SC dari list summonedchar board (dan skill yg di attach di removed juga)
-    }
-
-    @Override
-    public void publish(String topic, BaseEvent event) {
-        this.channel.sendEvent(topic, event);
+        // TODO remove e.SC dari array summonedchar board
     }
 
     @Override

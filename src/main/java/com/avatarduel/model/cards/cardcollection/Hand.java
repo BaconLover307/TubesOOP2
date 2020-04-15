@@ -8,6 +8,7 @@ import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
