@@ -7,7 +7,6 @@ import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
-import com.avatarduel.model.player.Player;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class Deck extends CardCollection implements
     Subscriber,
     CardClickedEvent.CardClickedEventHandler {
 
-    public Deck(GameplayChannel channel, Player player){
+    public Deck(GameplayChannel channel, String player){
         super(channel, player);
     }
 

@@ -21,8 +21,9 @@ public class Player implements Publisher, Subscriber,
     protected GameplayChannel channel;
 
     public Player(String name, int health, GameplayChannel channel) {
-        this.deck = new Deck(channel, this);
-        this.hand = new Hand(channel, this);
+        this.name = name;
+        this.deck = new Deck(channel, name);
+        this.hand = new Hand(channel, name);
         // this.board = new Board();
         this.health = health;
         this.powers = new Power(channel, name);
@@ -52,10 +53,10 @@ public class Player implements Publisher, Subscriber,
 
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
-        if(this == e.target){
+        if(this.name == e.target){
             this.health -= e.amount;
             if (this.health <= 0){
-                this.publish("GAMESTATE", new EndGameEvent(this));
+                this.publish("GAMESTATE", new EndGameEvent(this.name));
             }
         }
     }

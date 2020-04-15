@@ -1,7 +1,6 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Card;
 // import com.avatarduel.model.cards.cardcollection.Hand;
 // import com.avatarduel.model.Element;
@@ -13,9 +12,9 @@ import com.avatarduel.model.cards.card.Card;
 // target: Hand
 public class DrawEvent implements BaseEvent {
     public Card c;
-    public Player h;
+    public String h;
 
-    public DrawEvent(Card c, Player h){
+    public DrawEvent(Card c, String h){
         this.c = c;
         this.h = h;
     }
