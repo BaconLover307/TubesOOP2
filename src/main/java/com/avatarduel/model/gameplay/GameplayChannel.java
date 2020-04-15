@@ -10,7 +10,7 @@ public class GameplayChannel implements EventChannel {
     
     private HashMap<String, ArrayList<Subscriber>> listSubscriber;
     public String phase;
-    public Player activePlayer;
+    public String activePlayer;
     public SummonedCharacter lastClickedCard;
 
     public GameplayChannel() {

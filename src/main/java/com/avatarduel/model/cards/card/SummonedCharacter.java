@@ -7,7 +7,6 @@ import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
-import com.avatarduel.model.player.Player;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
@@ -24,12 +23,12 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     private Character CharCard;
     private boolean isAttack; // true jika dalam keadaan attack dan false bila dalam keadaan defense
     private ArrayList<Skill> attachedSkill;
-    private Player owner;
+    private String owner;
     private boolean isPowerUp;
     private int auraValue;
     private GameplayChannel gameplayChannel;
 
-    public SummonedCharacter(Character charCard, boolean isAttack, Player player, GameplayChannel gameplayChannel) {
+    public SummonedCharacter(Character charCard, boolean isAttack, String player, GameplayChannel gameplayChannel) {
         this.CharCard = charCard;
         this.isAttack = isAttack;
         this.owner = player;
@@ -64,7 +63,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void doAttack(SummonedCharacter target) {
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
     }
-    public void doAttackPlayer(Player target) {
+    public void doAttackPlayer(String target) {
         this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(this.CharCard.getAttack(), target));
     }
 

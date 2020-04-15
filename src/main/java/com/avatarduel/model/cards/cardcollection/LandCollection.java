@@ -14,7 +14,7 @@ public class LandCollection extends CardCollection {
     private int airPower;
     private int earthPower;
 
-	public LandCollection(GameplayChannel channel, Player player) {
+	public LandCollection(GameplayChannel channel, String player) {
         super(channel, player);
         this.waterPower = 0;
         this.firePower = 0;

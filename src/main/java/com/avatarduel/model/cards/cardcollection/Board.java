@@ -73,7 +73,7 @@ public class Board implements Subscriber, Publisher,
     
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        // SummonedCharacter C = SummonedCharacter(e.C, boolean isAttack, Player player, channel)
+        // SummonedCharacter C = SummonedCharacter(e.C, boolean isAttack, String player, channel)
         // TODO Masukin C ke map summonedchar dan parameter yg blm (isAttack,player)
     }
 

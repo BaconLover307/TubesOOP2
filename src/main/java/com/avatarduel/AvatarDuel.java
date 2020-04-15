@@ -51,12 +51,8 @@ public class AvatarDuel extends Application {
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
 
-    // Main Menu Layout
-//    InitScreen(mainMenu);
-
-
     Button btnStart = new Button("START");
-    Button btnSetting = new Button("SETTING");
+    Button btnSetting = new Button("SETTINGS");
     Button btnExit = new Button("EXIT");
 
     btnStart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -77,7 +73,6 @@ public class AvatarDuel extends Application {
       }
     });
 
-    // TODO Delete after debugging
     btnSetting.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     btnSetting.setOnAction(e -> {
       Settings set = new Settings();
@@ -107,7 +102,6 @@ public class AvatarDuel extends Application {
     window.setScene(s);
     window.setMaximized(true);
     window.show();
-
     /*
     try {
       this.loadCards();
@@ -115,12 +109,6 @@ public class AvatarDuel extends Application {
     } catch (Exception e) {
       text.setText("Failed to load cards: " + e);
     } */
-  }
-
-
-
-  public void InitScreen(Scene scene) {
-
   }
 
   public void MainScreen(Stage stage) throws Exception{
@@ -137,7 +125,7 @@ public class AvatarDuel extends Application {
             BackgroundPosition.DEFAULT,
             backgroundSize);
     Background background = new Background(backgroundImage);
-//    pane.setBackground(background);
+    pane.setBackground(background);
 
     stage.setScene(scene);
     stage.setMaximized(true);
