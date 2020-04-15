@@ -4,8 +4,6 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 
-import java.util.ArrayList;
-
 public class AttackPlayerEvent implements BaseEvent {
 
     public int amount;

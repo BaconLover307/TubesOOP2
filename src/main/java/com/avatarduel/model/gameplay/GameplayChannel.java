@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.avatarduel.model.cards.card.SummonedCharacter;
-import com.avatarduel.model.player.Player;
 
 public class GameplayChannel implements EventChannel {
     

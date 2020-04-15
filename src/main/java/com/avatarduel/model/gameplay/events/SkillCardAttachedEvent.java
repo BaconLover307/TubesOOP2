@@ -15,11 +15,11 @@ public class SkillCardAttachedEvent implements BaseEvent {
     }
 
 
-    public interface SummonCharacterEventHandler {
+    public interface SkillCardAttachedEventHandler {
         void onSkillCardAttached(SkillCardAttachedEvent e);
     }
     
-    public void execute(){
+    public void execute() {
 
     }
 }

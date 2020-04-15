@@ -7,7 +7,6 @@ import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
-import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
@@ -15,7 +14,7 @@ import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
-        SkillCardAttachedEvent.SummonCharacterEventHandler, 
+        SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
         CardClickedEvent.CardClickedEventHandler
         {
@@ -39,6 +38,9 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
     }
+    
+    public Character getCharCard() {return this.CharCard;}
+    public boolean getPosition() {return this.isAttack;}
 
     public void rotate() {
         if (this.isAttack) {
@@ -55,10 +57,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
             return CharCard.getDefense() + auraValue;
         }
     }
-
-    public Character getCharCard() {return this.CharCard;}
-
-    public boolean getPosition() {return this.isAttack;}
+    
 
     public void doAttack(SummonedCharacter target) {
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
@@ -72,8 +71,11 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     }
 
     public void destroy() {
-        // TODO remove this card
+        // TODO remove this card and remove every skill attached
         this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
+        for (Skill skill : attachedSkill) {
+            doDiscardSkill(skill);
+        }
     }
 
     @Override

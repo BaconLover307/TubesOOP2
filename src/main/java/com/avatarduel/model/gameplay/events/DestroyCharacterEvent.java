@@ -10,11 +10,11 @@ public class DestroyCharacterEvent implements BaseEvent {
         this.SC = SC;
     }
 
-    public void execute(){
-        System.out.println("Character Destroyed!");
-    }
-
     public interface DestroyCharacterEventHandler {
         void onDestroyCharacterEvent(DestroyCharacterEvent e);
+    }
+
+    public void execute(){
+        System.out.println("Character " + SC.getCharCard().getName() + " Destroyed!");
     }
 }

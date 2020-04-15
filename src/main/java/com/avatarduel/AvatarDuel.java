@@ -65,7 +65,10 @@ public class AvatarDuel extends Application {
           playerName1 = inpP1.getName();
           InputPlayer inpP2 = new InputPlayer(2);
           inpP2.showInputPlayer();
-          playerName1 = inpP2.getName();
+          playerName2 = inpP2.getName();
+          if (playerName1.equals(playerName2)) {
+            playerName2 = playerName2 + "*";
+          }
           MainScreen(window);
         } catch (Exception err) {
           err.printStackTrace();

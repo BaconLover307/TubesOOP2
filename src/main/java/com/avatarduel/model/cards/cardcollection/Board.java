@@ -1,7 +1,7 @@
 package com.avatarduel.model.cards.cardcollection;
 
 import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.SummonedSkill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
@@ -14,22 +14,16 @@ import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
-import java.util.Map;
-import java.util.HashMap;
-
 public class Board implements Subscriber, Publisher,
     SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
     DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler,
     RepositionCharacterEvent.RepositionCharacterEventHandler {
     
-    Map<Integer, SummonedCharacter> charBoard;
-    Map<Integer, Skill> skillBoard;
+    private SummonedCharacter charBoard[];
+    private SummonedSkill skillBoard[];
     private GameplayChannel channel;
 
     public Board(GameplayChannel channel) {
-        //super();
-        this.charBoard = new HashMap<Integer, SummonedCharacter>();
-        this.skillBoard = new HashMap<Integer, Skill>();
         this.channel = channel;
         channel.addSubscriber("SUMMON_CHARACTER",this);
         channel.addSubscriber("SUMMON_SKILL",this);
@@ -38,17 +32,17 @@ public class Board implements Subscriber, Publisher,
     }
 
     public void addChartoBoard(int id, SummonedCharacter C) {
-        this.charBoard.put(id, C);
+        this.charBoard[id] = C;
     }
 
     public SummonedCharacter getCharwithId(int id) {
-        return this.charBoard.get(id);
+        return this.charBoard[id];
     }
 
     public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {
         // 1. Harus ada tempat kosong
         // 2. Harus ada karakter yg ditarget
-        this.skillBoard.put(id, s);
+        this.skillBoard[id] = s;
         // TODO s arahin ke target 
     }
 
@@ -74,12 +68,12 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
         // SummonedCharacter C = SummonedCharacter(e.C, boolean isAttack, String player, channel)
-        // TODO Masukin C ke map summonedchar dan parameter yg blm (isAttack,player)
+        // TODO Masukin C ke array SummonedChar dan parameter yg blm (isAttack,player)
     }
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        // TODO Masukin e.S ke map skill 
+        // TODO Masukin e.S ke array skill 
         // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
         this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
     }
