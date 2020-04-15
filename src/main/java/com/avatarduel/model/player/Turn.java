@@ -25,15 +25,14 @@ public class Turn implements Publisher {
     }
 
 	public void drawPhase(){
-        System.out.println("Draw Phase");
+        // System.out.println("Draw Phase");
         // String draw = this.player.getName() + " Deck";
         this.player.getDeck().doDraw();
-        String reset = this.player.getName() + " Power";
-        this.publish(reset, new ResetPowerEvent());
+        this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
     }
     
 	public void mainPhase(){
-        System.out.println("Main Phase");
+        // System.out.println("Main Phase");
         boolean nextPhase = false;
         String command;
         Card card;
@@ -56,6 +55,7 @@ public class Turn implements Publisher {
                     nextPhase = true;
             }
             */
+            nextPhase = true;
         }
         
     }
@@ -85,7 +85,7 @@ public class Turn implements Publisher {
     }
     */   
 	public void battlePhase(){
-        System.out.println("Battle Phase");
+        // System.out.println("Battle Phase");
         boolean nextPhase = false;
         while (!nextPhase){
             //input attacker
@@ -97,11 +97,12 @@ public class Turn implements Publisher {
                     attacker.doAttackPlayer(target);
                 }
             */
+            nextPhase = true;
         }
     }
 
     public void endPhase(){
-        System.out.println("End Phase");
+        // System.out.println("End Phase");
 	}
     
     public void startTurn(){
