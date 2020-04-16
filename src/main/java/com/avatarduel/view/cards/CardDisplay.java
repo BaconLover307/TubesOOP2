@@ -2,11 +2,12 @@ package com.avatarduel.view.cards;
 
 
 import com.avatarduel.model.gameplay.GameplayChannel;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -32,21 +33,86 @@ public class CardDisplay {
     private Card card;
     private Pane box;
 
-    public Image card_bg;
+    @FXML
+    public ImageView card_bg;
+    @FXML
     public Label card_name;
+    @FXML
     public ImageView card_element;
+    @FXML
     public ImageView card_image;
+    @FXML
     public Label card_desc;
+    @FXML
     public Label card_attribute;
+    @FXML
     public Label card_skillType;
+    @FXML
     public String name;
+
+    private Image bg;
 
     private boolean show;
     private GameplayChannel channel;
     private int n;
 
-    public CardDisplay(GameplayChannel gameplayChannel) {
+    public CardDisplay(GameplayChannel gameplayChannel, Card C) {
         this.channel = gameplayChannel;
+        Button btn = new Button("Click me!");
+        this.card = C;
+        System.out.println(card.getName());
+        this.card_name.setText(card.getName());
+        System.out.println(card_name.getText());
+        this.card_image.setImage(new Image(card.getImgPath()));
+        String elpath;
+        switch (card.getElement()) {
+            case AIR: elpath = "com/avatarduel/asset/elm-air.png"; break;
+            case WATER: elpath = "com/avatarduel/asset/elm-water.png"; break;
+            case FIRE: elpath = "com/avatarduel/asset/elm-fire.png"; break;
+            case EARTH: elpath = "com/avatarduel/asset/elm-earth.png"; break;
+            default: elpath = "com/avatarduel/asset/elm-energy.png"; break;
+        }
+        System.out.println(elpath);
+        this.card_element.setImage(new Image(elpath));
+        this.card_desc.setText(card.getDesc());
+        if (card instanceof Character) {
+            this.bg = new Image("com/avatarduel/asset/card_character.png");
+            String atr = "ATK/" + Integer.toString(((Character)this.card).getAttack()) +
+                    "  DEF/" +Integer.toString(((Character)this.card).getDefense()) +
+                    "  POW/" + Integer.toString(((Character)this.card).getPower());
+            this.card_attribute.setText(atr);
+        }
+        else if (card instanceof Land) {
+            this.bg = new Image("com/avatarduel/asset/card_land.png");
+        }
+        else {
+            this.bg = new Image("com/avatarduel/asset/card_skill.png");
+            String atr;
+            if (card instanceof Aura) {
+                this.card_skillType.setText("[Aura]");
+                atr = "+" + Integer.toString(((Aura)this.card).getAttVal()) + " ATK  " +
+                        "+" + Integer.toString(((Aura)this.card).getDefVal()) + " DEF" +
+                        "  POW/" + Integer.toString(((Aura)this.card).getPowVal());
+            }
+            else if (card instanceof PowerUp) {
+                this.card_skillType.setText("[PowerUp]");
+                atr = "POW/" + Integer.toString(((PowerUp)this.card).getPowVal());
+            }
+            else {
+                this.card_skillType.setText("[Destroy]");
+                atr = "POW/" + Integer.toString(((Destroy)this.card).getPowVal());
+            }
+            this.card_attribute.setText(atr);
+        }
+        System.out.println(card_attribute.getText());
+        BackgroundSize backgroundSize = new BackgroundSize(box.getWidth(), box.getHeight(), false, false, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage(this.bg,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                backgroundSize);
+        Background background = new Background(backgroundImage);
+        box.setBackground(background);
     }
 
     public void initCard(Card C, boolean show) {
@@ -68,17 +134,17 @@ public class CardDisplay {
         this.card_desc.setText(card.getDesc());
 //        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource("CardDisplay.fxml"));
         if (card instanceof Character) {
-            this.card_bg = new Image("com/avatarduel/asset/card_character.png");
+            this.bg = new Image("com/avatarduel/asset/card_character.png");
             String atr = "ATK/" + Integer.toString(((Character)this.card).getAttack()) +
                     "  DEF/" +Integer.toString(((Character)this.card).getDefense()) +
                     "  POW/" + Integer.toString(((Character)this.card).getPower());
             this.card_attribute.setText(atr);
         }
         else if (card instanceof Land) {
-            this.card_bg = new Image("com/avatarduel/asset/card_land.png");
+            this.bg = new Image("com/avatarduel/asset/card_land.png");
         }
         else {
-            this.card_bg = new Image("com/avatarduel/asset/card_skill.png");
+            this.bg = new Image("com/avatarduel/asset/card_skill.png");
             String atr;
             if (card instanceof Aura) {
                 this.card_skillType.setText("[Aura]");
@@ -96,18 +162,19 @@ public class CardDisplay {
             }
             this.card_attribute.setText(atr);
         }
+
         this.box.widthProperty().addListener(e -> {
             card_name.setFont(new Font(java.awt.Font.SERIF, (double)36/500 * this.box.getWidth()));
             card_desc.setFont(new Font(java.awt.Font.SERIF, (double)19/500 * this.box.getWidth()));
             card_attribute.setFont(new Font(java.awt.Font.SERIF, (double)24/500 * this.box.getWidth()));
             card_skillType.setFont(new Font(java.awt.Font.SERIF, (double)18/500 * this.box.getWidth()));
-        });
+            });
 
         //this.card_bg.fitWidthProperty().bind(box.widthProperty());
         //this.card_bg.fitHeightProperty().bind(box.heightProperty());
         
         BackgroundSize backgroundSize = new BackgroundSize(box.getWidth(), box.getHeight(), false, false, false, false);
-        BackgroundImage backgroundImage = new BackgroundImage(this.card_bg,
+        BackgroundImage backgroundImage = new BackgroundImage(this.bg,
             BackgroundRepeat.NO_REPEAT,
             BackgroundRepeat.NO_REPEAT,
             BackgroundPosition.DEFAULT,

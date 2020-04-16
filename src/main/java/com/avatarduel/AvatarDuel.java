@@ -56,23 +56,20 @@ public class AvatarDuel extends Application {
     Button btnExit = new Button("EXIT");
 
     btnStart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-    btnStart.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent e) {
-        try {
-          InputPlayer inpP1 = new InputPlayer(1);
-          inpP1.showInputPlayer();
-          playerName1 = inpP1.getName();
-          InputPlayer inpP2 = new InputPlayer(2);
-          inpP2.showInputPlayer();
-          playerName2 = inpP2.getName();
-          if (playerName1.equals(playerName2)) {
-            playerName2 = playerName2 + "*";
-          }
-          MainScreen(window);
-        } catch (Exception err) {
-          err.printStackTrace();
+    btnStart.setOnAction(e -> {
+      try {
+        InputPlayer inpP1 = new InputPlayer(1);
+        inpP1.showInputPlayer();
+        playerName1 = inpP1.getName();
+        InputPlayer inpP2 = new InputPlayer(2);
+        inpP2.showInputPlayer();
+        playerName2 = inpP2.getName();
+        if (playerName1.equals(playerName2)) {
+          playerName2 = playerName2 + "*";
         }
+        MainScreen(window);
+      } catch (Exception err) {
+        err.printStackTrace();
       }
     });
 

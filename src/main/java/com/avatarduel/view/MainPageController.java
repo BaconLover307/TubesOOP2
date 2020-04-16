@@ -9,6 +9,7 @@ import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -59,6 +60,21 @@ public class MainPageController{
 
         this.channel = channel;
         this.cardAmount = cardAmount;
+        this.player1 = new Player(P1, 80, channel);
+        this.player2 = new Player(P2, 80, channel);
+        Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
+        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/CardDisplay.fxml"));
+        cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, card));
+        try {
+            this.cardPane.getChildren().add(cardLoader.load());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
 
 //        this.player1 = new Player()
 
