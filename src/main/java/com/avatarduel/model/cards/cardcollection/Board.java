@@ -39,7 +39,7 @@ public class Board implements Subscriber, Publisher,
         return this.charBoard[id];
     }
 
-    public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {
+    public void addSkilltoBoard(int id, SummonedSkill s, SummonedCharacter target) {
         // 1. Harus ada tempat kosong
         // 2. Harus ada karakter yg ditarget
         this.skillBoard[id] = s;
@@ -79,7 +79,7 @@ public class Board implements Subscriber, Publisher,
     }
 
     @Override
-    public void onDiscardSkillEvent(DiscardSkillEvent e) {
+    public void onDiscardSkill(DiscardSkillEvent e) {
         // TODO hapus skill dari summonedchar dan destroy dari board
     }
 
