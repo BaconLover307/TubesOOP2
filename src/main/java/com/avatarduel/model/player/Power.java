@@ -45,8 +45,8 @@ public class Power implements
         }
     }
 
-    public void AddCapacity(Element elm, int cap) {
-        getPower(elm).AddCapacity(cap);
+    public void addCapacity(Element elm, int cap) {
+        getPower(elm).addCapacity(cap);
     }
 
     public void UsePower(Element elm, int use) {
@@ -61,8 +61,6 @@ public class Power implements
     public void onEvent(BaseEvent e){
         if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
-        } else if (e instanceof UseLandEvent){
-            this.onUseLandEvent((UseLandEvent)e);
         }
     }
 
@@ -72,7 +70,4 @@ public class Power implements
         this.publish(e.getSender(), e.new Handler(success));
     }
 
-    public void onUseLandEvent(UseLandEvent e){
-        this.AddCapacity(e.land.getElement(), 1);
-    }
 }

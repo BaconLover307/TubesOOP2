@@ -6,12 +6,14 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 import com.avatarduel.model.cards.cardcollection.Board;
 
 public class Player implements Publisher, Subscriber,
-    AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler {
+    AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler,
+    UseLandEvent.UseLandEventHandler {
 
     protected String name;
     protected Deck deck;
@@ -31,6 +33,7 @@ public class Player implements Publisher, Subscriber,
         this.channel = channel;
         channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
         channel.addSubscriber("RESET_POWER_EVENT", this);
+        channel.addSubscriber("USE_LAND", this);
     }
 
     public String getName(){
@@ -65,6 +68,11 @@ public class Player implements Publisher, Subscriber,
     @Override
     public void onResetPowerEvent(ResetPowerEvent e) {
         this.powers.resetAllPower();
+    }
+
+    @Override
+    public void onUseLandEvent(UseLandEvent e){
+        this.powers.addCapacity(e.land.getElement(), 1);
     }
 
 }

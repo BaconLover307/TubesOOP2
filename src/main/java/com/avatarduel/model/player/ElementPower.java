@@ -17,7 +17,7 @@ public class ElementPower {
 
     public int getCapacity() {return this.capacity;}
 
-    public void AddCapacity(int capacity){
+    public void addCapacity(int capacity){
         this.capacity += capacity;
     }
 

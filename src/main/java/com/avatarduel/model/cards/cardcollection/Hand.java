@@ -68,15 +68,18 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
 
     public void doSelectChar(Character C) {
         this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
+        // TODO ilangin kartu C dari hand
     }
 
     public void doSelectSkill(Skill S) {
         this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
+        // TODO ilangin kartu S dari hand
     }
 
     public void doSelectLand(Land L) {
         this.publish("USE_LAND", new UseLandEvent(L));
         this.usedLand = true;
+        // TODO ilangin kartu L dari hand
     }
 
     public void publish(String topic, BaseEvent event){
