@@ -45,13 +45,13 @@ public class Power implements
         }
     }
 
-    public void AddCapacity(Element elm, int cap) {
-        getPower(elm).AddCapacity(cap);
+    public void addCapacity(Element elm, int cap) {
+        getPower(elm).addCapacity(cap);
     }
 
-    public void UsePower(Element elm, int use) {
+    public void usePower(Element elm, int use) {
         //kok ini void tapi use power jadi boolean?
-        getPower(elm).UsePower(use);
+        getPower(elm).usePower(use);
     }
 
     public void publish(String topic, BaseEvent event){
@@ -59,20 +59,9 @@ public class Power implements
     }
 
     public void onEvent(BaseEvent e){
-        if (e instanceof SpendPowerEvent){
+      /*  if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
-        } else if (e instanceof UseLandEvent){
-            this.onUseLandEvent((UseLandEvent)e);
-        }
+        } */
     }
 
-    // TODO ini seharusnya di player (?)
-    public void onSpendPowerEvent(SpendPowerEvent e){
-        boolean success = this.getPower(e.getElement()).UsePower(e.getVal());
-        this.publish(e.getSender(), e.new Handler(success));
-    }
-
-    public void onUseLandEvent(UseLandEvent e){
-        this.AddCapacity(e.land.getElement(), 1);
-    }
 }

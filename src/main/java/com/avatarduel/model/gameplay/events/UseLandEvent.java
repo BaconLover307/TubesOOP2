@@ -15,7 +15,7 @@ public class UseLandEvent implements BaseEvent {
     }
 
     public interface UseLandEventHandler {
-        void onUseLand(UseLandEvent e);
+        void onUseLandEvent(UseLandEvent e);
     }
 
     public void execute() {
