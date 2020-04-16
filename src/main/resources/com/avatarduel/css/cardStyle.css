@@ -1,0 +1,7 @@
+@font-face {
+    src: url("../asset/Herculanum.ttf");
+}
+
+.label {
+    -fx-text-fill:#000000;
+}
