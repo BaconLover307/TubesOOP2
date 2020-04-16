@@ -7,13 +7,14 @@ import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.UseLandEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 import com.avatarduel.model.cards.cardcollection.Board;
 
 public class Player implements Publisher, Subscriber,
     AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler,
-    UseLandEvent.UseLandEventHandler {
+    UseLandEvent.UseLandEventHandler, SpendPowerEvent.SpendPowerEventHandler {
 
     protected String name;
     protected Deck deck;
@@ -34,6 +35,7 @@ public class Player implements Publisher, Subscriber,
         channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
         channel.addSubscriber("RESET_POWER_EVENT", this);
         channel.addSubscriber("USE_LAND", this);
+        channel.addSubscriber("SPEND_POWER_EVENT", this);
     }
 
     public String getName(){
@@ -50,7 +52,10 @@ public class Player implements Publisher, Subscriber,
         } 
         else if (e.getClass() == ResetPowerEvent.class){
             this.onResetPowerEvent((ResetPowerEvent) e);
-        } 
+        }
+        else if (e.getClass() == SpendPowerEvent.class){
+            this.onSpendPowerEvent((SpendPowerEvent) e);
+        }  
     }
 
     public Deck getDeck() {return this.deck;}
@@ -73,6 +78,13 @@ public class Player implements Publisher, Subscriber,
     @Override
     public void onUseLandEvent(UseLandEvent e){
         this.powers.addCapacity(e.land.getElement(), 1);
+    }
+
+    @Override
+    public void onSpendPowerEvent(SpendPowerEvent e) {
+        if (e.sender.equals(this.name)){
+            this.powers.usePower(e.element, e.amount);
+        }    
     }
 
 }
