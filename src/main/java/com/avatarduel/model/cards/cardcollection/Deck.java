@@ -79,7 +79,7 @@ public class Deck extends CardCollection implements
         if(this.channel.activePlayer == this.player && this.channel.phase.equals("DRAW_PHASE")){
             this.doDraw();
             this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
-            this.channel.phase = "MAIN_PHASE_1";
+            this.channel.phase = "MAIN_PHASE";
         }
 
     }

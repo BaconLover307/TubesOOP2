@@ -73,6 +73,6 @@ public class Power implements
     }
 
     public void onUseLandEvent(UseLandEvent e){
-        this.AddCapacity(e.getLand().getElement(), 1);
+        this.AddCapacity(e.land.getElement(), 1);
     }
 }

@@ -8,6 +8,7 @@ import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
+import com.avatarduel.model.cards.cardcollection.Board;
 
 public class Player implements Publisher, Subscriber,
     AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler {
@@ -15,7 +16,7 @@ public class Player implements Publisher, Subscriber,
     protected String name;
     protected Deck deck;
     protected Hand hand;
-    // protected Board board;
+    protected Board board;
     protected int health;
     protected Power powers;
     protected GameplayChannel channel;
@@ -24,7 +25,7 @@ public class Player implements Publisher, Subscriber,
         this.name = name;
         this.deck = new Deck(channel, name);
         this.hand = new Hand(channel, name);
-        // this.board = new Board();
+        this.board = new Board(channel, name);
         this.health = health;
         this.powers = new Power(channel, name);
         this.channel = channel;

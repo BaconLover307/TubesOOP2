@@ -1,6 +1,7 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.cards.card.Character;
 
 public class SummonCharacterEvent implements BaseEvent {
     
@@ -15,6 +16,6 @@ public class SummonCharacterEvent implements BaseEvent {
     }
 
     public void execute(){
-        System.out.println("Character Summoned!");
+        System.out.println("Character " + C.getName() + " Summoned!");
     }
 }

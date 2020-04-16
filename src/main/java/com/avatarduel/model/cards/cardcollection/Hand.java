@@ -1,31 +1,34 @@
 package com.avatarduel.model.cards.cardcollection;
 
-import com.avatarduel.model.Element;
-import com.avatarduel.model.cards.card.Flippable;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 
-import java.util.ArrayList;
+public class Hand extends CardCollection implements Publisher, Subscriber,
+        // UseLandEvent.UseLandEventHandler,     
+        DrawEvent.DrawEventHandler {
 
-public class Hand extends CardCollection implements Publisher, Subscriber, DrawEvent.DrawEventHandler {
-
-    private boolean show; // Jika kartu terbuka, maka true
+    // TODO Pindahin ke Hand Display
+    // private boolean show; // true if card is open
     private boolean usedLand; // true if UseCard(Land) was used this turn
     private GameplayChannel channel;
 
     public Hand(GameplayChannel channel, String player) {
         super(channel, player);
-        this.show = false;
+        // this.show = false;
         this.usedLand = false;
         this.channel = channel;
         channel.addSubscriber("DRAW_EVENT", this);
+        // channel.addSubscriber("USE_LAND", this);
     }
 
     public int findCard(String name) {
@@ -63,12 +66,17 @@ public class Hand extends CardCollection implements Publisher, Subscriber, DrawE
     }
 
 
-    public void selectChar(Character C) {
+    public void doSelectChar(Character C) {
         this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
     }
 
-    public void selectSkill(Skill S) {
+    public void doSelectSkill(Skill S) {
         this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
+    }
+
+    public void doSelectLand(Land L) {
+        this.publish("USE_LAND", new UseLandEvent(L));
+        this.usedLand = true;
     }
 
     public void publish(String topic, BaseEvent event){
@@ -77,15 +85,23 @@ public class Hand extends CardCollection implements Publisher, Subscriber, DrawE
 
     @Override
     public void onEvent(BaseEvent e){
-        if (e.getClass() == DrawEvent.class){
+        if (e instanceof DrawEvent){
             this.onDrawEvent((DrawEvent) e);
-        } 
+        // } else if (e instanceof UseLandEvent) {
+        //     this.onUseLand((UseLandEvent) e);
+        }
     }
 
     @Override
     public void onDrawEvent(DrawEvent e) {
         if(this.getPlayer().equals(e.h)){
             this.add(e.c);
+            this.usedLand = false;
         }
     }
+
+    // @Override
+    // public void onUseLand(UseLandEvent e) {
+    //     if (this.)
+    // }
 }

@@ -10,5 +10,4 @@ public class Land extends Card {
     public Land(){
         super("",Element.AIR,"","");
     }
-    
 }
