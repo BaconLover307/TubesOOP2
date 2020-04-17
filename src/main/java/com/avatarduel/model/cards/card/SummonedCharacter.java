@@ -2,6 +2,7 @@ package com.avatarduel.model.cards.card;
 
 import java.util.ArrayList;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
+import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
@@ -16,14 +17,15 @@ import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
-        CardClickedEvent.CardClickedEventHandler
+        CardClickedEvent.CardClickedEventHandler,
+        DrawEvent.DrawEventHandler
         {
 
     private Character CharCard;
     private boolean isAttack; // true jika dalam keadaan attack dan false bila dalam keadaan defense
     private ArrayList<Skill> attachedSkill;
     private String owner;
-    private boolean isPowerUp;
+    private boolean isPowerUp, isAlreadyAttack;
     private int auraValue;
     private GameplayChannel gameplayChannel;
 
@@ -34,9 +36,11 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel = gameplayChannel;
         this.auraValue = 0;
         this.isPowerUp = false;
+        this.isAlreadyAttack = true;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
         this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
+        this.gameplayChannel.addSubscriber("DRAW_PHASE", this);
     }
     
     public Character getCharCard() {return this.CharCard;}
@@ -138,6 +142,10 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if(event.getClass() == CardClickedEvent.class){
             this.onCardClicked((CardClickedEvent) event);
         }
+        
+        if(event.getClass() == DrawEvent.class){
+            this.onDrawEvent((DrawEvent) event);
+        }
     }
 
     @Override
@@ -155,14 +163,23 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
         if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
             if (this.gameplayChannel.activePlayer == this.owner){
-                this.gameplayChannel.lastClickedCard = this;
-                // TODO publish
+                if(!this.isAlreadyAttack)
+                    this.gameplayChannel.lastClickedCard = this;
+                // TODO publish  //jika ingin menandakan di board lastclickedcard-nya
             }else{
                 if(this.gameplayChannel.lastClickedCard != null){
                     this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this.gameplayChannel.lastClickedCard, this));
                     this.gameplayChannel.lastClickedCard = null;
                 }
             }
+        }
+    }
+
+    @Override
+    public void onDrawEvent(DrawEvent e) {
+        if((this.gameplayChannel.phase.equals("DRAW_PHASE"))
+             && this.gameplayChannel.activePlayer == this.owner){
+            this.isAlreadyAttack = false;
         }
     }
 

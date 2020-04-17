@@ -57,19 +57,19 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onEvent(BaseEvent e){
-        if (e.getClass() == SummonCharacterEvent.class){
+        if ((e.getClass() == SummonCharacterEvent.class) && (this.channel.phase.equals("MAIN_PHASE"))){
             this.onSummonCharacterEvent((SummonCharacterEvent) e);
         }
-        else if (e.getClass() == SummonSkillEvent.class) {
+        else if ((e.getClass() == SummonSkillEvent.class) && (this.channel.phase.equals("MAIN_PHASE"))) {
             this.onSummonSkillEvent((SummonSkillEvent) e);
         }
-        else if (e.getClass() == DiscardSkillEvent.class) {
+        else if ((e.getClass() == DiscardSkillEvent.class) && (this.channel.phase.equals("MAIN_PHASE") || this.channel.phase.equals("BATTLE_PHASE"))) {
             this.onDiscardSkillEvent((DiscardSkillEvent) e);
         }
-        else if (e.getClass() == DestroyCharacterEvent.class) {
+        else if ((e.getClass() == DestroyCharacterEvent.class) && (this.channel.phase.equals("MAIN_PHASE") || this.channel.phase.equals("BATTLE_PHASE"))) {
             this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
         }
-        else if (e.getClass() == RepositionCharacterEvent.class) {
+        else if ((e.getClass() == RepositionCharacterEvent.class) && (this.channel.phase.equals("MAIN_PHASE"))) {
             this.onRepositionCharacterEvent((RepositionCharacterEvent) e);
         }
     }

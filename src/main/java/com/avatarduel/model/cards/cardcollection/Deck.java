@@ -76,7 +76,7 @@ public class Deck extends CardCollection implements
         List<String[]> landRows = landReader.read();
 
         Collections.shuffle(charRows);
-        int amountCharLand = (int) Math.floor(2*(amount/5));
+        int amountCharLand = (int) Math.floor((2*amount/5));
         for (int i=0; i<amountCharLand; i++)
         {
             this.addCharFromArr(charRows.get(i % charRows.size()));
@@ -96,7 +96,7 @@ public class Deck extends CardCollection implements
         }
         
         this.shuffle();
-/*        for (int a=0;a<this.getSize();a++) {
+        /* for (int a=0;a<this.getSize();a++) {
             System.out.println(this.get(a).getClass());
         } */
     }
