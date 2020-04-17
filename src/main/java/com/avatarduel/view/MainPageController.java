@@ -11,6 +11,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
+import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -34,10 +35,12 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable, Publisher, Subscriber,
-        ChangePhaseEvent.ChangePhaseEventHandler {
+        ChangePhaseEvent.ChangePhaseEventHandler,
+        DisplayCardEvent.DisplayCardEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
+    private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
 
     @FXML
     private Pane cardPane;
@@ -89,6 +92,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private Player player1;
     private Player player2;
     private Card display;
+    private Card display2;
     private int turn;
     private Phase phase;
 
@@ -130,10 +134,19 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         player2.getDeck().shuffle();
 
 
-        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/CardDisplay.fxml"));
+        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
         cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
         try {
             this.cardPane.getChildren().add(cardLoader.load());
+        } catch (Exception e) {
+            System.out.println("Error = " + e);
+        }
+        cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+        CardDisplay coba = new CardDisplay(this.channel, display2);
+        coba.showCard();
+        cardLoader.setControllerFactory(c -> coba);
+        try {
+            this.hand1HBox.getChildren().add(cardLoader.load());
         } catch (Exception e) {
             System.out.println("Error = " + e);
         }
@@ -145,14 +158,16 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         // % Gameplay Channel
         this.channel = channel;
         this.channel.addSubscriber("CHANGE_PHASE", this);
+        this.channel.addSubscriber("DISPLAY_CARD", this);
 
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
-//        Aura card = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
+        Aura card2 = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
         this.display = card;
+        this.display2 = card2;
         this.phase = Phase.GAME_INIT;
         this.turn = 1;
     }
@@ -180,13 +195,28 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
 
     public void onChangePhase(ChangePhaseEvent e) {
-        this.phase = e.phase;
+        setPhase(e.phase);
+    }
+
+    public void onDisplayCard(DisplayCardEvent event) {
+        this.cardPane.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+        loader.setControllerFactory(c -> event.card);
+        try {
+            this.cardPane.getChildren().add(loader.load());
+        } catch (Exception e) {
+            System.out.println("Failed to load card to cardPane!");
+            System.out.println("Error = " + e);
+        }
+
     }
 
     @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
+        } else if (event instanceof DisplayCardEvent) {
+            this.onDisplayCard((DisplayCardEvent) event);
         }
     }
 }

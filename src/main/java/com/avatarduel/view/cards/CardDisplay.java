@@ -2,7 +2,11 @@ package com.avatarduel.view.cards;
 
 
 import com.avatarduel.AvatarDuel;
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,7 +38,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class CardDisplay implements Initializable {
+public class CardDisplay implements Initializable, Publisher, Subscriber {
     @FXML
     public Pane box;
     @FXML
@@ -75,7 +79,6 @@ public class CardDisplay implements Initializable {
         this.card_element.setImage(img_el);
         this.card_desc.setText(card.getDesc());
 
-        System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
         if (card instanceof Character) {
             this.bg = new Image("com/avatarduel/asset/card-character.png");
             String atr = "ATK/" + Integer.toString(((Character)this.card).getAttack()) +
@@ -113,15 +116,32 @@ public class CardDisplay implements Initializable {
                 backgroundSize);
         Background background = new Background(backgroundImage);
         box.setBackground(background);
+        box.setOnMouseMoved(e -> {if (this.show) doDisplayCard();});
     }
 
     public CardDisplay(GameplayChannel gameplayChannel, Card C) {
         this.channel = gameplayChannel;
         this.card = C;
+        this.show = false;
 //        Button btn = new Button("Click me!");
 //        this.box.getChildren().add(btn);
     }
 
+    public void showCard() {this.show = true;}
+    public void hideCard() {this.show = false;}
+    public void changeShowProperty() {this.show = !this.show;}
+
+    public void doDisplayCard() {
+        publish("DISPLAY_CARD", new DisplayCardEvent(this));
+    }
+
+    @Override
+    public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
+
+    @Override
+    public void onEvent(BaseEvent event) {
+
+    }
 
     public void initCard() {
 
