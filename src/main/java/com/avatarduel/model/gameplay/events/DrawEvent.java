@@ -12,7 +12,7 @@ import com.avatarduel.model.cards.card.Card;
 // target: Hand
 public class DrawEvent implements BaseEvent {
     public Card c;
-    public String h;
+    public String h; // activePlayer
 
     public DrawEvent(Card c, String h){
         this.c = c;
