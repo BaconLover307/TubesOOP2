@@ -6,6 +6,8 @@ import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class MainPageController implements Initializable {
+public class MainPageController implements Initializable, Publisher, Subscriber {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -152,18 +154,11 @@ public class MainPageController implements Initializable {
 //        this.display = card;
         this.phase = Phase.GAME_INIT;
         this.turn = 1;
-
-
-
-
-
-
-//        this.player1 = new Player()
-
-
-//        //stage.setFullScreen(true);,pane);
     }
 
     public void setPhase(Phase p) {this.phase = p;}
+
+
+
 
 }
