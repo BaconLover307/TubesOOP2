@@ -1,5 +1,6 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
@@ -98,8 +99,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile);
-            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile);
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, 60);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, 60);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);
@@ -141,13 +142,17 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
+        // % Gameplay Channel
         this.channel = channel;
+        this.channel.addSubscriber("CHANGE_PHASE", this);
+
+
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
-//        Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
+        Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
 //        Aura card = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
-//        this.display = card;
+        this.display = card;
         this.phase = Phase.GAME_INIT;
         this.turn = 1;
     }
@@ -165,7 +170,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     public void doChangePhase() {
         Phase p = this.getNextPhase();
+        ChangePhaseEvent e = new ChangePhaseEvent(p);
         this.publish("CHANGE_PHASE", new ChangePhaseEvent(p));
+        e.execute();
     }
 
 
@@ -178,6 +185,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onEvent(BaseEvent event) {
-
+        if (event instanceof ChangePhaseEvent) {
+            this.onChangePhase((ChangePhaseEvent) event);
+        }
     }
 }

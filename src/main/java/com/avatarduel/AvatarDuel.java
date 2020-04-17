@@ -54,16 +54,6 @@ public class AvatarDuel extends Application {
 
   @Override
   public void start(Stage stage) {
-    try {
-      Deck d = new Deck(gameplay,"Hengky");
-      File fileChar = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
-      File fileAura = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-      File fileLand = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
-      d.loadDeck(fileChar, fileAura, fileLand);
-      System.out.println("berhasil");
-    } catch (Exception e) {
-      System.out.println("gagal");
-    }
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();

@@ -16,6 +16,7 @@ import com.avatarduel.util.CSVReader;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import com.avatarduel.util.CSVReader;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.net.URISyntaxException;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Card;
+import java.lang.Math;
 
 public class Deck extends CardCollection implements
     Publisher,
@@ -34,7 +36,8 @@ public class Deck extends CardCollection implements
     }
 
 	public void shuffle(){
-        Random r = new Random();
+        Collections.shuffle(this); // shuffle deck each turn before draw
+    /*    Random r = new Random();
         int randomNumber;
         Card cardTemp;
 
@@ -54,32 +57,48 @@ public class Deck extends CardCollection implements
                 stackTemp.remove(cardTemp);
                 this.add(cardTemp);
             }
-        }
+        } */
     }
 
     // * Untuk meload kartu" ke deck
-    public void loadDeck(File fileChar, File fileAura, File fileLand) throws IOException, URISyntaxException {
+    public void loadDeck(File fileChar, File fileAura, File fileLand, int amount) throws IOException, URISyntaxException {
 
         CSVReader charReader = new CSVReader(fileChar, "\t");
         charReader.setSkipHeader(true);
         List<String[]> charRows = charReader.read();
-        for (String[] row : charRows) {
-          this.addCharFromArr(row);
-        } 
 
         CSVReader auraReader = new CSVReader(fileAura, "\t");
         auraReader.setSkipHeader(true);
         List<String[]> auraRows = auraReader.read();
-        for (String[] row : auraRows) {
-          this.addAuraFromArr(row);
-        }
 
         CSVReader landReader = new CSVReader(fileLand, "\t");
         landReader.setSkipHeader(true);
         List<String[]> landRows = landReader.read();
-        for (String[] row : landRows) {
-          this.addLandFromArr(row); 
+
+        Collections.shuffle(charRows);
+        int amountCharLand = (int) Math.floor(2*(amount/5));
+        for (int i=0; i<amountCharLand; i++)
+        {
+            this.addCharFromArr(charRows.get(i % charRows.size()));
         }
+
+        Collections.shuffle(landRows);
+        for (int j=0; j<amountCharLand; j++)
+        {
+            this.addLandFromArr(landRows.get(j % landRows.size()));
+        }  
+
+        Collections.shuffle(auraRows);
+        int amountSkill = amount - 2*amountCharLand;
+        for (int k=0; k<amountSkill; k++)
+        {
+            this.addAuraFromArr(auraRows.get(k % auraRows.size()));
+        }
+        
+        this.shuffle();
+/*        for (int a=0;a<this.getSize();a++) {
+            System.out.println(this.get(a).getClass());
+        } */
     }
 
 	public void addCard(Card C){
