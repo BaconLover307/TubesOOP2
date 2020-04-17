@@ -12,6 +12,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.gameplay.events.DisplayCardEvent;
+import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -36,7 +37,8 @@ import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
-        DisplayCardEvent.DisplayCardEventHandler {
+        DisplayCardEvent.DisplayCardEventHandler,
+        DrawEvent.DrawEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -115,20 +117,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
-        this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
-        this.hand1HBox = this.hand1Dis.getHandBox();
-//        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
-//        this.hand2HBox = this.hand2Dis.getHandBox();
-        for (int i = 0; i<7; i++) {
-            this.player1.getDeck().doDraw();
-//            this.player2.getDeck().doDraw();
-        }
-        this.hand1HBox = this.hand1Dis.getHandBox();
-//        this.hand2HBox = this.hand2Dis.getHandBox();
-        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
-        System.out.println("SIZE HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHand().getSize());
-        System.out.println("JUMLAH CHILD HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHandBox().getChildren().size());
-        System.out.println("JUMLAH CHILD HAND P1 DI hand1Hbox= " + this.hand1HBox.getChildren().size());
+//        this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
+//        this.hand1HBox = this.hand1Dis.getHandBox();
+////        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
+////        this.hand2HBox = this.hand2Dis.getHandBox();
+//        for (int i = 0; i<7; i++) {
+//            this.player1.getDeck().doDraw();
+////            this.player2.getDeck().doDraw();
+//        }
+//        this.hand1HBox = this.hand1Dis.getHandBox();
+////        this.hand2HBox = this.hand2Dis.getHandBox();
+//        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
+//        System.out.println("SIZE HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHand().getSize());
+//        System.out.println("JUMLAH CHILD HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHandBox().getChildren().size());
+//        System.out.println("JUMLAH CHILD HAND P1 DI hand1Hbox= " + this.hand1HBox.getChildren().size());
 
 
         // ! TESTING PURPOSES
@@ -139,12 +141,17 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         } catch (Exception e) {
             System.out.println("Error = " + e);
         }
-        cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-        CardDisplay coba = new CardDisplay(this.channel, display2);
-        coba.showCard();
-        cardLoader.setControllerFactory(c -> coba);
+        FXMLLoader cardLoader1 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+        CardDisplay coba1 = new CardDisplay(this.channel, display, 80, 112);
+        FXMLLoader cardLoader2 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+        CardDisplay coba2 = new CardDisplay(this.channel, display2, 80, 112);
+        coba1.showCard();
+        coba2.showCard();
+        cardLoader1.setControllerFactory(c -> coba1);
+        cardLoader2.setControllerFactory(c -> coba2);
         try {
-            this.hand1HBox.getChildren().add(cardLoader.load());
+            this.hand1HBox.getChildren().add(cardLoader1.load());
+            this.hand1HBox.getChildren().add(cardLoader2.load());
         } catch (Exception e) {
             System.out.println("Error = " + e);
         }
@@ -157,6 +164,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel = channel;
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
+        this.channel.addSubscriber("DRAW_EVENT", this);
 
 
         this.cardAmount = cardAmount;
@@ -199,14 +207,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void onDisplayCard(DisplayCardEvent event) {
         this.cardPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-        loader.setControllerFactory(c -> event.card);
+        loader.setControllerFactory(c -> new CardDisplay(this.channel, event.card.getCard(), 400, 560));
         try {
             this.cardPane.getChildren().add(loader.load());
         } catch (Exception e) {
             System.out.println("Failed to load card to cardPane!");
             System.out.println("Error = " + e);
         }
+    }
 
+    public void onDrawEvent(DrawEvent event) {
+//        if (event.h == this.player1.getName()) {
+//            this.hand1Dis.addCard(event.c);
+////            this.hand1HBox
+//        }
     }
 
     @Override
@@ -215,6 +229,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onChangePhase((ChangePhaseEvent) event);
         } else if (event instanceof DisplayCardEvent) {
             this.onDisplayCard((DisplayCardEvent) event);
+        } else if (event instanceof DrawEvent) {
+            this.onDrawEvent((DrawEvent) event);
         }
     }
 }

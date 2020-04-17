@@ -61,17 +61,21 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         try {
             FXMLLoader loader = new FXMLLoader(MainPageController.class.getResource("../fxml/CardDisplay.fxml"));
 //            CardDisplay cD = ;
-            loader.setControllerFactory(c -> new CardDisplay(this.channel, card));
+            loader.setControllerFactory(c -> new CardDisplay(this.channel, card, 80, 112));
             System.out.println("PASS1");
             System.out.println(card.getName());
+            System.out.println(card.getClass());
 //            System.out.println(cD.card_name.getText());
             System.out.println("PASS2");
 //            cD.box.setPrefHeight(112.0);
 //            cD.box.setPrefWidth(80.0);
             this.handBox.getChildren().add(loader.load());
+            System.out.println(this.handBox.getChildren().get(0));
+            System.out.println(this.handBox.getChildren().size());
         } catch (Exception e) {
             System.out.println("Hand failed to add card!");
             System.out.println("Error = " + e);
+            e.printStackTrace();
         }
     }
 

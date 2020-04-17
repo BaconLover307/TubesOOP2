@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="box" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.cards.CardDisplay">
    <children>
-      <ImageView fx:id="card_image" fitHeight="240.0" fitWidth="300.0" layoutX="50.0" layoutY="122.0" pickOnBounds="true" />
-      <ImageView fx:id="card_element" fitHeight="46.0" fitWidth="46.0" layoutX="329.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card_bg" fitHeight="560.0" fitWidth="400.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" />
+      <ImageView fx:id="card_image" fitHeight="240.0" fitWidth="300.0" pickOnBounds="true" x="50.0" y="122.0" />
+      <ImageView fx:id="card_element" fitHeight="46.0" fitWidth="46.0" x="329.0" y="25.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="card_name" layoutX="30.0" layoutY="23.0" prefHeight="48.0" prefWidth="280.0" stylesheets="@../css/cardStyle.css" text="">
          <font>
-            <Font name="Herculanum" size="36.0" />
+            <Font name="SERIF" size="36.0" />
          </font>
       </Label>
       <Label fx:id="card_desc" alignment="TOP_LEFT" layoutX="30.0" layoutY="394.0" prefHeight="110.0" prefWidth="340.0" stylesheets="@../css/cardStyle.css" text="" textAlignment="JUSTIFY" textOverrun="CLIP" wrapText="true">
