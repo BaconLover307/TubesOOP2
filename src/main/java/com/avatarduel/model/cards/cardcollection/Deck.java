@@ -91,7 +91,9 @@ public class Deck extends CardCollection implements
         for (int k=0; k<amountSkill; k++)
         {
             this.addAuraFromArr(auraRows.get(k));
-        } 
+        }
+        
+        this.shuffle();
         //System.out.println(this.size());
     }
 
