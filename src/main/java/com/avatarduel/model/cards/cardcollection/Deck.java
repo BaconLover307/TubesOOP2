@@ -57,15 +57,10 @@ public class Deck extends CardCollection implements
     public void loadDeck(File file) {
         CSVReader reader = new CSVReader(file, ",");
         reader.setSkipHeader(true);
-
-
     }
 
-	public void addCard(Card C, int num){
-        /* Adds several instances of C to collection */
-        for (int i = 0; i < num; i++){
-            this.add(C);
-        }
+	public void addCard(Card C){
+        this.add(C);
     }
 
     public void addLandFromArr(String[] arr) {
@@ -126,7 +121,7 @@ public class Deck extends CardCollection implements
 
     @Override
     public void onCardClicked(CardClickedEvent e) {
-        if(this.channel.activePlayer == this.player && this.channel.phase.equals("DRAW_PHASE")){
+        if(this.channel.activePlayer.equals(this.player) && this.channel.phase.equals("DRAW_PHASE")){
             this.doDraw();
             this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
             this.channel.phase = "MAIN_PHASE";
