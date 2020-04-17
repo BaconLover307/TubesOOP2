@@ -83,7 +83,7 @@ public class Deck extends CardCollection implements
         Collections.shuffle(landRows);
         for (int j=0; j<amountCharLand; j++)
         {
-            this.addAuraFromArr(auraRows.get(j));
+            this.addLandFromArr(landRows.get(j));
         }  
 
         Collections.shuffle(auraRows);
@@ -94,7 +94,9 @@ public class Deck extends CardCollection implements
         }
         
         this.shuffle();
-        //System.out.println(this.size());
+/*        for (int a=0;a<this.getSize();a++) {
+            System.out.println(this.get(a).getClass());
+        } */
     }
 
 	public void addCard(Card C){
