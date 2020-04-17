@@ -8,6 +8,7 @@ import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
+import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
@@ -20,6 +21,7 @@ import com.avatarduel.util.CSVReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import com.avatarduel.model.Element;
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Card;
 
 public class Deck extends CardCollection implements
@@ -85,39 +87,15 @@ public class Deck extends CardCollection implements
     }
 
     public void addLandFromArr(String[] arr) {
-        Element elm;
-        switch (arr[2]) {
-            case "AIR": elm = Element.AIR; 
-            case "FIRE": elm = Element.FIRE; 
-            case "EARTH": elm = Element.EARTH; 
-            case "WATER": elm = Element.WATER; 
-            default: elm = Element.ENERGY; 
-        }
-        addCard(new Land(arr[1], elm, arr[3], arr[4]));
+        addCard(new Land(arr[1], Element.valueOf(arr[2]), arr[3], arr[4]));
     }
 
     public void addCharFromArr(String[] arr) {
-        Element elm;
-        switch (arr[2]) {
-            case "AIR": elm = Element.AIR; 
-            case "FIRE": elm = Element.FIRE; 
-            case "EARTH": elm = Element.EARTH; 
-            case "WATER": elm = Element.WATER; 
-            default: elm = Element.ENERGY; 
-        }
-        addCard(new Character(arr[1], elm, arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
+        addCard(new Character(arr[1], Element.valueOf(arr[2]), arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
     }
     
     public void addAuraFromArr(String[] arr) {
-        Element elm;
-        switch (arr[2]) {
-            case "AIR": elm = Element.AIR; 
-            case "FIRE": elm = Element.FIRE; 
-            case "EARTH": elm = Element.EARTH; 
-            case "WATER": elm = Element.WATER; 
-            default: elm = Element.ENERGY; 
-        }
-        addCard(new Aura(arr[1], elm, arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
+        addCard(new Aura(arr[1], Element.valueOf(arr[2]), arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
     }
 
     public void doDraw(){
@@ -145,7 +123,7 @@ public class Deck extends CardCollection implements
         if(this.channel.activePlayer.equals(this.player) && this.channel.phase.equals("DRAW_PHASE")){
             this.doDraw();
             this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
-            this.channel.phase = "MAIN_PHASE";
+            this.publish("CHANGE_PHASE", new ChangePhaseEvent(Phase.MAIN_PHASE));
         }
 
     }

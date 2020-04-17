@@ -82,6 +82,6 @@
             <Font name="Arial" size="42.0" />
          </font>
       </Label>
-      <Button fx:id="btnNext" layoutX="556.0" layoutY="752.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="Change Phase" />
+      <Button fx:id="btnNext" layoutX="556.0" layoutY="752.0" mnemonicParsing="false" onAction="#doChangePhase" prefHeight="69.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="Change Phase" />
    </children>
 </AnchorPane>

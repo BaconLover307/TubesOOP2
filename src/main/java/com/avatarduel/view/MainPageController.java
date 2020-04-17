@@ -5,9 +5,11 @@ import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -30,7 +32,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class MainPageController implements Initializable, Publisher, Subscriber {
+public class MainPageController implements Initializable, Publisher, Subscriber,
+        ChangePhaseEvent.ChangePhaseEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -95,15 +98,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber 
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-            CSVReader readerChar = new CSVReader(charCSVFile, "\t");
-            readerChar.setSkipHeader(true);
-            charCardList = readerChar.read();
-            CSVReader readerLand = new CSVReader(landCSVFile, "\t");
-            readerLand.setSkipHeader(true);
-            landCardList = readerLand.read();
-            CSVReader readerAura = new CSVReader(auraCSVFile, "\t");
-            readerAura.setSkipHeader(true);
-            auraCardList = readerAura.read();
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);
@@ -112,23 +108,23 @@ public class MainPageController implements Initializable, Publisher, Subscriber 
 
         // ! Temporary Deck Loader
         Random objGen = new Random();
-        for (int i=0; i<30; i++) {
-            int rand = objGen.nextInt(charCardList.size());
-            this.player1.getDeck().addCharFromArr(charCardList.get(rand));
-            rand = objGen.nextInt(charCardList.size());
-            this.player2.getDeck().addCharFromArr(charCardList.get(rand));
-        }
-
-        for (int i=0; i<15; i++) {
-            int rand = objGen.nextInt(landCardList.size());
-            this.player1.getDeck().addLandFromArr(landCardList.get(rand));
-            rand = objGen.nextInt(auraCardList.size());
-            this.player1.getDeck().addAuraFromArr(auraCardList.get(rand));
-            rand = objGen.nextInt(landCardList.size());
-            this.player2.getDeck().addLandFromArr(charCardList.get(rand));
-            rand = objGen.nextInt(auraCardList.size());
-            this.player2.getDeck().addAuraFromArr(auraCardList.get(rand));
-        }
+//        for (int i=0; i<30; i++) {
+//            int rand = objGen.nextInt(charCardList.size());
+//            this.player1.getDeck().addCharFromArr(charCardList.get(rand));
+//            rand = objGen.nextInt(charCardList.size());
+//            this.player2.getDeck().addCharFromArr(charCardList.get(rand));
+//        }
+//
+//        for (int i=0; i<15; i++) {
+//            int rand = objGen.nextInt(landCardList.size());
+//            this.player1.getDeck().addLandFromArr(landCardList.get(rand));
+//            rand = objGen.nextInt(auraCardList.size());
+//            this.player1.getDeck().addAuraFromArr(auraCardList.get(rand));
+//            rand = objGen.nextInt(landCardList.size());
+//            this.player2.getDeck().addLandFromArr(charCardList.get(rand));
+//            rand = objGen.nextInt(auraCardList.size());
+//            this.player2.getDeck().addAuraFromArr(auraCardList.get(rand));
+//        }
         player1.getDeck().shuffle();
         player2.getDeck().shuffle();
 
@@ -158,7 +154,30 @@ public class MainPageController implements Initializable, Publisher, Subscriber 
 
     public void setPhase(Phase p) {this.phase = p;}
 
+    public Phase getNextPhase() {
+        int idx = this.phase.ordinal();
+        int nextIdx = idx + 1;
+        Phase[] phases = Phase.values();
+        nextIdx %= phases.length;
+        if (nextIdx == 0) nextIdx++;
+        return phases[nextIdx];
+    }
+
+    public void doChangePhase() {
+        Phase p = this.getNextPhase();
+        this.publish("CHANGE_PHASE", new ChangePhaseEvent(p));
+    }
 
 
+    @Override
+    public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
 
+    public void onChangePhase(ChangePhaseEvent e) {
+        this.phase = e.phase;
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+
+    }
 }
