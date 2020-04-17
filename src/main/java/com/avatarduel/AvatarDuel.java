@@ -59,10 +59,10 @@ public class AvatarDuel extends Application {
       File fileChar = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
       File fileAura = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
       File fileLand = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
-      d.loadDeck(fileChar, fileAura, fileLand);
+      d.loadDeck(fileChar, fileAura, fileLand, 43);
       System.out.println("berhasil");
     } catch (Exception e) {
-      System.out.println("gagal");
+      System.out.println("gagal" + e);
     }
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");

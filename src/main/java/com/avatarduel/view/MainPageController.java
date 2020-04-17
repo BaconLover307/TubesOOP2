@@ -1,5 +1,6 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
@@ -158,7 +159,15 @@ public class MainPageController implements Initializable, Publisher, Subscriber 
 
     public void setPhase(Phase p) {this.phase = p;}
 
+    @Override
+    public void onEvent(BaseEvent e) {
 
+    }
+
+    @Override
+    public void publish(String topic, BaseEvent Event) {
+
+    }
 
 
 }
