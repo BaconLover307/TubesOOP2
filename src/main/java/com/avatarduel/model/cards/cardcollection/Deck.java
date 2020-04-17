@@ -34,7 +34,7 @@ public class Deck extends CardCollection implements
     }
 
 	public void shuffle(){
-        Collections.shuffle(this , new Random()); // shuffle deck each turn before draw
+        Collections.shuffle(this); // shuffle deck each turn before draw
     /*    Random r = new Random();
         int randomNumber;
         Card cardTemp;
@@ -73,26 +73,26 @@ public class Deck extends CardCollection implements
         landReader.setSkipHeader(true);
         List<String[]> landRows = landReader.read();
 
-        Collections.shuffle(charRows, new Random());
+        Collections.shuffle(charRows);
         int amountCharLand = (int) Math.floor(2*(amount/5));
         for (int i=0; i<amountCharLand; i++)
         {
             this.addCharFromArr(charRows.get(i));
         }
 
-        Collections.shuffle(landRows, new Random());
+        Collections.shuffle(landRows);
         for (int j=0; j<amountCharLand; j++)
         {
             this.addAuraFromArr(auraRows.get(j));
         }  
 
-        Collections.shuffle(auraRows, new Random());
+        Collections.shuffle(auraRows);
         int amountSkill = amount - 2*amountCharLand;
         for (int k=0; k<amountSkill; k++)
         {
             this.addAuraFromArr(auraRows.get(k));
         } 
-        System.out.println(this.size());
+        //System.out.println(this.size());
     }
 
 	public void addCard(Card C){
