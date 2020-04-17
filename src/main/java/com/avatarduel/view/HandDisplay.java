@@ -8,6 +8,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DrawEvent;
+import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -39,9 +40,14 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         this.showHand = false;
         this.channel = gameplayChannel;
         this.channel.addSubscriber("DRAW_EVENT", this);
+
+        this.hand = hand;
         this.handBox = new HBox(10);
-        handBox.setAlignment(Pos.CENTER);
+        handBox.setAlignment(Pos.TOP_CENTER);
     }
+
+    public HBox getHandBox() {return handBox;}
+    public Hand getHand() {return hand;}
 
     // To flip cards
     public void flipOpen() {
@@ -51,15 +57,26 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         this.showHand = false;
     }
 
-    public void addCard(Card c) {
-        FXMLLoader loader = new FXMLLoader(MainPageController.class.getResource("/../"));
-
-
-
+    public void addCard(Card card) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainPageController.class.getResource("../fxml/CardDisplay.fxml"));
+//            CardDisplay cD = ;
+            loader.setControllerFactory(c -> new CardDisplay(this.channel, card));
+            System.out.println("PASS1");
+            System.out.println(card.getName());
+//            System.out.println(cD.card_name.getText());
+            System.out.println("PASS2");
+//            cD.box.setPrefHeight(112.0);
+//            cD.box.setPrefWidth(80.0);
+            this.handBox.getChildren().add(loader.load());
+        } catch (Exception e) {
+            System.out.println("Hand failed to add card!");
+            System.out.println("Error = " + e);
+        }
     }
 
     public void onDrawEvent(DrawEvent event) {
-
+        this.addCard(event.c);
     }
 
     @Override
@@ -67,6 +84,8 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
 
     @Override
     public void onEvent(BaseEvent event) {
-
+        if (event instanceof DrawEvent) {
+            onDrawEvent((DrawEvent) event);
+        }
     }
 }

@@ -56,10 +56,14 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public Label health2;
     @FXML
     public Label deck2;
+
+    private HandDisplay hand1Dis;
     @FXML
     public ScrollPane hand1Pane;
     @FXML
     public HBox hand1HBox;
+
+    private HandDisplay hand2Dis;
     @FXML
     public ScrollPane hand2Pane;
     @FXML
@@ -111,29 +115,23 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
-        // ! Temporary Deck Loader
-        Random objGen = new Random();
-//        for (int i=0; i<30; i++) {
-//            int rand = objGen.nextInt(charCardList.size());
-//            this.player1.getDeck().addCharFromArr(charCardList.get(rand));
-//            rand = objGen.nextInt(charCardList.size());
-//            this.player2.getDeck().addCharFromArr(charCardList.get(rand));
-//        }
-//
-//        for (int i=0; i<15; i++) {
-//            int rand = objGen.nextInt(landCardList.size());
-//            this.player1.getDeck().addLandFromArr(landCardList.get(rand));
-//            rand = objGen.nextInt(auraCardList.size());
-//            this.player1.getDeck().addAuraFromArr(auraCardList.get(rand));
-//            rand = objGen.nextInt(landCardList.size());
-//            this.player2.getDeck().addLandFromArr(charCardList.get(rand));
-//            rand = objGen.nextInt(auraCardList.size());
-//            this.player2.getDeck().addAuraFromArr(auraCardList.get(rand));
-//        }
-        player1.getDeck().shuffle();
-        player2.getDeck().shuffle();
+        this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
+        this.hand1HBox = this.hand1Dis.getHandBox();
+//        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
+//        this.hand2HBox = this.hand2Dis.getHandBox();
+        for (int i = 0; i<7; i++) {
+            this.player1.getDeck().doDraw();
+//            this.player2.getDeck().doDraw();
+        }
+        this.hand1HBox = this.hand1Dis.getHandBox();
+//        this.hand2HBox = this.hand2Dis.getHandBox();
+        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
+        System.out.println("SIZE HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHand().getSize());
+        System.out.println("JUMLAH CHILD HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHandBox().getChildren().size());
+        System.out.println("JUMLAH CHILD HAND P1 DI hand1Hbox= " + this.hand1HBox.getChildren().size());
 
 
+        // ! TESTING PURPOSES
         FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
         cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
         try {

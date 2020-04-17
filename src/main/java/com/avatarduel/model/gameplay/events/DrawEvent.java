@@ -25,6 +25,6 @@ public class DrawEvent implements BaseEvent {
     }
     
     public void execute(){
-
+        System.out.println("Card Drawn!");
     }
 }
