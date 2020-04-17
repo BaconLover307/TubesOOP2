@@ -8,10 +8,16 @@ import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
+import com.avatarduel.model.cards.card.Land;
+import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.Aura;
+import com.avatarduel.util.CSVReader;
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Card;
 
 public class Deck extends CardCollection implements
@@ -47,6 +53,14 @@ public class Deck extends CardCollection implements
         }
     }
 
+    // * Untuk meload kartu" ke deck
+    public void loadDeck(File file) {
+        CSVReader reader = new CSVReader(file, ",");
+        reader.setSkipHeader(true);
+
+
+    }
+
 	public void addCard(Card C, int num){
         /* Adds several instances of C to collection */
         for (int i = 0; i < num; i++){
@@ -54,7 +68,43 @@ public class Deck extends CardCollection implements
         }
     }
 
-	public void doDraw(){
+    public void addLandFromArr(String[] arr) {
+        Element elm;
+        switch (arr[2]) {
+            case "AIR": elm = Element.AIR; 
+            case "FIRE": elm = Element.FIRE; 
+            case "EARTH": elm = Element.EARTH; 
+            case "WATER": elm = Element.WATER; 
+            default: elm = Element.ENERGY; 
+        }
+        addCard(new Land(arr[1], elm, arr[3], arr[4]));
+    }
+
+    public void addCharFromArr(String[] arr) {
+        Element elm;
+        switch (arr[2]) {
+            case "AIR": elm = Element.AIR; 
+            case "FIRE": elm = Element.FIRE; 
+            case "EARTH": elm = Element.EARTH; 
+            case "WATER": elm = Element.WATER; 
+            default: elm = Element.ENERGY; 
+        }
+        addCard(new Character(arr[1], elm, arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
+    }
+    
+    public void addAuraFromArr(String[] arr) {
+        Element elm;
+        switch (arr[2]) {
+            case "AIR": elm = Element.AIR; 
+            case "FIRE": elm = Element.FIRE; 
+            case "EARTH": elm = Element.EARTH; 
+            case "WATER": elm = Element.WATER; 
+            default: elm = Element.ENERGY; 
+        }
+        addCard(new Aura(arr[1], elm, arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
+    }
+
+    public void doDraw(){
         if(this.isEmpty()){
             this.publish("GAMESTATE", new EndGameEvent(this.getPlayer()));
         } else {

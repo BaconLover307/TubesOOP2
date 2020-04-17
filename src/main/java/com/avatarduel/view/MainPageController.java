@@ -1,6 +1,7 @@
 package com.avatarduel.view;
 
 import com.avatarduel.model.Element;
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
@@ -9,6 +10,7 @@ import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
+import com.avatarduel.util.CSVReader;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,7 +22,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
 
 import javax.naming.Name;
+import java.io.File;
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable {
@@ -32,9 +37,13 @@ public class MainPageController implements Initializable {
     @FXML
     public Label health1;
     @FXML
+    public Label deck1;
+    @FXML
     public Label name2;
     @FXML
     public Label health2;
+    @FXML
+    public Label deck2;
     @FXML
     public ScrollPane hand1Pane;
     @FXML
@@ -64,19 +73,67 @@ public class MainPageController implements Initializable {
 
     private GameplayChannel channel;
     private int cardAmount;
+    private List<String[]> charCardList;
+    private List<String[]> landCardList;
+    private List<String[]> auraCardList;
 
     private Player player1;
     private Player player2;
     private Card display;
+    private int turn;
+    private Phase phase;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // * Loads the CSV
+        try {
+            File charFile = new File(getClass().getResource("/../com/avatarduel/card/data/character.csv").toURI().toString());
+            File landFile = new File("/com/avatarduel/card/data/land.csv");
+            File auraFile = new File("/com/avatarduel/card/data/skill_aura.csv");
+            CSVReader readerChar = new CSVReader(charFile, ",");
+            charCardList = readerChar.read();
+            for (String[] s: charCardList) {
+                System.out.println(s);
+            }
+            CSVReader readerLand = new CSVReader(landFile, ",");
+            landCardList = readerLand.read();
+            CSVReader readerAura = new CSVReader(auraFile, ",");
+            auraCardList = readerAura.read();
+        } catch (Exception e) {
+            System.out.println("Failed to load CSV Files!");
+            System.out.println("Error = " + e);
+            e.printStackTrace();
+        }
+
+        // ! Temporary Loader
+        Random objGen = new Random();
+        for (int i=0; i<30; i++) {
+            int rand = objGen.nextInt(charCardList.size());
+            this.player1.getDeck().addCharFromArr(charCardList.get(rand));
+            rand = objGen.nextInt(charCardList.size());
+            this.player2.getDeck().addCharFromArr(charCardList.get(rand));
+        }
+
+        for (int i=0; i<15; i++) {
+            int rand = objGen.nextInt(landCardList.size());
+            this.player1.getDeck().addLandFromArr(landCardList.get(rand));
+            rand = objGen.nextInt(auraCardList.size());
+            this.player1.getDeck().addAuraFromArr(auraCardList.get(rand));
+            rand = objGen.nextInt(landCardList.size());
+            this.player2.getDeck().addLandFromArr(charCardList.get(rand));
+            rand = objGen.nextInt(auraCardList.size());
+            this.player2.getDeck().addAuraFromArr(auraCardList.get(rand));
+        }
+        player1.getDeck().shuffle();
+        player2.getDeck().shuffle();
+
+
         FXMLLoader cardLoader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/CardDisplay.fxml"));
         cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
         try {
             this.cardPane.getChildren().add(cardLoader.load());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error = " + e);
         }
 //        this.name1.setText("abcdefghijkl");
 
@@ -87,9 +144,11 @@ public class MainPageController implements Initializable {
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
-        Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
+//        Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
 //        Aura card = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
-        this.display = card;
+//        this.display = card;
+        this.phase = Phase.GAME_INIT;
+        this.turn = 1;
 
 
 
@@ -99,19 +158,9 @@ public class MainPageController implements Initializable {
 //        this.player1 = new Player()
 
 
-//        //stage.setFullScreen(true);
-//        Player p1 = new Player("Hojun", 80, channel);
-//        Character card = new Character("Aang", Element.AIR,"Aang is the last surviving Airbender, a monk of the Air Nomads' Southern Air Temple. He is an incarnation of the \"Avatar\", the spirit of light and peace manifested in human form.","com/avatarduel/card/image/character/Aang.png",100,100,100);
-//        SummonedCharacter cardS = new SummonedCharacter(card, false, new Player("hengky",80, channel), channel);
-//        try {
-//
-//        }
-//        CardDisplay DCard = new CharDisplay(cardS.getCharCard(), cardPane, cardDisW, cardDisH, cardDisPosX, cardDisPosY);
-//
-//        Power powlist = new Power(gameplay,"hengky");
-//        PowerDisplay P = new PowerDisplay(powlist,pane);
-
-
+//        //stage.setFullScreen(true);,pane);
     }
+
+    public void setPhase(Phase p) {this.phase = p;}
 
 }

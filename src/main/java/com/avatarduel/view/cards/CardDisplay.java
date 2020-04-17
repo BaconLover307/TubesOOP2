@@ -105,7 +105,7 @@ public class CardDisplay implements Initializable {
             }
             this.card_attribute.setText(atr);
         }
-        BackgroundSize backgroundSize = new BackgroundSize(400, 560, false, false, false, false);
+        BackgroundSize backgroundSize = new BackgroundSize(box.getPrefWidth(), box.getPrefHeight(), false, false, false, false);
         BackgroundImage backgroundImage = new BackgroundImage(this.bg,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
@@ -125,29 +125,29 @@ public class CardDisplay implements Initializable {
 
     public void initCard() {
 
-        this.card_image.fitWidthProperty().bind(box.widthProperty().multiply((double)300/400));
-        this.card_image.fitHeightProperty().bind(card_image.fitWidthProperty());
-        this.card_image.relocate(box.getWidth() * ((double)50/400), box.getHeight() * ((double)122/560));
-
-        this.card_element.fitWidthProperty().bind(box.widthProperty().multiply((double)46/400));
-        this.card_element.fitHeightProperty().bind(card_element.fitWidthProperty());
-        this.card_element.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
-
-        this.card_name.prefWidthProperty().bind(box.widthProperty().multiply((double)280/400));
-        this.card_name.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
-        this.card_name.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
-
-        this.card_desc.prefWidthProperty().bind(box.widthProperty().multiply((double)340/400));
-        this.card_desc.prefHeightProperty().bind(box.heightProperty().multiply((double)110/560));
-        this.card_desc.relocate(box.getWidth() * ((double)30/400), box.getHeight() * ((double)394/560));
-
-        this.card_attribute.prefWidthProperty().bind(box.widthProperty().multiply((double)350/400));
-        this.card_attribute.prefHeightProperty().bind(box.heightProperty().multiply((double)34/560));
-        this.card_attribute.relocate(box.getWidth() * ((double)25/400), box.getHeight() * ((double)505/560));
-
-        this.card_skillType.prefWidthProperty().bind(box.widthProperty().multiply((double)82/400));
-        this.card_skillType.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
-        this.card_skillType.relocate(box.getWidth() * ((double)50/400), box.getHeight() * ((double)82/560));
+//        this.card_image.fitWidthProperty().bind(box.widthProperty().multiply((double)300/400));
+//        this.card_image.fitHeightProperty().bind(card_image.fitWidthProperty());
+//        this.card_image.relocate(box.getWidth() * ((double)50/400), box.getHeight() * ((double)122/560));
+//
+//        this.card_element.fitWidthProperty().bind(box.widthProperty().multiply((double)46/400));
+//        this.card_element.fitHeightProperty().bind(card_element.fitWidthProperty());
+//        this.card_element.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
+//
+//        this.card_name.prefWidthProperty().bind(box.widthProperty().multiply((double)280/400));
+//        this.card_name.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
+//        this.card_name.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
+//
+//        this.card_desc.prefWidthProperty().bind(box.widthProperty().multiply((double)340/400));
+//        this.card_desc.prefHeightProperty().bind(box.heightProperty().multiply((double)110/560));
+//        this.card_desc.relocate(box.getWidth() * ((double)30/400), box.getHeight() * ((double)394/560));
+//
+//        this.card_attribute.prefWidthProperty().bind(box.widthProperty().multiply((double)350/400));
+//        this.card_attribute.prefHeightProperty().bind(box.heightProperty().multiply((double)34/560));
+//        this.card_attribute.relocate(box.getWidth() * ((double)25/400), box.getHeight() * ((double)505/560));
+//
+//        this.card_skillType.prefWidthProperty().bind(box.widthProperty().multiply((double)82/400));
+//        this.card_skillType.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
+//        this.card_skillType.relocate(box.getWidth() * ((double)50/400), box.getHeight() * ((double)82/560));
 
 //        box.setVisible(true);
 //        pane.getChildren().add(box);
