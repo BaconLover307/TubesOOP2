@@ -2,7 +2,10 @@ package com.avatarduel;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.util.List;
 
+import com.avatarduel.util.CSVReader;
 import com.avatarduel.view.MainPageController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -28,7 +31,6 @@ import com.avatarduel.view.Settings;
 import com.avatarduel.view.InputPlayer;
 
 public class AvatarDuel extends Application {
-
   private GameplayChannel gameplay;
   Stage window;
   Scene inGame, mainMenu;
@@ -50,6 +52,7 @@ public class AvatarDuel extends Application {
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
+
 
     Button btnStart = new Button("START");
     Button btnSetting = new Button("SETTINGS");

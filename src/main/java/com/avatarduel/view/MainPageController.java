@@ -29,6 +29,9 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable {
+    private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
+    private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
+    private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
 
     @FXML
     private Pane cardPane;
@@ -87,17 +90,17 @@ public class MainPageController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // * Loads the CSV
         try {
-            File charFile = new File(getClass().getResource("/../com/avatarduel/card/data/character.csv").toURI().toString());
-            File landFile = new File("/com/avatarduel/card/data/land.csv");
-            File auraFile = new File("/com/avatarduel/card/data/skill_aura.csv");
-            CSVReader readerChar = new CSVReader(charFile, ",");
+            File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
+            File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
+            File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
+            CSVReader readerChar = new CSVReader(charCSVFile, "\t");
+            readerChar.setSkipHeader(true);
             charCardList = readerChar.read();
-            for (String[] s: charCardList) {
-                System.out.println(s);
-            }
-            CSVReader readerLand = new CSVReader(landFile, ",");
+            CSVReader readerLand = new CSVReader(landCSVFile, "\t");
+            readerLand.setSkipHeader(true);
             landCardList = readerLand.read();
-            CSVReader readerAura = new CSVReader(auraFile, ",");
+            CSVReader readerAura = new CSVReader(auraCSVFile, "\t");
+            readerAura.setSkipHeader(true);
             auraCardList = readerAura.read();
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
@@ -105,7 +108,7 @@ public class MainPageController implements Initializable {
             e.printStackTrace();
         }
 
-        // ! Temporary Loader
+        // ! Temporary Deck Loader
         Random objGen = new Random();
         for (int i=0; i<30; i++) {
             int rand = objGen.nextInt(charCardList.size());
