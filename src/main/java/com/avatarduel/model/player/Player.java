@@ -67,7 +67,7 @@ public class Player implements Publisher, Subscriber,
         if(this.name == e.target){
             this.health -= e.amount;
             if (this.health <= 0){
-                this.publish("GAMESTATE", new EndGameEvent(this.name));
+                this.publish("END_GAME", new EndGameEvent(this.name));
             }
         }
     }
