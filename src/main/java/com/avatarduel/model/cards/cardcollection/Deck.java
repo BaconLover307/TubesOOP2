@@ -13,10 +13,12 @@ import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.util.CSVReader;
 import java.io.File;
-
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-
+import com.avatarduel.util.CSVReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.Card;
 
@@ -54,9 +56,28 @@ public class Deck extends CardCollection implements
     }
 
     // * Untuk meload kartu" ke deck
-    public void loadDeck(File file) {
-        CSVReader reader = new CSVReader(file, ",");
-        reader.setSkipHeader(true);
+    public void loadDeck(File fileChar, File fileAura, File fileLand) throws IOException, URISyntaxException {
+
+        CSVReader charReader = new CSVReader(fileChar, "\t");
+        charReader.setSkipHeader(true);
+        List<String[]> charRows = charReader.read();
+        for (String[] row : charRows) {
+          this.addCharFromArr(row);
+        } 
+
+        CSVReader auraReader = new CSVReader(fileAura, "\t");
+        auraReader.setSkipHeader(true);
+        List<String[]> auraRows = auraReader.read();
+        for (String[] row : auraRows) {
+          this.addAuraFromArr(row);
+        }
+
+        CSVReader landReader = new CSVReader(fileLand, "\t");
+        landReader.setSkipHeader(true);
+        List<String[]> landRows = landReader.read();
+        for (String[] row : landRows) {
+          this.addLandFromArr(row); 
+        }
     }
 
 	public void addCard(Card C){
@@ -101,7 +122,7 @@ public class Deck extends CardCollection implements
 
     public void doDraw(){
         if(this.isEmpty()){
-            this.publish("GAMESTATE", new EndGameEvent(this.getPlayer()));
+            this.publish("END_GAME", new EndGameEvent(this.getPlayer()));
         } else {
             Card C = this.get(this.size() - 1);
             this.remove(C);
@@ -128,4 +149,5 @@ public class Deck extends CardCollection implements
         }
 
     }
+
 }

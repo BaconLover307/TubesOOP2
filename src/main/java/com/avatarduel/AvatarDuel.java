@@ -1,4 +1,5 @@
 package com.avatarduel;
+import com.avatarduel.model.cards.cardcollection.Deck;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.view.Settings;
 import com.avatarduel.view.InputPlayer;
+import com.avatarduel.model.cards.card.Land;
 
 public class AvatarDuel extends Application {
   private GameplayChannel gameplay;
@@ -46,9 +48,22 @@ public class AvatarDuel extends Application {
   private int cardAmount = 60;
   private String playerName1, playerName2;
 
+  private static final String CHAR_CSV_FILE_PATH = "card/data/character.csv";
+  private static final String AURA_CSV_FILE_PATH = "card/data/skill_aura.csv";
+  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
 
   @Override
   public void start(Stage stage) {
+    try {
+      Deck d = new Deck(gameplay,"Hengky");
+      File fileChar = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
+      File fileAura = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
+      File fileLand = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
+      d.loadDeck(fileChar, fileAura, fileLand);
+      System.out.println("berhasil");
+    } catch (Exception e) {
+      System.out.println("gagal");
+    }
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
