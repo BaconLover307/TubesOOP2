@@ -28,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -298,6 +299,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         getPhaseBox().getStylesheets().clear();
         getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         this.cardPane.getChildren().clear();
+        if (e.phase == Phase.DRAW_PHASE) {
+            AlertPlayer alert = new AlertPlayer(channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn");
+            alert.show();
+        }
     }
 
     public void onDisplayCard(DisplayCardEvent event) {

@@ -74,8 +74,6 @@ public class AvatarDuel extends Application {
         InputPlayer inpP2 = new InputPlayer(2);
         inpP2.showInputPlayer();
         playerName2 = inpP2.getName();
-        AlertPlayer alert = new AlertPlayer("Skill board full!", AlertType.WARNING, "WARNING");
-        alert.show();
         if (playerName1.equals(playerName2)) {
           playerName2 = playerName2 + "*";
         }
