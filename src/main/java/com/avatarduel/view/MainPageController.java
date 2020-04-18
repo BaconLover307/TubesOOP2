@@ -34,6 +34,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
 
 import javax.naming.Name;
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -50,6 +51,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
     private static final String CUR_PHASE_STYLE_PATH = "com/avatarduel/css/curPhaseStyle.css";
     private static final String PHASE_STYLE_PATH = "com/avatarduel/css/phaseStyle.css";
+    private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private static final double SCREENH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private static final double CARD_DISPLAY_SIZEW = SCREENW * 400 / 1920;
+    private static final double CARD_DISPLAY_SIZEH = SCREENH * 560 / 1920;
+    private static final double CARD_SIZEW = SCREENW * 80 / 1920;
+    private static final double CARD_SIZEH = SCREENH * 112 / 1920;
 
     @FXML
     public AnchorPane root;
@@ -111,8 +118,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     private GameplayChannel channel;
     private int cardAmount;
-    private double screenW;
-    private double screenH;
     private List<String[]> charCardList;
     private List<String[]> landCardList;
     private List<String[]> auraCardList;
@@ -127,12 +132,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // * Pane Setup
-        DoubleProperty scaleW = new SimpleDoubleProperty(screenW/1920);
-        DoubleProperty scaleH = new SimpleDoubleProperty(screenH/1080);
+        DoubleProperty scaleW = new SimpleDoubleProperty(SCREENW/1920);
+        DoubleProperty scaleH = new SimpleDoubleProperty(SCREENH/1080);
         root.scaleXProperty().bind(scaleW);
         root.scaleYProperty().bind(scaleH);
-        root.setPrefWidth(this.screenW * scaleW.doubleValue());
-        root.setPrefHeight(this.screenH * scaleH.doubleValue());
+        root.setPrefWidth(SCREENW * scaleW.doubleValue());
+        root.setPrefHeight(SCREENH * scaleH.doubleValue());
         root.relocate(0,0);
 
 
@@ -224,10 +229,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     }
 
-    public MainPageController(GameplayChannel channel, double screenW, double screenH, int cardAmount, String P1, String P2) {
+    public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
         // % Gameplay Channel
-        this.screenW = screenW;
-        this.screenH = screenH;
         this.channel = channel;
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);

@@ -122,7 +122,7 @@ public class AvatarDuel extends Application {
   public void MainScreen(Stage stage) throws Exception{
     Pane pane = new Pane();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
-    loader.setControllerFactory(c -> new MainPageController(this.gameplay, screenSize.getWidth(), screenSize.getHeight(), cardAmount, playerName1, playerName2));
+    loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
