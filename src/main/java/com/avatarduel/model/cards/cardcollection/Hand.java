@@ -81,7 +81,7 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
     }
 
     public void doSelectLand(Land L) {
-        this.publish("USE_LAND", new UseLandEvent(L));
+        this.publish("USE_LAND", new UseLandEvent(L, getPlayer()));
         this.usedLand = true;
         // TODO ilangin kartu L dari hand
     }

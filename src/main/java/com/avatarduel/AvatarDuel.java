@@ -124,6 +124,7 @@ public class AvatarDuel extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
     loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
+    main.relocate(0,0);
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
 //    Image image = new Image("com/avatarduel/asset/board.png");

@@ -17,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -24,6 +25,11 @@ import java.util.ResourceBundle;
 import com.avatarduel.model.cards.cardcollection.Hand;
 
 public class HandDisplay implements Initializable, Flippable, Publisher, Subscriber {
+    private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private static final double SCREENH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private static final double CARD_SIZEW = SCREENW * 80 / 1920;
+    private static final double CARD_SIZEH = SCREENH * 112 / 1080;
+
     private Hand hand;
     private GameplayChannel channel;
     private boolean showHand;
@@ -42,7 +48,7 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         this.channel.addSubscriber("DRAW_EVENT", this);
 
         this.hand = hand;
-        this.handBox = new HBox(10);
+        this.handBox = new HBox(CARD_SIZEW * 70 / 80);
         handBox.setAlignment(Pos.TOP_CENTER);
     }
 
@@ -58,7 +64,7 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
     }
 
     public void addCard(Card card) {
-        CardDisplay cD = new CardDisplay(this.channel, card, 80, 112);
+        CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
         cD.showCard();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));

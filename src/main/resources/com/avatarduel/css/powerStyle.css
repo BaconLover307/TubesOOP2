@@ -1,0 +1,10 @@
+@font-face {
+    src: url("../asset/Herculanum.ttf");
+}
+
+.label {
+    -fx-text-fill: #DFD7D1;
+    -fx-font-family: Herculanum;
+    -fx-font-size: 30;
+    -fx-text-alignment: right;
+}

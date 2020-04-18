@@ -1,84 +1,130 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.gameplay.GameplayChannel;
+import com.avatarduel.model.gameplay.Publisher;
+import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.player.ElementPower;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.model.Element;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javafx.scene.Node;
 
-public class PowerDisplay {
+public class PowerDisplay implements Subscriber,
+        UseLandEvent.UseLandEventHandler {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private Pane box, airbox, earthbox, firebox, waterbox, energyBox;
-    private Power P;
-    private String air, earth, fire, water, energy;
-    private Text airText, earthText, fireText, waterText, energyText;
-    private double width, height, posX, posY;
+    private VBox box;
+    private Power power;
+    private Label airLabel, earthLabel, fireLabel, waterLabel, energyLabel;
+    private StringProperty air, earth, fire, water, energy;
+    private StringProperty airSize, earthSize, fireSize, waterSize, energySize;
+    private StringProperty airCap, earthCap, fireCap, waterCap, energyCap;
+    private double width, height;
 
-    public PowerDisplay(Power P, Pane pane) {
+    private VBox powerBox;
+    private GameplayChannel channel;
 
-        this.P = P;
-        box = new Pane();
-        this.width = (400*screenSize.getWidth()/1920);
-        this.height = (560*screenSize.getHeight()/1080);
-        this.posY = (260*screenSize.getHeight()/1080);
-        this.posX = (300*screenSize.getWidth()/1920);
-        double Size = 0.034 * height;
-        box.setPrefSize(width,height);
-        box.relocate(posX,posY);
+    public PowerDisplay(GameplayChannel gameplayChannel, Power P) {
+        this.channel = gameplayChannel;
+        this.channel.addSubscriber("USE_LAND", this);
 
-        air = Integer.toString(P.getPower(Element.AIR).getSize()) + "/" + Integer.toString(P.getPower(Element.AIR).getCapacity());
-        earth = Integer.toString(P.getPower(Element.EARTH).getSize()) + "/" + Integer.toString(P.getPower(Element.EARTH).getCapacity());
-        fire = Integer.toString(P.getPower(Element.FIRE).getSize()) + "/" + Integer.toString(P.getPower(Element.FIRE).getCapacity());
-        water = Integer.toString(P.getPower(Element.WATER).getSize()) + "/" + Integer.toString(P.getPower(Element.WATER).getCapacity());
-        energy = Integer.toString(P.getPower(Element.ENERGY).getSize()) + "/" + Integer.toString(P.getPower(Element.ENERGY).getCapacity());
+        this.power = P;
+        this.box = new VBox(16*screenSize.getHeight()/1080);
+        this.width = (80*screenSize.getWidth()/1920);
+        this.height = (260*screenSize.getHeight()/1080);
+        this.box.setPrefSize(width,height);
+        this.box.setAlignment(Pos.TOP_RIGHT);
+        this.box.getStylesheets().add("com/avatarduel/css/powerStyle.css");
+
+        this.airSize = new SimpleStringProperty(Integer.toString(power.getPower(Element.AIR).getSize()));
+        this.airCap = new SimpleStringProperty(Integer.toString(power.getPower(Element.AIR).getCapacity()));
+        this.air = new SimpleStringProperty(this.airSize.getValue() + "/" + this.airCap.getValue());
+//        this.air.setValue(this.airSize + "/" + this.airCap);
+        this.airLabel = new Label();
+        this.airLabel.textProperty().bind(this.air);
+        this.airLabel.setPrefSize(80*screenSize.getWidth()/1920,40*screenSize.getHeight()/1080);
+        this.airLabel.setAlignment(Pos.CENTER_RIGHT);
  
-        airText = new Text();
-        airText.setText(air);
-        airText.setFont(Font.font(java.awt.Font.SERIF, Size));
-        airText.setX(posX);
-        airText.setY(posY-80);
-        airbox = new Pane();
-        airbox.getChildren().add(airText);
+        this.fireSize = new SimpleStringProperty(Integer.toString(power.getPower(Element.FIRE).getSize()));
+        this.fireCap = new SimpleStringProperty(Integer.toString(power.getPower(Element.FIRE).getCapacity()));
+        this.fire = new SimpleStringProperty(this.fireSize.getValue() + "/" + this.fireCap.getValue());
+        this.fireLabel = new Label();
+        this.fireLabel.textProperty().bind(this.fire);
+        this.fireLabel.setPrefSize(80*screenSize.getWidth()/1920,40*screenSize.getHeight()/1080);
+        this.fireLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        earthText = new Text();
-        earthText.setText(earth);
-        earthText.setFont(Font.font(java.awt.Font.SERIF, Size));
-        earthText.setX(posX);
-        earthText.setY(posY-60);
-        earthbox = new Pane();
-        earthbox.getChildren().add(earthText);
+        this.earthSize = new SimpleStringProperty(Integer.toString(power.getPower(Element.EARTH).getSize()));
+        this.earthCap = new SimpleStringProperty(Integer.toString(power.getPower(Element.EARTH).getCapacity()));
+        this.earth = new SimpleStringProperty(this.earthSize.getValue() + "/" + this.earthCap.getValue());
+        this.earthLabel = new Label();
+        this.earthLabel.textProperty().bind(this.earth);
+        this.earthLabel.setPrefSize(80*screenSize.getWidth()/1920,40*screenSize.getHeight()/1080);
+        this.earthLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        fireText = new Text();
-        fireText.setText(fire);
-        fireText.setFont(Font.font(java.awt.Font.SERIF, Size));
-        fireText.setX(posX);
-        fireText.setY(posY-40);
-        firebox = new Pane();
-        firebox.getChildren().add(fireText);
+        this.waterSize = new SimpleStringProperty(Integer.toString(power.getPower(Element.WATER).getSize()));
+        this.waterCap = new SimpleStringProperty(Integer.toString(power.getPower(Element.WATER).getCapacity()));
+        this.water = new SimpleStringProperty(this.waterSize.getValue() + "/" + this.waterCap.getValue());
+        this.waterLabel = new Label();
+        this.waterLabel.textProperty().bind(this.water);
+        this.waterLabel.setPrefSize(80*screenSize.getWidth()/1920,40*screenSize.getHeight()/1080);
+        this.waterLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        waterText = new Text();
-        waterText.setText(water);
-        waterText.setFont(Font.font(java.awt.Font.SERIF, Size));
-        waterText.setX(posX);
-        waterText.setY(posY-20);
-        waterbox = new Pane();
-        waterbox.getChildren().add(waterText);
+        this.energySize = new SimpleStringProperty(Integer.toString(power.getPower(Element.ENERGY).getSize()));
+        this.energyCap = new SimpleStringProperty(Integer.toString(power.getPower(Element.ENERGY).getCapacity()));
+        this.energy = new SimpleStringProperty(this.energySize.getValue() + "/" + this.energyCap.getValue());
+        this.energyLabel = new Label();
+        this.energyLabel.textProperty().bind(this.energy);
+        this.energyLabel.setPrefSize(80*screenSize.getWidth()/1920,40*screenSize.getHeight()/1080);
+        this.energyLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        energyText = new Text();
-        energyText.setText(energy);
-        energyText.setFont(Font.font(java.awt.Font.SERIF, Size));
-        energyText.setX(posX);
-        energyText.setY(posY);
-        energyBox = new Pane();
-        energyBox.getChildren().add(energyText);
+        box.getChildren().addAll(waterLabel, earthLabel, fireLabel, airLabel, energyLabel);
+    }
 
-        box.getChildren().addAll(waterbox,earthbox,firebox,airbox);
-        box.setVisible(true);
-        pane.getChildren().add(box);
+    public Pane getPane() {return this.box;}
+
+    @Override
+    public void onUseLandEvent(UseLandEvent e) {
+        if (power.getOwner() == e.owner) {
+            switch (e.land.getElement()) {
+                case WATER:
+                    this.waterCap.setValue(Integer.toString(power.getPower(Element.WATER).getCapacity()));
+                    this.waterSize.setValue(Integer.toString(power.getPower(Element.WATER).getSize()));
+                    break;
+                case EARTH:
+                    this.earthCap.setValue(Integer.toString(power.getPower(Element.EARTH).getCapacity()));
+                    this.earthSize.setValue(Integer.toString(power.getPower(Element.EARTH).getSize()));
+                    break;
+                case FIRE:
+                    this.fireCap.setValue(Integer.toString(power.getPower(Element.FIRE).getCapacity()));
+                    this.fireSize.setValue(Integer.toString(power.getPower(Element.FIRE).getSize()));
+                    break;
+                case AIR:
+                    this.airCap.setValue(Integer.toString(power.getPower(Element.AIR).getCapacity()));
+                    this.airSize.setValue(Integer.toString(power.getPower(Element.AIR).getSize()));
+                    break;
+                case ENERGY:
+                    this.energyCap.setValue(Integer.toString(power.getPower(Element.ENERGY).getCapacity()));
+                    this.energySize.setValue(Integer.toString(power.getPower(Element.ENERGY).getSize()));
+                    break;
+                default: break;
+            }
+        }
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        if (event instanceof UseLandEvent) {
+            onUseLandEvent((UseLandEvent) event);
+        }
 
     }
 }

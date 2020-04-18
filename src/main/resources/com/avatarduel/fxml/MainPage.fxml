@@ -37,7 +37,7 @@
             <Font size="55.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="hand1Pane" layoutX="640.0" layoutY="905.0" pannable="true" prefHeight="130.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
+      <ScrollPane fx:id="hand1Pane" layoutX="640.0" layoutY="895.0" pannable="true" prefHeight="135.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
          <content>
             <HBox fx:id="hand1HBox" alignment="TOP_CENTER" prefHeight="110.0" prefWidth="1203.0" />
          </content>
@@ -59,7 +59,7 @@
             <Font size="55.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="hand2Pane" layoutX="640.0" layoutY="60.0" pannable="true" prefHeight="130.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
+      <ScrollPane fx:id="hand2Pane" layoutX="640.0" layoutY="45.0" pannable="true" prefHeight="135.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
          <content>
             <HBox fx:id="hand2HBox" alignment="TOP_CENTER" prefHeight="110.0" prefWidth="1203.0" />
          </content>

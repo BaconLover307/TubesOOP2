@@ -9,9 +9,11 @@ import com.avatarduel.model.gameplay.BaseEvent;
 public class UseLandEvent implements BaseEvent {
     
     public Land land;
+    public String owner;
 
-    public UseLandEvent(Land L){
+    public UseLandEvent(Land L, String O){
         this.land = L;
+        this.owner = O;
     }
 
     public interface UseLandEventHandler {

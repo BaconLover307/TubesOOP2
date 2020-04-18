@@ -39,6 +39,8 @@ public class Power implements
         else return this.energyPower;
     }
 
+    public String getOwner() {return this.player;}
+
     public void resetAllPower() {
         for(Element e : elements) {
             getPower(e).resetPower();

@@ -54,9 +54,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     private static final double SCREENH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private static final double CARD_DISPLAY_SIZEW = SCREENW * 400 / 1920;
-    private static final double CARD_DISPLAY_SIZEH = SCREENH * 560 / 1920;
+    private static final double CARD_DISPLAY_SIZEH = SCREENH * 560 / 1080;
     private static final double CARD_SIZEW = SCREENW * 80 / 1920;
-    private static final double CARD_SIZEH = SCREENH * 112 / 1920;
+    private static final double CARD_SIZEH = SCREENH * 112 / 1080;
 
     @FXML
     public AnchorPane root;
@@ -138,24 +138,25 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         root.scaleYProperty().bind(scaleH);
         root.setPrefWidth(SCREENW * scaleW.doubleValue());
         root.setPrefHeight(SCREENH * scaleH.doubleValue());
-        root.relocate(0,0);
-
 
         // * Loads the CSV
         try {
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, 60);
-            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, 60);
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);
             e.printStackTrace();
         }
 
-        power1Dis = new PowerDisplay(player1.getPower(), power1Pane);
-        power2Dis = new PowerDisplay(player2.getPower(), power2Pane);
+        // Power Display Setup
+        power1Dis = new PowerDisplay(this.channel, player1.getPower());
+        this.power1Pane.getChildren().add(power1Dis.getPane());
+        power2Dis = new PowerDisplay(this.channel, player2.getPower());
+        this.power2Pane.getChildren().add(power2Dis.getPane());
 
         this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
         this.hand1HBox.getChildren().addAll(this.hand1Dis.getHandBox());
@@ -206,25 +207,19 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
         // TODO tambahin turn ke deck1 deck2
         deck1.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE) {
-                player1.getDeck().doDraw();
-            }
+            if (phase == Phase.DRAW_PHASE) player1.getDeck().doDraw();
         });
         deck2.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE) {
-                player2.getDeck().doDraw();
-            }
+            if (phase == Phase.DRAW_PHASE) player2.getDeck().doDraw();
         });
 
         hand1Pane.setOnScroll(event -> {
-            if(event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0)
                 hand1Pane.setHvalue(hand1Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand1Pane.getWidth());
-            }
         });
         hand2Pane.setOnScroll(event -> {
-            if(event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0)
                 hand2Pane.setHvalue(hand2Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand2Pane.getWidth());
-            }
         });
 
     }
@@ -235,7 +230,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
-
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
