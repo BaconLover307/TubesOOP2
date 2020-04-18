@@ -58,7 +58,10 @@ public class Player implements Publisher, Subscriber,
         }
         else if (e.getClass() == SpendPowerEvent.class){
             this.onSpendPowerEvent((SpendPowerEvent) e);
-        }  
+        }
+        else if (e.getClass() == UseLandEvent.class){
+            this.onUseLandEvent((UseLandEvent) e);
+        }    
     }
 
 
@@ -74,12 +77,17 @@ public class Player implements Publisher, Subscriber,
 
     @Override
     public void onResetPowerEvent(ResetPowerEvent e) {
-        this.powers.resetAllPower();
+        if (e.player.equals(this.name)){
+            this.powers.resetAllPower();
+        }
     }
 
     @Override
     public void onUseLandEvent(UseLandEvent e){
-        this.powers.addCapacity(e.land.getElement(), 1);
+        if (e.owner.equals(this.name)){
+            this.powers.addCapacity(e.land.getElement(), 1);
+            this.powers.addSize(e.land.getElement(), 1);
+        }
     }
 
     @Override

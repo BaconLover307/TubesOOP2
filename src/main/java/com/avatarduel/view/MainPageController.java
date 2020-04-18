@@ -4,6 +4,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -14,6 +15,8 @@ import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.gameplay.events.ChangePlayerEvent;
 import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -46,7 +49,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        DrawEvent.DrawEventHandler, ChangePlayerEvent.ChangePlayerEventHandler {
+        ChangePlayerEvent.ChangePlayerEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -251,7 +254,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
-        this.channel.addSubscriber("DRAW_EVENT", this);
+        //this.channel.addSubscriber("DRAW_EVENT", this); subs di hand.java
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);

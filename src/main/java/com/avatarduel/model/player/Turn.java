@@ -28,7 +28,7 @@ public class Turn implements Publisher {
         // System.out.println("Draw Phase");
         // String draw = this.player.getName() + " Deck";
         this.player.getDeck().doDraw();
-        this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
+        //this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
     }
     
 	public void mainPhase(){

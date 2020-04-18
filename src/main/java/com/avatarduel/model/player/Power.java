@@ -51,6 +51,10 @@ public class Power implements
         getPower(elm).addCapacity(cap);
     }
 
+    public void addSize(Element elm, int size) {
+        getPower(elm).addSize(size);
+    }
+
     public void usePower(Element elm, int use) {
         //kok ini void tapi use power jadi boolean?
         getPower(elm).usePower(use);

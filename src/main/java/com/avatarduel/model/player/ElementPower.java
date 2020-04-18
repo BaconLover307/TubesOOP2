@@ -21,7 +21,7 @@ public class ElementPower {
         this.capacity += capacity;
     }
 
-    public void AddSize(int size) {
+    public void addSize(int size) {
         this.size += size;
     }
 

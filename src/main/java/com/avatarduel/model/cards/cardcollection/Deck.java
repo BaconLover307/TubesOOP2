@@ -141,7 +141,7 @@ public class Deck extends CardCollection implements
     public void onCardClicked(CardClickedEvent e) {
         if(this.channel.activePlayer.equals(this.player) && this.channel.phase.equals("DRAW_PHASE")){
             this.doDraw();
-            this.publish("RESET_POWER_EVENT", new ResetPowerEvent());
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.getPlayer()));
             this.publish("CHANGE_PHASE", new ChangePhaseEvent(Phase.MAIN_PHASE));
         }
 

@@ -14,6 +14,9 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 
+/**
+ * Merupakan kelas yang mengimplementasi interface ICharSummoned (kartu yang disummon ke arena)
+ */
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
