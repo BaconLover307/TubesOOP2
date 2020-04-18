@@ -7,8 +7,9 @@ import java.io.File;
 import java.util.List;
 
 import com.avatarduel.util.CSVReader;
-import com.avatarduel.view.MainPageController;
+import com.avatarduel.view.*;
 import javafx.application.Application;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
@@ -29,30 +30,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 
 import com.avatarduel.model.gameplay.GameplayChannel;
-import com.avatarduel.view.Settings;
-import com.avatarduel.view.AlertPlayer;
-import com.avatarduel.view.InputPlayer;
 import com.avatarduel.model.cards.card.Land;
 
-public class AvatarDuel extends Application {
+public class AvatarDuel extends Application implements BaseView {
   private GameplayChannel gameplay;
   Stage window;
   Scene inGame, mainMenu;
 
-  final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  final BackgroundSize backgroundSize = new BackgroundSize(screenSize.getWidth(), screenSize.getHeight(), false, false, false, false);
-  final double cardDisW = (400*screenSize.getWidth()/1920);
-  final double cardDisH = (560*screenSize.getHeight()/1080);
-  final double cardDisPosX = (120*screenSize.getWidth()/1920);
-  final double cardDisPosY = (260*screenSize.getHeight()/1080);
-  final double cardSummonedW = (80*screenSize.getWidth()/1920);
-  final double cardSummonedH = (112*screenSize.getHeight()/1080);
-  private int cardAmount = 60;
-  private String playerName1, playerName2;
 
+  final BackgroundSize backgroundSize = new BackgroundSize(SCREENW, SCREENH, false, false, false, false);
   private static final String CHAR_CSV_FILE_PATH = "card/data/character.csv";
   private static final String AURA_CSV_FILE_PATH = "card/data/skill_aura.csv";
   private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
+
+  private int cardAmount = 60;
+  private String playerName1, playerName2;
 
   @Override
   public void start(Stage stage) {
@@ -127,7 +119,7 @@ public class AvatarDuel extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
     loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
-    pane.relocate(-277.25, -156);
+    pane.relocate(0,0);
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
 //    Image image = new Image("com/avatarduel/asset/board.png");

@@ -150,7 +150,9 @@ public class CardDisplay implements Initializable, Publisher, Subscriber, Flippa
         this.cardWidth = width;
     }
 
+    public Pane getBox() {return this.box;}
     public Card getCard() {return this.card;}
+
     public void changeShowProperty() {this.show = !this.show;}
 
     public void doDisplayCard() {
@@ -176,8 +178,6 @@ public class CardDisplay implements Initializable, Publisher, Subscriber, Flippa
     public void onEvent(BaseEvent event) {
 
     }
-
-    public Pane getBox() {return this.box;}
 
 
 

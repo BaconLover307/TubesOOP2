@@ -27,22 +27,13 @@ import java.util.ResourceBundle;
 
 import com.avatarduel.model.cards.cardcollection.Hand;
 
-public class HandDisplay implements Initializable, Flippable, Publisher, Subscriber {
-    private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    private static final double SCREENH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    private static final double CARD_SIZEW = SCREENW * 80 / 1920;
-    private static final double CARD_SIZEH = SCREENH * 112 / 1080;
+public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
 
     private Hand hand;
     private ArrayList<CardDisplay> cardList;
     private GameplayChannel channel;
     private boolean showHand;
     private HBox handBox;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 
     public HandDisplay(GameplayChannel gameplayChannel, Hand hand) {
 //        this.handW = handW; this.handH = handH; this.handX = handX; this.handY = handY;
@@ -88,7 +79,6 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             this.handBox.getChildren().add(loader.load());
-            System.out.println(this.handBox.getChildren().size());
         } catch (Exception e) {
             System.out.println("Hand failed to add card!");
             System.out.println("Check Name " + cD.getCard().getName() );

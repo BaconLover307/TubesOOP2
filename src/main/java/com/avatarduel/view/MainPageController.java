@@ -227,7 +227,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 //        this.name1.setText("abcdefghijkl");
 
 
-        // TODO tambahin turn ke deck1 deck2
         deck1.setOnMouseReleased(e -> {
             if (phase == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
         });
@@ -254,7 +253,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
-        //this.channel.addSubscriber("DRAW_EVENT", this); subs di hand.java
+        this.channel.addSubscriber("DRAW_EVENT", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -296,8 +295,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void doChangePhase() {
         Phase p;
         try {
-            getPhaseBox().getStylesheets().clear();
-            getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
+            if (this.phase != Phase.GAME_INIT) {
+                getPhaseBox().getStylesheets().clear();
+                getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
+            }
         } catch (Exception e) {
             System.out.println("Change Phase: Stylesheet failed to load!");
             System.out.println("Error = " + e);
@@ -314,12 +315,14 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     public void onChangePhase(ChangePhaseEvent e) {
         setPhase(e.phase);
-        getPhaseBox().getStylesheets().clear();
-        getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
+        if (this.phase != Phase.GAME_INIT) {
+            getPhaseBox().getStylesheets().clear();
+            getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
+        }
         this.cardPane.getChildren().clear();
         if (e.phase == Phase.END_PHASE) {
             String nextPlayer = getNextPlayer();
-            AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn%2+1));
+            AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
             alert.show();
             this.publish("CHANGE_PLAYER", new ChangePlayerEvent(getNextPlayer()));
             doChangePhase();
