@@ -12,6 +12,7 @@ import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -19,30 +20,22 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.avatarduel.model.cards.cardcollection.Hand;
 
-public class HandDisplay implements Initializable, Flippable, Publisher, Subscriber {
-    private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-    private static final double SCREENH = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-    private static final double CARD_SIZEW = SCREENW * 80 / 1920;
-    private static final double CARD_SIZEH = SCREENH * 112 / 1080;
+public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
 
     private Hand hand;
+    private ArrayList<CardDisplay> cardList;
     private GameplayChannel channel;
     private boolean showHand;
-    private double handW,handH,handX,handY;
     private HBox handBox;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
     public HandDisplay(GameplayChannel gameplayChannel, Hand hand) {
-//        this.handW = handW; this.handH = handH; this.handX = handX; this.handY = handY;
         this.showHand = false;
         this.channel = gameplayChannel;
         this.channel.addSubscriber("DRAW_EVENT", this);
@@ -50,6 +43,8 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         this.hand = hand;
         this.handBox = new HBox(CARD_SIZEW * 70 / 80);
         handBox.setAlignment(Pos.TOP_CENTER);
+
+        this.cardList = new ArrayList<CardDisplay>();
     }
 
     public HBox getHandBox() {return handBox;}
@@ -58,19 +53,31 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
     // To flip cards
     public void flipOpen() {
         this.showHand = true;
+        for (CardDisplay cD: cardList) {
+            cD.flipOpen();;
+        }
     }
+//        for (int i = 0; i < getHandBox().getChildren().size(); i++) {
+//            Node n = getHandBox().getChildren().get(i);
+//            if (n instanceof CardDisplay) {
+//
+//            }
+//
+//        }
     public void flipClose() {
         this.showHand = false;
+        for (CardDisplay cD: cardList) {
+            cD.flipClose();
+        }
     }
 
     public void addCard(Card card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
-        cD.showCard();
+        cardList.add(cD);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             this.handBox.getChildren().add(loader.load());
-            System.out.println(this.handBox.getChildren().size());
         } catch (Exception e) {
             System.out.println("Hand failed to add card!");
             System.out.println("Check Name " + cD.getCard().getName() );
