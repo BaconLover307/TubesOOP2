@@ -319,6 +319,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         getPhaseBox().getStylesheets().clear();
         getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         this.cardPane.getChildren().clear();
+        if (e.phase == Phase.DRAW_PHASE) {
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer));   
+        }
         if (e.phase == Phase.END_PHASE) {
             String nextPlayer = getNextPlayer();
             AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn%2+1));
