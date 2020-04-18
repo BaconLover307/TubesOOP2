@@ -17,6 +17,7 @@ import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -49,7 +50,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        ChangePlayerEvent.ChangePlayerEventHandler {
+        ChangePlayerEvent.ChangePlayerEventHandler, EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -254,6 +255,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
+        this.channel.addSubscriber("END_GAME", this);
         //this.channel.addSubscriber("DRAW_EVENT", this); subs di hand.java
 
         this.cardAmount = cardAmount;
@@ -363,6 +365,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onEndGame(EndGameEvent e) {
+        // SELESAI GAME
+        // TODO 
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
@@ -372,6 +380,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onDrawEvent((DrawEvent) event);
         } else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
+        } else if (event instanceof EndGameEvent) {
+            this.onEndGame((EndGameEvent) event);
         }
     }
 }
