@@ -1,18 +1,22 @@
 package com.avatarduel.view;
 
 import com.avatarduel.AvatarDuel;
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.*;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.DiscardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
+import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -27,7 +31,10 @@ import java.util.ResourceBundle;
 
 import com.avatarduel.model.cards.cardcollection.Hand;
 
-public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
+public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
+        DrawEvent.DrawEventHandler,
+//        DiscardEvent.DiscardEventHandler,
+        UseLandEvent.UseLandEventHandler {
 
     private Hand hand;
     private ArrayList<CardDisplay> cardList;
@@ -39,6 +46,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
         this.showHand = false;
         this.channel = gameplayChannel;
         this.channel.addSubscriber("DRAW_EVENT", this);
+        this.channel.addSubscriber("USE_LAND", this);
+//        this.channel.addSubscriber("DISCARD", this);
 
         this.hand = hand;
         this.handBox = new HBox(CARD_SIZEW * 70 / 80);
@@ -57,13 +66,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
             cD.flipOpen();;
         }
     }
-//        for (int i = 0; i < getHandBox().getChildren().size(); i++) {
-//            Node n = getHandBox().getChildren().get(i);
-//            if (n instanceof CardDisplay) {
-//
-//            }
-//
-//        }
+
     public void flipClose() {
         this.showHand = false;
         for (CardDisplay cD: cardList) {
@@ -74,12 +77,14 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
     public void addCard(Card card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
         cardList.add(cD);
+        this.hand.addCard(card);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
+//            toLoad.setPrefWidth(CARD_SIZEW);
             toLoad.setOnMouseClicked(event -> {
-                if (this.showHand) selectCard(cD);
+                if (this.showHand && this.channel.phase == Phase.MAIN_PHASE) selectCard(cD);
             });
             this.handBox.getChildren().add(toLoad);
         } catch (Exception e) {
@@ -93,21 +98,90 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
         }
     }
 
-    public void onDrawEvent(DrawEvent event) {
-        if (hand.getPlayer() == event.h) this.addCard(event.c);
+    public void removeCard(Card card) {
+        int i = 0;
+        for (CardDisplay cD: cardList) {
+            if (cD.getCard().equals(card)) {
+                cardList.remove(i);
+                break;
+            }
+            i++;
+        }
+        if (i < this.handBox.getChildren().size()) this.handBox.getChildren().remove(i);
     }
 
     public void selectCard(CardDisplay cD) {
-
         if (cD.getCard() instanceof Land) {
-
-            System.out.println("LAND FROM HAND SELECTED");
+            AlertChoice landChoice = new AlertChoice("Use Land", "Discard", ("Land Card " + cD.getCard().getName() + " selected."), "Land Card");
+            String ret = landChoice.showAndReturn();
+            if (ret.equals("Use Land")) {
+                if (this.hand.isUsedLand()) {
+                    AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card in this turn!", Alert.AlertType.WARNING, "Used Land!");
+                    hasUsedLand.show();
+                } else {
+                    this.hand.doUseLand((Land) cD.getCard());
+                }
+            } else if (ret.equals("Discard")) {
+                this.removeCard(cD.getCard());
+                this.hand.removeCard(cD.getCard());
+                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
+            }
         } else if (cD.getCard() instanceof Character) {
-            System.out.println("CHAR FROM HAND SELECTED");
+            AlertChoice landChoice = new AlertChoice("Summon Character", "Discard", ("Character Card " + cD.getCard().getName() + " selected."), "Character Card");
+            String ret = landChoice.showAndReturn();
+            if (ret.equals("Summon Character")) {
+                // TODO Publish Request Summon Char
+//                if (this.hand.isUsedLand()) {
+//                    AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card in this turn!", Alert.AlertType.WARNING, "Used Land!");
+//                    hasUsedLand.show();
+//                } else {
+//                    this.hand.doUseLand((Land) cD.getCard());
+//                }
+                System.out.println("Nanti request ya..");
+            } else if (ret.equals("Discard")) {
+                this.removeCard(cD.getCard());
+                this.hand.removeCard(cD.getCard());
+                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
+            }
         } else if (cD.getCard() instanceof Skill) {
-            System.out.println("SKILL FROM HAND SELECTED");
+            AlertChoice landChoice = new AlertChoice("Summon Skill", "Discard", ("Skill Card " + cD.getCard().getName() + " selected."), "Skill Card");
+            String ret = landChoice.showAndReturn();
+            if (ret.equals("Summon Skill")) {
+                // TODO Publish Request Summon SKill
+//                if (this.hand.isUsedLand()) {
+//                AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card i?n this turn!", Alert.AlertType.WARNING, "Used Land!");
+//                    hasUsedLand.show();
+//                } else {
+//                    this.hand.doUseLand((Land) cD.getCard());
+//                }
+                System.out.println("Nanti request ya..");
+            } else if (ret.equals("Discard")) {
+                this.removeCard(cD.getCard());
+                this.hand.removeCard(cD.getCard());
+                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
+            }
         }
     }
+
+    @Override
+    public void onDrawEvent(DrawEvent e) {
+        if (hand.getPlayer() == e.h) this.addCard(e.c);
+    }
+
+    @Override
+    public void onUseLandEvent(UseLandEvent e) {
+        if (hand.getPlayer() == e.owner) {
+            this.removeCard(e.land);
+        }
+    }
+
+//    @Override
+//    public void onDiscard(DiscardEvent e) {
+//        if (hand.getPlayer() == e.owner) {
+//            this.removeCard(e.card);
+//            this.hand.removeCard(e.card);
+//        }
+//    }
 
     @Override
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
@@ -116,6 +190,10 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
     public void onEvent(BaseEvent event) {
         if (event instanceof DrawEvent) {
             onDrawEvent((DrawEvent) event);
+        } else if (event instanceof UseLandEvent) {
+            onUseLandEvent((UseLandEvent) event);
+//        } else if (event instanceof DiscardEvent) {
+//            onDiscard((DiscardEvent) event);
         }
     }
 }

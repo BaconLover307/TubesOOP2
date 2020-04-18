@@ -11,13 +11,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
-import com.avatarduel.model.gameplay.events.ChangePlayerEvent;
-import com.avatarduel.model.gameplay.events.DisplayCardEvent;
-import com.avatarduel.model.gameplay.events.DrawEvent;
-import com.avatarduel.model.gameplay.events.ResetPowerEvent;
-import com.avatarduel.model.gameplay.events.SpendPowerEvent;
-import com.avatarduel.model.gameplay.events.EndGameEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -50,6 +44,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
+        UseLandEvent.UseLandEventHandler,
         ChangePlayerEvent.ChangePlayerEventHandler, EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
@@ -175,13 +170,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.health2.textProperty().bind(health2Text);
 
 
-
-        // Power Display Setup
-        power1Dis = new PowerDisplay(this.channel, player1.getPower());
-        this.power1Pane.getChildren().add(power1Dis.getPane());
-        power2Dis = new PowerDisplay(this.channel, player2.getPower());
-        this.power2Pane.getChildren().add(power2Dis.getPane());
-
         // Hand Display Setup
         this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
         this.hand1HBox.getChildren().addAll(this.hand1Dis.getHandBox());
@@ -211,6 +199,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
+
         this.board2 = new BoardDisplay(this.channel, this.player2.getBoard());
         try {
             FXMLLoader loader2 = new FXMLLoader(getClass().getResource(BOARD2_FXML_PATH));
@@ -221,6 +210,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
+        // Power Display Setup
+        power1Dis = new PowerDisplay(this.channel, player1.getPowers());
+        this.power1Pane.getChildren().add(power1Dis.getPane());
+        power2Dis = new PowerDisplay(this.channel, player2.getPowers());
+        this.power2Pane.getChildren().add(power2Dis.getPane());
 
 //        this.hand1HBox = this.hand1Dis.getHandBox();
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
@@ -288,6 +282,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("END_GAME", this);
+        this.channel.addSubscriber("USE_LAND", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -409,6 +404,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onUseLandEvent(UseLandEvent e) {
+        this.power1Dis.updatePower();
+        this.power2Dis.updatePower();
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
@@ -420,6 +421,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onChangePlayer((ChangePlayerEvent) event);
         } else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);
+        } else if (event instanceof UseLandEvent) {
+            this.onUseLandEvent((UseLandEvent) event);
         }
     }
 }

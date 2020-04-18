@@ -53,7 +53,7 @@ public class Player implements Publisher, Subscriber,
     public Hand getHand() {return this.hand;}
     public Board getBoard() {return this.board;}
     public int getHealth() {return this.health;}
-    public Power getPower() {return this.powers;}
+    public Power getPowers() {return this.powers;}
 
     /**
      * Implemen interface publisher
