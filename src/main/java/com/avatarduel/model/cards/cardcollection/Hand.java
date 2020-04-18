@@ -17,14 +17,11 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         // UseLandEvent.UseLandEventHandler,     
         DrawEvent.DrawEventHandler {
 
-    // TODO Pindahin ke Hand Display
-    // private boolean show; // true if card is open
     private boolean usedLand; // true if UseCard(Land) was used this turn
     private GameplayChannel channel;
 
     public Hand(GameplayChannel channel, String player) {
         super(channel, player);
-        // this.show = false;
         this.usedLand = false;
         this.channel = channel;
         channel.addSubscriber("DRAW_EVENT", this);
