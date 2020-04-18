@@ -69,6 +69,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @FXML
     public Label name1;
+    private StringProperty health1Text;
     @FXML
     public Label health1;
     private StringProperty deck1Count;
@@ -77,6 +78,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @FXML
     public Label name2;
+    private StringProperty health2Text;
     @FXML
     public Label health2;
     private StringProperty deck2Count;
@@ -154,23 +156,41 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
+        // Name and Health Setup
+        this.name1.setText(player1.getName());
+        this.health1Text = new SimpleStringProperty(Integer.toString(player1.getHealth()));
+        this.health1.textProperty().bind(health1Text);
+
+        this.name2.setText(player2.getName());
+        this.health2Text = new SimpleStringProperty(Integer.toString(player2.getHealth()));
+        this.health2.textProperty().bind(health2Text);
+
+
+
         // Power Display Setup
         power1Dis = new PowerDisplay(this.channel, player1.getPower());
         this.power1Pane.getChildren().add(power1Dis.getPane());
         power2Dis = new PowerDisplay(this.channel, player2.getPower());
         this.power2Pane.getChildren().add(power2Dis.getPane());
 
+        // Hand Display Setup
         this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
         this.hand1HBox.getChildren().addAll(this.hand1Dis.getHandBox());
         this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
         this.hand2HBox.getChildren().addAll(this.hand2Dis.getHandBox());
-//        this.hand1HBox = this.hand1Dis.getHandBox();
-//        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
-////        this.hand2HBox = this.hand2Dis.getHandBox();
-        for (int i = 0; i<16; i++) {
+        for (int i = 0; i<7; i++) {
             this.player1.getDeck().doDraw();
             this.player2.getDeck().doDraw();
         }
+        this.hand1Dis.flipOpen();
+        this.hand2Dis.flipClose();
+
+        // Deck setup
+        this.deck1Count = new SimpleStringProperty(Integer.toString(player1.getDeck().getSize()));
+        deck1.textProperty().bind(deck1Count);
+        this.deck2Count = new SimpleStringProperty(Integer.toString(player2.getDeck().getSize()));
+        deck2.textProperty().bind(deck2Count);
+
 //        this.hand1HBox = this.hand1Dis.getHandBox();
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
 //        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
@@ -202,28 +222,27 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 //            System.out.println("Error = " + e);
 //        }
 //        this.name1.setText("abcdefghijkl");
-        this.deck1Count = new SimpleStringProperty(Integer.toString(player1.getDeck().getSize()));
-        deck1.textProperty().bind(deck1Count);
-        this.deck2Count = new SimpleStringProperty(Integer.toString(player2.getDeck().getSize()));
-        deck2.textProperty().bind(deck2Count);
+
 
         // TODO tambahin turn ke deck1 deck2
         deck1.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE) player1.getDeck().doDraw();
+            if (phase == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
         });
         deck2.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE) player2.getDeck().doDraw();
+            if (phase == Phase.DRAW_PHASE && turn == 2) player2.getDeck().doDraw();
         });
 
         hand1Pane.setOnScroll(event -> {
-            if (event.getDeltaX() == 0 && event.getDeltaY() != 0)
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0 && turn == 1)
                 hand1Pane.setHvalue(hand1Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand1Pane.getWidth());
         });
         hand2Pane.setOnScroll(event -> {
-            if (event.getDeltaX() == 0 && event.getDeltaY() != 0)
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0 && turn == 2)
                 hand2Pane.setHvalue(hand2Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand2Pane.getWidth());
         });
-
+        AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Start Game");
+        gameStartAlert.show();
+        doChangePhase();
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
@@ -247,12 +266,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public String getNextPlayer() {
-        if (turn%2 == 1) {
-            return player1.getName();
-        }
-        else {
-            return player2.getName();
-        }
+        if (turn == 2) return player1.getName();
+        else return player2.getName();
     }
 
     public void setPhase(Phase p) {this.phase = p;}
@@ -261,7 +276,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             case DRAW_PHASE: return this.drawPhaseBox;
             case MAIN_PHASE: return this.mainPhaseBox;
             case BATTLE_PHASE: return this.battlePhaseBox;
-            default: return this.endPhaseBox;
+            case END_PHASE: return this.endPhaseBox;
+            default: return null;
         }
     }
 
@@ -275,25 +291,18 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void doChangePhase() {
-        Phase p = this.phase;
+        Phase p;
         try {
             getPhaseBox().getStylesheets().clear();
             getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
         } catch (Exception e) {
-            System.out.println("Stylesheet failed to load!");
+            System.out.println("Change Phase: Stylesheet failed to load!");
             System.out.println("Error = " + e);
         }
         p = this.getNextPhase();
         ChangePhaseEvent e = new ChangePhaseEvent(p);
         this.publish("CHANGE_PHASE", e);
         e.execute();
-//        if (p == Phase.DRAW_PHASE) {
-//            doChangeTurn();
-//        }
-    }
-
-    public void doDraw() {
-
     }
 
 
@@ -305,13 +314,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         getPhaseBox().getStylesheets().clear();
         getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         this.cardPane.getChildren().clear();
-        if (e.phase == Phase.DRAW_PHASE) {
-            AlertPlayer alert = new AlertPlayer(channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + turn);
-            alert.show();
-        }
         if (e.phase == Phase.END_PHASE) {
-            turn++;
+            String nextPlayer = getNextPlayer();
+            AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn%2+1));
+            alert.show();
             this.publish("CHANGE_PLAYER", new ChangePlayerEvent(getNextPlayer()));
+            doChangePhase();
         }
     }
 
@@ -341,6 +349,14 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     @Override
     public void onChangePlayer(ChangePlayerEvent e) {
         this.channel.activePlayer = e.nextPlayer;
+        this.turn = turn%2+1;
+        if (this.channel.activePlayer == player1.getName()) {
+            hand1Dis.flipOpen();
+            hand2Dis.flipClose();
+        } else {
+            hand2Dis.flipOpen();
+            hand1Dis.flipClose();
+        }
     }
 
     @Override

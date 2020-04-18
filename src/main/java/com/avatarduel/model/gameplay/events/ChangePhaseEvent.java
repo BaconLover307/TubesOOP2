@@ -12,6 +12,7 @@ public class ChangePhaseEvent implements BaseEvent {
         void onChangePhase(ChangePhaseEvent e);
     }
 
+    @Override
     public void execute() {
         System.out.println("Phase changed! Now " + phase.toString());
     }
