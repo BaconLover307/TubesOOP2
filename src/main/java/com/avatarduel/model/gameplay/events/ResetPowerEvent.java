@@ -4,7 +4,9 @@ import com.avatarduel.model.gameplay.BaseEvent;
 // TODO implementasi
 public class ResetPowerEvent implements BaseEvent {
 
-    public ResetPowerEvent(){}
+    public String player;
+
+    public ResetPowerEvent(String player) {this.player = player;}
 
     public interface ResetPowerEventHandler {
         void onResetPowerEvent(ResetPowerEvent e);

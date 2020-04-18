@@ -15,43 +15,16 @@ public class SpendPowerEvent implements BaseEvent {
     public Element element;
     public int amount;
 
-    public SpendPowerEvent(String sender, Element element, int val){
-        //this.sender = sender;
+    public SpendPowerEvent(String sender, Element element, int amount){
+        this.sender = sender;
         this.element = element;
         this.amount = amount;
     }
-/*
-    public String getSender(){
-        return this.sender;
-    }
-
-    public Element getElement(){
-        return this.element;
-    }
-
-    public int getVal(){
-        return this.val;
-    }
-*/
+    
     public interface SpendPowerEventHandler{
         public void onSpendPowerEvent(SpendPowerEvent e);
     } 
 
     public void execute(){}
 
-    /*
-    public class Handler implements BaseEvent {
-
-        private boolean success;
-
-        public Handler(boolean success){
-            this.success = success;
-        }
-
-        public boolean getSuccess(){
-            return this.success;
-        }
-
-        public void execute(){}
-    } */
 }

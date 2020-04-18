@@ -4,6 +4,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -14,6 +15,8 @@ import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.gameplay.events.ChangePlayerEvent;
 import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -153,6 +156,18 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             System.out.println("Error = " + e);
             e.printStackTrace();
         }
+
+        try {
+        /*  // TESTING ALL POWER EVENT  
+            Land l = new Land("as", Element.AIR, "LALA", "LALA");
+            player1.getHand().doSelectLand(l);
+            System.out.println(player1.getPower().getPower(Element.AIR).getSize());
+            this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(player1.getName(), Element.AIR, 1));
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(player1.getName()));
+            Land l2 = new Land("as", Element.AIR, "LALA", "LALA");
+            player2.getHand().doSelectLand(l2);
+            System.out.println(player2.getPower().getPower(Element.AIR).getSize()); */
+        } catch (Exception e) {e.printStackTrace();}
 
         // Power Display Setup
         power1Dis = new PowerDisplay(this.channel, player1.getPower());
