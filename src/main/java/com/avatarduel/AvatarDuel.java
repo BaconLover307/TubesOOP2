@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
@@ -29,6 +30,7 @@ import javafx.event.EventHandler;
 
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.view.Settings;
+import com.avatarduel.view.AlertPlayer;
 import com.avatarduel.view.InputPlayer;
 import com.avatarduel.model.cards.card.Land;
 
@@ -75,6 +77,7 @@ public class AvatarDuel extends Application {
         if (playerName1.equals(playerName2)) {
           playerName2 = playerName2 + "*";
         }
+       
         MainScreen(window);
       } catch (Exception err) {
         err.printStackTrace();
@@ -124,7 +127,7 @@ public class AvatarDuel extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
     loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
-    main.relocate(0,0);
+    pane.relocate(0.0, 0.0);
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
 //    Image image = new Image("com/avatarduel/asset/board.png");

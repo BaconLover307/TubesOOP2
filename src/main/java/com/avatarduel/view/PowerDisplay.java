@@ -91,32 +91,23 @@ public class PowerDisplay implements Subscriber,
 
     public Pane getPane() {return this.box;}
 
+    public void updatePower() {
+        this.waterCap.setValue(Integer.toString(power.getPower(Element.WATER).getCapacity()));
+        this.waterSize.setValue(Integer.toString(power.getPower(Element.WATER).getSize()));
+        this.earthCap.setValue(Integer.toString(power.getPower(Element.EARTH).getCapacity()));
+        this.earthSize.setValue(Integer.toString(power.getPower(Element.EARTH).getSize()));
+        this.fireCap.setValue(Integer.toString(power.getPower(Element.FIRE).getCapacity()));
+        this.fireSize.setValue(Integer.toString(power.getPower(Element.FIRE).getSize()));
+        this.airCap.setValue(Integer.toString(power.getPower(Element.AIR).getCapacity()));
+        this.airSize.setValue(Integer.toString(power.getPower(Element.AIR).getSize()));
+        this.energyCap.setValue(Integer.toString(power.getPower(Element.ENERGY).getCapacity()));
+        this.energySize.setValue(Integer.toString(power.getPower(Element.ENERGY).getSize()));
+    }
+
     @Override
     public void onUseLandEvent(UseLandEvent e) {
         if (power.getOwner() == e.owner) {
-            switch (e.land.getElement()) {
-                case WATER:
-                    this.waterCap.setValue(Integer.toString(power.getPower(Element.WATER).getCapacity()));
-                    this.waterSize.setValue(Integer.toString(power.getPower(Element.WATER).getSize()));
-                    break;
-                case EARTH:
-                    this.earthCap.setValue(Integer.toString(power.getPower(Element.EARTH).getCapacity()));
-                    this.earthSize.setValue(Integer.toString(power.getPower(Element.EARTH).getSize()));
-                    break;
-                case FIRE:
-                    this.fireCap.setValue(Integer.toString(power.getPower(Element.FIRE).getCapacity()));
-                    this.fireSize.setValue(Integer.toString(power.getPower(Element.FIRE).getSize()));
-                    break;
-                case AIR:
-                    this.airCap.setValue(Integer.toString(power.getPower(Element.AIR).getCapacity()));
-                    this.airSize.setValue(Integer.toString(power.getPower(Element.AIR).getSize()));
-                    break;
-                case ENERGY:
-                    this.energyCap.setValue(Integer.toString(power.getPower(Element.ENERGY).getCapacity()));
-                    this.energySize.setValue(Integer.toString(power.getPower(Element.ENERGY).getSize()));
-                    break;
-                default: break;
-            }
+            updatePower();
         }
     }
 
