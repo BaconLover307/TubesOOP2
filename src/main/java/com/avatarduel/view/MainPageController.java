@@ -49,7 +49,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        DrawEvent.DrawEventHandler, ChangePlayerEvent.ChangePlayerEventHandler {
+        ChangePlayerEvent.ChangePlayerEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -247,7 +247,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
-        this.channel.addSubscriber("DRAW_EVENT", this);
+        //this.channel.addSubscriber("DRAW_EVENT", this); subs di hand.java
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -306,11 +306,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 //            doChangeTurn();
 //        }
     }
-
-    public void doDraw() {
-
-    }
-
 
     @Override
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
