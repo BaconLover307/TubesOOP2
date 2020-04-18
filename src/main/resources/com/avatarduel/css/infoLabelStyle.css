@@ -1,0 +1,5 @@
+.label {
+    -fx-background-color: rgba(40,49,72,0.4);
+    -fx-text-fill: #DFD7D1;
+    -fx-background-radius: 2em;
+}

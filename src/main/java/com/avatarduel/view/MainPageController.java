@@ -19,6 +19,8 @@ import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
 import com.avatarduel.util.CSVReader;
 import com.sun.javafx.css.Stylesheet;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -50,7 +52,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final String PHASE_STYLE_PATH = "com/avatarduel/css/phaseStyle.css";
 
     @FXML
+    public AnchorPane root;
+    @FXML
     private Pane cardPane;
+    @FXML
+    public Label infoLabel;
+
     @FXML
     public Label name1;
     @FXML
@@ -104,6 +111,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     private GameplayChannel channel;
     private int cardAmount;
+    private double screenW;
+    private double screenH;
     private List<String[]> charCardList;
     private List<String[]> landCardList;
     private List<String[]> auraCardList;
@@ -117,6 +126,16 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // * Pane Setup
+        DoubleProperty scaleW = new SimpleDoubleProperty(screenW/1920);
+        DoubleProperty scaleH = new SimpleDoubleProperty(screenH/1080);
+        root.scaleXProperty().bind(scaleW);
+        root.scaleYProperty().bind(scaleH);
+        root.setPrefWidth(this.screenW * scaleW.doubleValue());
+        root.setPrefHeight(this.screenH * scaleH.doubleValue());
+        root.relocate(0,0);
+
+
         // * Loads the CSV
         try {
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
@@ -205,8 +224,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     }
 
-    public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
+    public MainPageController(GameplayChannel channel, double screenW, double screenH, int cardAmount, String P1, String P2) {
         // % Gameplay Channel
+        this.screenW = screenW;
+        this.screenH = screenH;
         this.channel = channel;
         this.channel.addSubscriber("CHANGE_PHASE", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);

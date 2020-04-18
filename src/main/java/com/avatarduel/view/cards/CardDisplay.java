@@ -77,12 +77,12 @@ public class CardDisplay implements Initializable, Publisher, Subscriber {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DoubleProperty scaleX = new SimpleDoubleProperty(cardWidth/400);
-        DoubleProperty scaleY = new SimpleDoubleProperty(cardHeight/560);
-        box.scaleXProperty().bind(scaleX);
-        box.scaleYProperty().bind(scaleY);
-        box.setPrefWidth(this.cardWidth * scaleX.doubleValue());
-        box.setPrefHeight(this.cardHeight * scaleY.doubleValue());
+        DoubleProperty scaleW = new SimpleDoubleProperty(cardWidth/400);
+        DoubleProperty scaleH = new SimpleDoubleProperty(cardHeight/560);
+        box.scaleXProperty().bind(scaleW);
+        box.scaleYProperty().bind(scaleH);
+        box.setPrefWidth(this.cardWidth * scaleW.doubleValue());
+        box.setPrefHeight(this.cardHeight * scaleH.doubleValue());
         this.card_name.setText(card.getName());
         this.card_image.setImage(new Image(card.getImgPath()));
         String elpath;
