@@ -366,8 +366,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onEndGame(EndGameEvent e) {
-        // SELESAI GAME
-        // TODO 
+        e.execute(); 
     }
 
     @Override
