@@ -58,29 +58,26 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
     }
 
     public void addCard(Card card) {
+        CardDisplay cD = new CardDisplay(this.channel, card, 80, 112);
+        cD.showCard();
         try {
-            FXMLLoader loader = new FXMLLoader(MainPageController.class.getResource("../fxml/CardDisplay.fxml"));
-//            CardDisplay cD = ;
-            loader.setControllerFactory(c -> new CardDisplay(this.channel, card, 80, 112));
-            System.out.println("PASS1");
-            System.out.println(card.getName());
-            System.out.println(card.getClass());
-//            System.out.println(cD.card_name.getText());
-            System.out.println("PASS2");
-//            cD.box.setPrefHeight(112.0);
-//            cD.box.setPrefWidth(80.0);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
+            loader.setControllerFactory(c -> cD);
             this.handBox.getChildren().add(loader.load());
-            System.out.println(this.handBox.getChildren().get(0));
             System.out.println(this.handBox.getChildren().size());
         } catch (Exception e) {
             System.out.println("Hand failed to add card!");
+            System.out.println("Check Name " + cD.getCard().getName() );
+            System.out.println("Check Element " + cD.getCard().getElement().toString());
+            System.out.println("Check Desc " + cD.getCard().getDesc());
+            System.out.println("Check PATH " + cD.getCard().getImgPath());
             System.out.println("Error = " + e);
             e.printStackTrace();
         }
     }
 
     public void onDrawEvent(DrawEvent event) {
-        this.addCard(event.c);
+        if (hand.getPlayer() == event.h) this.addCard(event.c);
     }
 
     @Override

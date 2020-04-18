@@ -32,7 +32,7 @@
             <Font size="55.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="hand1Pane" layoutX="642.0" layoutY="905.0" pannable="true" prefHeight="120.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
+      <ScrollPane fx:id="hand1Pane" layoutX="640.0" layoutY="905.0" pannable="true" prefHeight="130.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
          <content>
             <HBox fx:id="hand1HBox" alignment="TOP_CENTER" prefHeight="110.0" prefWidth="1203.0" />
          </content>
@@ -54,7 +54,7 @@
             <Font size="55.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="hand2Pane" layoutX="642.0" layoutY="54.0" pannable="true" prefHeight="120.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
+      <ScrollPane fx:id="hand2Pane" layoutX="640.0" layoutY="60.0" pannable="true" prefHeight="130.0" prefWidth="1205.0" stylesheets="@../css/scrollStyle.css" vbarPolicy="NEVER">
          <content>
             <HBox fx:id="hand2HBox" alignment="TOP_CENTER" prefHeight="110.0" prefWidth="1203.0" />
          </content>
@@ -62,26 +62,26 @@
       <AnchorPane fx:id="board2Pane" layoutX="884.0" layoutY="207.0" prefHeight="285.0" prefWidth="825.0" />
       <Pane fx:id="cardPane" layoutX="118.0" layoutY="261.0" prefHeight="560.0" prefWidth="400.0" />
       <Pane fx:id="power2Pane" layoutX="1767.0" layoutY="219.0" prefHeight="260.0" prefWidth="80.0" />
-      <Label fx:id="drawPhaseBox" alignment="CENTER" layoutX="556.0" layoutY="261.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="DRAW PHASE">
+      <Label fx:id="drawPhaseBox" alignment="CENTER" layoutX="556.0" layoutY="261.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseStyle.css" text="DRAW PHASE">
          <font>
             <Font name="Arial" size="42.0" />
          </font>
       </Label>
-      <Label fx:id="mainPhaseBox" layoutX="556.0" layoutY="372.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="MAIN PHASE" textAlignment="CENTER">
+      <Label fx:id="mainPhaseBox" layoutX="556.0" layoutY="372.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseStyle.css" text="MAIN PHASE" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="42.0" />
          </font>
       </Label>
-      <Label fx:id="battlePhaseBox" layoutX="556.0" layoutY="479.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="BATTLE PHASE" textAlignment="CENTER">
+      <Label fx:id="battlePhaseBox" layoutX="556.0" layoutY="479.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseStyle.css" text="BATTLE PHASE" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="42.0" />
          </font>
       </Label>
-      <Label fx:id="endPhaseBox" layoutX="556.0" layoutY="589.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="END PHASE" textAlignment="CENTER">
+      <Label fx:id="endPhaseBox" layoutX="556.0" layoutY="589.0" prefHeight="80.0" prefWidth="300.0" stylesheets="@../css/phaseStyle.css" text="END PHASE" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="42.0" />
          </font>
       </Label>
-      <Button fx:id="btnNext" layoutX="556.0" layoutY="752.0" mnemonicParsing="false" onAction="#doChangePhase" prefHeight="69.0" prefWidth="300.0" stylesheets="@../css/phaseSyle.css" text="Change Phase" />
+      <Button fx:id="btnNext" layoutX="556.0" layoutY="752.0" mnemonicParsing="false" onAction="#doChangePhase" prefHeight="69.0" prefWidth="300.0" stylesheets="@../css/phaseStyle.css" text="Change Phase" />
    </children>
 </AnchorPane>

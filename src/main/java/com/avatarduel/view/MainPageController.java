@@ -18,6 +18,9 @@ import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
 import com.avatarduel.util.CSVReader;
+import com.sun.javafx.css.Stylesheet;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,6 +46,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
     private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
+    private static final String CUR_PHASE_STYLE_PATH = "com/avatarduel/css/curPhaseStyle.css";
+    private static final String PHASE_STYLE_PATH = "com/avatarduel/css/phaseStyle.css";
 
     @FXML
     private Pane cardPane;
@@ -50,12 +55,15 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public Label name1;
     @FXML
     public Label health1;
+    private StringProperty deck1Count;
     @FXML
     public Label deck1;
+
     @FXML
     public Label name2;
     @FXML
     public Label health2;
+    private StringProperty deck2Count;
     @FXML
     public Label deck2;
 
@@ -74,10 +82,15 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public AnchorPane board1Pane;
     @FXML
     public AnchorPane board2Pane;
+
+    private PowerDisplay power1Dis;
     @FXML
     public Pane power1Pane;
+
+    private PowerDisplay power2Dis;
     @FXML
     public Pane power2Pane;
+
     @FXML
     public Label drawPhaseBox;
     @FXML
@@ -117,14 +130,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             e.printStackTrace();
         }
 
-//        this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
+        power1Dis = new PowerDisplay(player1.getPower(), power1Pane);
+        power2Dis = new PowerDisplay(player2.getPower(), power2Pane);
+
+        this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
+        this.hand1HBox.getChildren().addAll(this.hand1Dis.getHandBox());
+        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
+        this.hand2HBox.getChildren().addAll(this.hand2Dis.getHandBox());
 //        this.hand1HBox = this.hand1Dis.getHandBox();
-////        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
+//        this.hand2Dis = new HandDisplay(this.channel, player2.getHand());
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
-//        for (int i = 0; i<7; i++) {
-//            this.player1.getDeck().doDraw();
-////            this.player2.getDeck().doDraw();
-//        }
+        for (int i = 0; i<16; i++) {
+            this.player1.getDeck().doDraw();
+            this.player2.getDeck().doDraw();
+        }
 //        this.hand1HBox = this.hand1Dis.getHandBox();
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
 //        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
@@ -134,28 +153,55 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
 
         // ! TESTING PURPOSES
-        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-        cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
-        try {
-            this.cardPane.getChildren().add(cardLoader.load());
-        } catch (Exception e) {
-            System.out.println("Error = " + e);
-        }
-        FXMLLoader cardLoader1 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-        CardDisplay coba1 = new CardDisplay(this.channel, display, 80, 112);
-        FXMLLoader cardLoader2 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-        CardDisplay coba2 = new CardDisplay(this.channel, display2, 80, 112);
-        coba1.showCard();
-        coba2.showCard();
-        cardLoader1.setControllerFactory(c -> coba1);
-        cardLoader2.setControllerFactory(c -> coba2);
-        try {
-            this.hand1HBox.getChildren().add(cardLoader1.load());
-            this.hand1HBox.getChildren().add(cardLoader2.load());
-        } catch (Exception e) {
-            System.out.println("Error = " + e);
-        }
+//        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+//        cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
+//        try {
+//            this.cardPane.getChildren().add(cardLoader.load());
+//        } catch (Exception e) {
+//            System.out.println("Error = " + e);
+//        }
+//        FXMLLoader cardLoader1 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+//        CardDisplay coba1 = new CardDisplay(this.channel, display, 80, 112);
+//        FXMLLoader cardLoader2 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
+//        CardDisplay coba2 = new CardDisplay(this.channel, display2, 80, 112);
+//        coba1.showCard();
+//        coba2.showCard();
+//        cardLoader1.setControllerFactory(c -> coba1);
+//        cardLoader2.setControllerFactory(c -> coba2);
+//        try {
+//            this.hand1HBox.getChildren().add(cardLoader1.load());
+//            this.hand1HBox.getChildren().add(cardLoader2.load());
+//        } catch (Exception e) {
+//            System.out.println("Error = " + e);
+//        }
 //        this.name1.setText("abcdefghijkl");
+        this.deck1Count = new SimpleStringProperty(Integer.toString(player1.getDeck().getSize()));
+        deck1.textProperty().bind(deck1Count);
+        this.deck2Count = new SimpleStringProperty(Integer.toString(player2.getDeck().getSize()));
+        deck2.textProperty().bind(deck2Count);
+
+        // TODO tambahin turn ke deck1 deck2
+        deck1.setOnMouseReleased(e -> {
+            if (phase == Phase.DRAW_PHASE) {
+                player1.getDeck().doDraw();
+            }
+        });
+        deck2.setOnMouseReleased(e -> {
+            if (phase == Phase.DRAW_PHASE) {
+                player2.getDeck().doDraw();
+            }
+        });
+
+        hand1Pane.setOnScroll(event -> {
+            if(event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+                hand1Pane.setHvalue(hand1Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand1Pane.getWidth());
+            }
+        });
+        hand2Pane.setOnScroll(event -> {
+            if(event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+                hand2Pane.setHvalue(hand2Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand2Pane.getWidth());
+            }
+        });
 
     }
 
@@ -179,6 +225,14 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void setPhase(Phase p) {this.phase = p;}
+    public Label getPhaseBox() {
+        switch (this.phase) {
+            case DRAW_PHASE: return this.drawPhaseBox;
+            case MAIN_PHASE: return this.mainPhaseBox;
+            case BATTLE_PHASE: return this.battlePhaseBox;
+            default: return this.endPhaseBox;
+        }
+    }
 
     public Phase getNextPhase() {
         int idx = this.phase.ordinal();
@@ -190,10 +244,25 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void doChangePhase() {
-        Phase p = this.getNextPhase();
+        Phase p = this.phase;
+        try {
+            getPhaseBox().getStylesheets().clear();
+            getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
+        } catch (Exception e) {
+            System.out.println("Stylesheet failed to load!");
+            System.out.println("Error = " + e);
+        }
+        p = this.getNextPhase();
         ChangePhaseEvent e = new ChangePhaseEvent(p);
-        this.publish("CHANGE_PHASE", new ChangePhaseEvent(p));
+        this.publish("CHANGE_PHASE", e);
         e.execute();
+//        if (p == Phase.DRAW_PHASE) {
+//            doChangeTurn();
+//        }
+    }
+
+    public void doDraw() {
+
     }
 
 
@@ -202,6 +271,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     public void onChangePhase(ChangePhaseEvent e) {
         setPhase(e.phase);
+        getPhaseBox().getStylesheets().clear();
+        getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
+        this.cardPane.getChildren().clear();
     }
 
     public void onDisplayCard(DisplayCardEvent event) {
@@ -217,10 +289,14 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void onDrawEvent(DrawEvent event) {
-//        if (event.h == this.player1.getName()) {
-//            this.hand1Dis.addCard(event.c);
-////            this.hand1HBox
-//        }
+        if (this.phase != Phase.GAME_INIT) {
+            if (event.h == this.player1.getName()) {
+                this.deck1Count.setValue(Integer.toString(player1.getDeck().getSize()));
+            } else if (event.h == this.player2.getName()) {
+                this.deck2Count.setValue(Integer.toString(player2.getDeck().getSize()));
+            }
+            doChangePhase();
+        }
     }
 
     @Override

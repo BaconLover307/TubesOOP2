@@ -8,7 +8,9 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -45,6 +47,8 @@ public class CardDisplay implements Initializable, Publisher, Subscriber {
     public Pane box;
     @FXML
     public Label card_name;
+    public IntegerProperty name_font_size;
+    public int name_size;
     @FXML
     public ImageView card_bg;
     @FXML
@@ -73,6 +77,12 @@ public class CardDisplay implements Initializable, Publisher, Subscriber {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        DoubleProperty scaleX = new SimpleDoubleProperty(cardWidth/400);
+        DoubleProperty scaleY = new SimpleDoubleProperty(cardHeight/560);
+        box.scaleXProperty().bind(scaleX);
+        box.scaleYProperty().bind(scaleY);
+        box.setPrefWidth(this.cardWidth * scaleX.doubleValue());
+        box.setPrefHeight(this.cardHeight * scaleY.doubleValue());
         this.card_name.setText(card.getName());
         this.card_image.setImage(new Image(card.getImgPath()));
         String elpath;
@@ -121,40 +131,44 @@ public class CardDisplay implements Initializable, Publisher, Subscriber {
 
 
 
-        this.card_bg.fitWidthProperty().bind(box.widthProperty());
-        this.card_bg.fitHeightProperty().bind(box.heightProperty());
-//        this.card_image.layoutXProperty().bind(box.widthProperty().multiply((double)50/400));
-//        this.card_image.layoutYProperty().bind(box.heightProperty().multiply((double)122/560));
-//
-        this.card_image.fitWidthProperty().bind(box.widthProperty().multiply((double) 300/400));
-        this.card_image.fitHeightProperty().bind(box.heightProperty().multiply((double) 240/560));
-        this.card_image.xProperty().bind(box.widthProperty().multiply((double) 50/400));
-        this.card_image.yProperty().bind(box.heightProperty().multiply((double) 122/560));
-//
-        this.card_element.fitWidthProperty().bind(box.widthProperty().multiply((double) 46/400));
-        this.card_element.fitHeightProperty().bind(box.heightProperty().multiply((double) 46/400));
-        this.card_element.xProperty().bind(box.widthProperty().multiply((double)329/400));
-        this.card_element.yProperty().bind(box.heightProperty().multiply((double)25/560));
-//
-        this.card_name.prefWidthProperty().bind(box.widthProperty().multiply((double)280/400));
-        this.card_name.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
-//        this.card_name.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
-//        this.card_name.layoutXProperty().bind(box.widthProperty().multiply((double)30/400));
-//        this.card_name.layoutYProperty().bind(box.heightProperty().multiply((double)23/560));
-//
-        this.card_desc.prefWidthProperty().bind(box.widthProperty().multiply((double)340/400));
-        this.card_desc.prefHeightProperty().bind(box.heightProperty().multiply((double)110/560));
-////        this.card_desc.layoutXProperty().bind(box.widthProperty().multiply((double)30/400));
-////        this.card_desc.layoutYProperty().bind(box.heightProperty().multiply((double)394/560));
-//
-        this.card_attribute.prefWidthProperty().bind(box.widthProperty().multiply((double)350/400));
-        this.card_attribute.prefHeightProperty().bind(box.heightProperty().multiply((double)34/560));
-//        this.card_attribute.layoutXProperty().bind(box.widthProperty().multiply((double)25/400));
-//        this.card_attribute.layoutYProperty().bind(box.heightProperty().multiply((double)505/560));
-//
-        this.card_skillType.prefWidthProperty().bind(box.widthProperty().multiply((double)82/400));
-        this.card_skillType.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
-//        this.card_skillType.layoutXProperty().bind(box.widthProperty().multiply((double)50/400));
+//        this.card_bg.fitWidthProperty().bind(box.widthProperty());
+//        this.card_bg.fitHeightProperty().bind(box.heightProperty());
+////        this.card_image.layoutXProperty().bind(box.widthProperty().multiply((double)50/400));
+////        this.card_image.layoutYProperty().bind(box.heightProperty().multiply((double)122/560));
+////
+//        this.card_image.fitWidthProperty().bind(box.widthProperty().multiply((double) 260/400));
+//        this.card_image.fitHeightProperty().bind(box.heightProperty().multiply((double) 240/560));
+//        this.card_image.xProperty().bind(box.widthProperty().multiply((double) 70/400));
+//        this.card_image.yProperty().bind(box.heightProperty().multiply((double) 122/560));
+////
+//        this.card_element.fitWidthProperty().bind(box.widthProperty().multiply((double) 46/400));
+//        this.card_element.fitHeightProperty().bind(box.heightProperty().multiply((double) 46/400));
+//        this.card_element.xProperty().bind(box.widthProperty().multiply((double)329/400));
+//        this.card_element.yProperty().bind(box.heightProperty().multiply((double)25/560));
+////
+//        this.card_name.prefWidthProperty().bind(box.widthProperty().multiply((double)280/400));
+//        this.card_name.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
+////        if (this.card_name.getText().length() >= 12 ) this.card_name.setFont(Font.font("Times New Roman", 20));
+////        this.name_font_size = new SimpleIntegerProperty(36);
+////        this.name_size = (box.heightProperty().multiply((double) 36/540)).intValue();
+////        this.card_name.setFont(Font.font(java.awt.Font.SERIF, name_size));
+////        this.card_name.relocate(box.getWidth() * ((double)329/400), box.getHeight() * ((double)25/560));
+////        this.card_name.layoutXProperty().bind(box.widthProperty().multiply((double)30/400));
+////        this.card_name.layoutYProperty().bind(box.heightProperty().multiply((double)23/560));
+////
+//        this.card_desc.prefWidthProperty().bind(box.widthProperty().multiply((double)340/400));
+//        this.card_desc.prefHeightProperty().bind(box.heightProperty().multiply((double)110/560));
+//////        this.card_desc.layoutXProperty().bind(box.widthProperty().multiply((double)30/400));
+//////        this.card_desc.layoutYProperty().bind(box.heightProperty().multiply((double)394/560));
+////
+//        this.card_attribute.prefWidthProperty().bind(box.widthProperty().multiply((double)350/400));
+//        this.card_attribute.prefHeightProperty().bind(box.heightProperty().multiply((double)34/560));
+////        this.card_attribute.layoutXProperty().bind(box.widthProperty().multiply((double)25/400));
+////        this.card_attribute.layoutYProperty().bind(box.heightProperty().multiply((double)505/560));
+////
+//        this.card_skillType.prefWidthProperty().bind(box.widthProperty().multiply((double)82/400));
+//        this.card_skillType.prefHeightProperty().bind(box.heightProperty().multiply((double)48/560));
+////        this.card_skillType.layoutXProperty().bind(box.widthProperty().multiply((double)50/400));
 //        this.card_skillType.layoutYProperty().bind(box.heightProperty().multiply((double)82/560));
 
 //        this.cardW = new SimpleDoubleProperty(box.widthProperty().doubleValue());
@@ -171,8 +185,7 @@ public class CardDisplay implements Initializable, Publisher, Subscriber {
 //        Background background = new Background(backgroundImage);
 //        box.setBackground(background);
         box.setOnMouseMoved(e -> {if (this.show) doDisplayCard();});
-        box.setPrefWidth(this.cardWidth);
-        box.setPrefHeight(this.cardHeight);
+
 //        resizeCard();
     }
 
