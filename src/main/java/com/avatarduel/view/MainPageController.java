@@ -11,6 +11,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
+import com.avatarduel.model.gameplay.events.ChangePlayerEvent;
 import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.player.Player;
@@ -45,7 +46,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        DrawEvent.DrawEventHandler {
+        DrawEvent.DrawEventHandler, ChangePlayerEvent.ChangePlayerEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -234,6 +235,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         // % Gameplay Channel
         this.channel = channel;
         this.channel.addSubscriber("CHANGE_PHASE", this);
+        this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
 
@@ -247,6 +249,16 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.display2 = card2;
         this.phase = Phase.GAME_INIT;
         this.turn = 1;
+        this.channel.activePlayer = player1.getName();
+    }
+
+    public String getNextPlayer() {
+        if (turn%2 == 1) {
+            return player1.getName();
+        }
+        else {
+            return player2.getName();
+        }
     }
 
     public void setPhase(Phase p) {this.phase = p;}
@@ -303,6 +315,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             AlertPlayer alert = new AlertPlayer(channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn");
             alert.show();
         }
+        if (e.phase == Phase.END_PHASE) {
+            turn++;
+            this.publish("CHANGE_PLAYER", new ChangePlayerEvent(getNextPlayer()));
+        }
     }
 
     public void onDisplayCard(DisplayCardEvent event) {
@@ -329,6 +345,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onChangePlayer(ChangePlayerEvent e) {
+        this.channel.activePlayer = e.nextPlayer;
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
@@ -336,6 +357,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onDisplayCard((DisplayCardEvent) event);
         } else if (event instanceof DrawEvent) {
             this.onDrawEvent((DrawEvent) event);
+        } else if (event instanceof ChangePlayerEvent) {
+            this.onChangePlayer((ChangePlayerEvent) event);
         }
     }
 }
