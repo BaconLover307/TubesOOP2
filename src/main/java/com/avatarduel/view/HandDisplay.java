@@ -12,6 +12,7 @@ import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -19,6 +20,8 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -31,9 +34,9 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
     private static final double CARD_SIZEH = SCREENH * 112 / 1080;
 
     private Hand hand;
+    private ArrayList<CardDisplay> cardList;
     private GameplayChannel channel;
     private boolean showHand;
-    private double handW,handH,handX,handY;
     private HBox handBox;
 
     @Override
@@ -50,6 +53,8 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
         this.hand = hand;
         this.handBox = new HBox(CARD_SIZEW * 70 / 80);
         handBox.setAlignment(Pos.TOP_CENTER);
+
+        this.cardList = new ArrayList<CardDisplay>();
     }
 
     public HBox getHandBox() {return handBox;}
@@ -58,14 +63,27 @@ public class HandDisplay implements Initializable, Flippable, Publisher, Subscri
     // To flip cards
     public void flipOpen() {
         this.showHand = true;
+        for (CardDisplay cD: cardList) {
+            cD.flipOpen();;
+        }
     }
+//        for (int i = 0; i < getHandBox().getChildren().size(); i++) {
+//            Node n = getHandBox().getChildren().get(i);
+//            if (n instanceof CardDisplay) {
+//
+//            }
+//
+//        }
     public void flipClose() {
         this.showHand = false;
+        for (CardDisplay cD: cardList) {
+            cD.flipClose();
+        }
     }
 
     public void addCard(Card card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
-        cD.showCard();
+        cardList.add(cD);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
