@@ -1,8 +1,8 @@
 package com.avatarduel.view;
 
 import com.avatarduel.AvatarDuel;
-import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.model.cards.card.Flippable;
+import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
@@ -77,7 +77,11 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
-            this.handBox.getChildren().add(loader.load());
+            Pane toLoad = loader.load();
+            toLoad.setOnMouseClicked(event -> {
+                if (this.showHand) selectCard(cD);
+            });
+            this.handBox.getChildren().add(toLoad);
         } catch (Exception e) {
             System.out.println("Hand failed to add card!");
             System.out.println("Check Name " + cD.getCard().getName() );
@@ -91,6 +95,18 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
 
     public void onDrawEvent(DrawEvent event) {
         if (hand.getPlayer() == event.h) this.addCard(event.c);
+    }
+
+    public void selectCard(CardDisplay cD) {
+
+        if (cD.getCard() instanceof Land) {
+
+            System.out.println("LAND FROM HAND SELECTED");
+        } else if (cD.getCard() instanceof Character) {
+            System.out.println("CHAR FROM HAND SELECTED");
+        } else if (cD.getCard() instanceof Skill) {
+            System.out.println("SKILL FROM HAND SELECTED");
+        }
     }
 
     @Override

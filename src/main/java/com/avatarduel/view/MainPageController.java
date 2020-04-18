@@ -55,6 +55,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
     private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
+    private static final String BOARD1_FXML_PATH = "../fxml/Board1Display.fxml";
+    private static final String BOARD2_FXML_PATH = "../fxml/Board2Display.fxml";
     private static final String CUR_PHASE_STYLE_PATH = "com/avatarduel/css/curPhaseStyle.css";
     private static final String PHASE_STYLE_PATH = "com/avatarduel/css/phaseStyle.css";
     private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -100,8 +102,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public ScrollPane hand2Pane;
     @FXML
     public HBox hand2HBox;
+
+    public BoardDisplay board1;
     @FXML
     public AnchorPane board1Pane;
+    public BoardDisplay board2;
     @FXML
     public AnchorPane board2Pane;
 
@@ -194,6 +199,28 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         deck1.textProperty().bind(deck1Count);
         this.deck2Count = new SimpleStringProperty(Integer.toString(player2.getDeck().getSize()));
         deck2.textProperty().bind(deck2Count);
+
+        // Board setup
+        this.board1 = new BoardDisplay(this.channel, this.player1.getBoard());
+        try {
+            FXMLLoader loader1 = new FXMLLoader(getClass().getResource(BOARD1_FXML_PATH));
+            loader1.setControllerFactory(c -> this.board1);
+            this.board1Pane.getChildren().add(loader1.load());
+        } catch (Exception e) {
+            System.out.println("Board1 failed to load!");
+            e.printStackTrace();
+        }
+
+        this.board2 = new BoardDisplay(this.channel, this.player2.getBoard());
+        try {
+            FXMLLoader loader2 = new FXMLLoader(getClass().getResource(BOARD2_FXML_PATH));
+            loader2.setControllerFactory(c -> this.board1);
+            this.board1Pane.getChildren().add(loader2.load());
+        } catch (Exception e) {
+            System.out.println("Board2 failed to load!");
+            e.printStackTrace();
+        }
+
 
 //        this.hand1HBox = this.hand1Dis.getHandBox();
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
@@ -322,6 +349,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     public void onChangePhase(ChangePhaseEvent e) {
         setPhase(e.phase);
+        this.channel.phase = e.phase;
         if (this.phase != Phase.GAME_INIT) {
             getPhaseBox().getStylesheets().clear();
             getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
