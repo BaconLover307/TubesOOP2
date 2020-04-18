@@ -12,6 +12,10 @@ import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 import com.avatarduel.model.cards.cardcollection.Board;
 
+/**
+ * Kelas untuk Player
+ * @author Hengky - 13518048
+ */
 public class Player implements Publisher, Subscriber,
     AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler,
     UseLandEvent.UseLandEventHandler, SpendPowerEvent.SpendPowerEventHandler {
@@ -24,6 +28,12 @@ public class Player implements Publisher, Subscriber,
     protected Power powers;
     protected GameplayChannel channel;
 
+    /**
+     * Membuat player baru 
+     * @param name nama player
+     * @param health health point awal
+     * @param channel gameplay channel
+     */
     public Player(String name, int health, GameplayChannel channel) {
         this.name = name;
         this.deck = new Deck(channel, name);
@@ -45,10 +55,20 @@ public class Player implements Publisher, Subscriber,
     public int getHealth() {return this.health;}
     public Power getPower() {return this.powers;}
 
+    /**
+     * Implemen interface publisher
+     * @param topic 
+     * @param event 
+     */
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
     }
 
+    /**
+     * Implemen interface subscriber
+     * @param e event
+     */
+    @Override
     public void onEvent(BaseEvent e){
         if (e.getClass() == AttackPlayerEvent.class){
             this.onAttackPlayer((AttackPlayerEvent) e);
@@ -64,7 +84,10 @@ public class Player implements Publisher, Subscriber,
         }    
     }
 
-
+    /**
+     * Implemen handler event attack player
+     * @param e event
+     */
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
         if(this.name == e.target){
@@ -75,6 +98,10 @@ public class Player implements Publisher, Subscriber,
         }
     }
 
+    /**
+     * Implemen handler event reset power
+     * @param e event
+     */
     @Override
     public void onResetPowerEvent(ResetPowerEvent e) {
         if (e.player.equals(this.name)){
@@ -82,6 +109,10 @@ public class Player implements Publisher, Subscriber,
         }
     }
 
+    /**
+     * Implemen handler event use land
+     * @param e event
+     */
     @Override
     public void onUseLandEvent(UseLandEvent e){
         if (e.owner.equals(this.name)){
@@ -90,6 +121,10 @@ public class Player implements Publisher, Subscriber,
         }
     }
 
+    /**
+     * Implemen handler event spend power
+     * @param e event
+     */
     @Override
     public void onSpendPowerEvent(SpendPowerEvent e) {
         if (e.sender.equals(this.name)){

@@ -5,12 +5,14 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BoardDisplay implements BaseView, Initializable, Publisher, Subscriber {
@@ -40,12 +42,38 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     @FXML
     public AnchorPane skill5;
 
+    private GameplayChannel channel
     private Board board;
+    private CardDisplay[] arrCharCD;
+    private CardDisplay[] arrSkillCD;
     private double boardW;
     private double boardH;
 
 
     public BoardDisplay(GameplayChannel gameplayChannel, Board B) {
+        this.channel = gameplayChannel;
+        this.board = B;
+        this.arrCharCD = new CardDisplay[6];
+        this.arrSkillCD = new CardDisplay[6];
+        for (int i = 0; i < 6; i++) {
+            arrCharCD[i] = null;
+            arrSkillCD[i] = null;
+        }
+        channel.addSubscriber("SUMMON_CHARACTER", this);
+        channel.addSubscriber("SUMMON_SKILL", this);
+        channel.addSubscriber("DISCARD_SKILL", this);
+        channel.addSubscriber("DESTROY_CHARACTER_EVENT", this);
+    }
+
+    public void doIndicateSlot() {
+        for (int i = 0; i < 6; i++) {
+            if (arrCharCD[i] != null) {
+
+            }
+        }
+    }
+
+
 
 //        this.boardW = boardW;
 //        this.boardH = boardH;
@@ -71,7 +99,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 //        name.setX(nameX);
 //        name.setY(nameY);
 
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,4 +116,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     public void onEvent(BaseEvent event) {
 
     }
+
+
 }

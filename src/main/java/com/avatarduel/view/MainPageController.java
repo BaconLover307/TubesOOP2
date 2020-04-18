@@ -17,6 +17,7 @@ import com.avatarduel.model.gameplay.events.DisplayCardEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -49,7 +50,7 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        ChangePlayerEvent.ChangePlayerEventHandler {
+        ChangePlayerEvent.ChangePlayerEventHandler, EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -242,6 +243,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             if (event.getDeltaX() == 0 && event.getDeltaY() != 0 && turn == 2)
                 hand2Pane.setHvalue(hand2Pane.getHvalue() - event.getDeltaY()*1.5 / this.hand2Pane.getWidth());
         });
+
+        // ? Change Here if want to enable continue without draw
+        btnNext.setOnAction(event -> {
+            if (this.phase != Phase.DRAW_PHASE) doChangePhase();
+        });
         AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Start Game");
         gameStartAlert.show();
         doChangePhase();
@@ -254,6 +260,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("CHANGE_PLAYER", this);
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
+        this.channel.addSubscriber("END_GAME", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -320,6 +327,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         }
         this.cardPane.getChildren().clear();
+        if (e.phase == Phase.DRAW_PHASE) {
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer));   
+        }
         if (e.phase == Phase.END_PHASE) {
             String nextPlayer = getNextPlayer();
             AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
@@ -366,6 +376,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onEndGame(EndGameEvent e) {
+        e.execute(); 
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
@@ -375,6 +390,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onDrawEvent((DrawEvent) event);
         } else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
+        } else if (event instanceof EndGameEvent) {
+            this.onEndGame((EndGameEvent) event);
         }
     }
 }

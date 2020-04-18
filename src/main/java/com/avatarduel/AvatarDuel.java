@@ -87,7 +87,7 @@ public class AvatarDuel extends Application implements BaseView {
     btnExit.setOnAction(e -> stage.close());
 
     TilePane mainmenu = new TilePane(Orientation.VERTICAL);
-    mainmenu.setPadding(new Insets(screenSize.getHeight()/2 - 50, 10, 10,(screenSize.getWidth()/2)-105));
+    mainmenu.setPadding(new Insets(SCREENH/2 - 50, 10, 10,(SCREENW/2)-105));
     mainmenu.setHgap(12.0);
     mainmenu.setVgap(10.0);
     mainmenu.getChildren().addAll(btnStart, btnSetting, btnExit);

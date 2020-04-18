@@ -36,7 +36,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber {
     private HBox handBox;
 
     public HandDisplay(GameplayChannel gameplayChannel, Hand hand) {
-//        this.handW = handW; this.handH = handH; this.handX = handX; this.handY = handY;
         this.showHand = false;
         this.channel = gameplayChannel;
         this.channel.addSubscriber("DRAW_EVENT", this);
