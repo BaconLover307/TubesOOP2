@@ -6,9 +6,11 @@ import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
+import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -59,6 +61,17 @@ public class MainPageController{
 
         this.channel = channel;
         this.cardAmount = cardAmount;
+        Card cardSample = new Card("Aang", Element.AIR, "None","/com/avatarduel/card/image/character/Aang.png");
+        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/CardDisplay.fxml"));
+        cardLoader.setControllerFactory(c -> new CardDisplay(channel, cardSample, true));
+        try {
+            System.out.println("MEH");
+            Pane card = cardLoader.load();
+//            cardPane.getChildren().add(card);
+            System.out.println("MEH");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        this.player1 = new Player()
 

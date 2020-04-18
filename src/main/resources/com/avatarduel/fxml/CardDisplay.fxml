@@ -5,7 +5,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.cards.CardDisplay">
     <children>
-        <ImageView fx:id="card_bg" fitHeight="560.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="Card_bg" fitHeight="560.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
         </ImageView>
         <ImageView fx:id="card_image" fitHeight="240.0" fitWidth="300.0" layoutX="50.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
         </ImageView>
