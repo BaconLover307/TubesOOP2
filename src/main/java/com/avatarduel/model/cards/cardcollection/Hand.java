@@ -73,12 +73,12 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
 //        // TODO ilangin kartu C dari hand
 //    }
 
-    public void doUseSkill(Skill S) {
-        // TODO cek dulu elemen yg dimiliki player cukup / ngga
-        this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
-        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,S.getElement(),S.getPowVal()))
-        // TODO ilangin kartu S dari hand
-    }
+//    public void doUseSkill(Skill S) {
+//        // TODO cek dulu elemen yg dimiliki player cukup / ngga
+//        this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
+//        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,S.getElement(),S.getPowVal()))
+//        // TODO ilangin kartu S dari hand
+//    }
 
     public void doUseLand(Land L) {
         this.publish("USE_LAND", new UseLandEvent(L, getPlayer()));

@@ -24,7 +24,9 @@ import java.util.ResourceBundle;
 
 public class BoardDisplay implements BaseView, Initializable, Publisher, Subscriber,
         RequestSummonEvent.RequestSummonEventHandler,
-        SummonCharacterEvent.SummonCharacterEventHandler{
+        SummonCharacterEvent.SummonCharacterEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
+        RequestSkillTargetEvent.RequestSkillTargetEventHandler {
 
     @FXML
     public AnchorPane char0;
@@ -64,6 +66,11 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     public BoardDisplay(GameplayChannel gameplayChannel, Board B) {
         this.channel = gameplayChannel;
         this.channel.addSubscriber("REQUEST_SUMMON", this);
+        this.channel.addSubscriber("REQUEST_SKILL_TARGET", this);
+        this.channel.addSubscriber("SUMMON_CHARACTER", this);
+        this.channel.addSubscriber("SUMMON_SKILL", this);
+        this.channel.addSubscriber("DISCARD_SKILL", this);
+        this.channel.addSubscriber("DESTROY_CHARACTER_EVENT", this);
 
         this.board = B;
         this.arrCharCD = new CardDisplay[6];
@@ -74,10 +81,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             arrCharCD[i] = null;
             arrSkillCD[i] = null;
         }
-        channel.addSubscriber("SUMMON_CHARACTER", this);
-        channel.addSubscriber("SUMMON_SKILL", this);
-        channel.addSubscriber("DISCARD_SKILL", this);
-        channel.addSubscriber("DESTROY_CHARACTER_EVENT", this);
+
     }
 
     @Override
@@ -121,26 +125,26 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     }
 
-    public void addSkilltoBoard(int id, Skill card) {
+    public void addSkilltoBoard(int id, Skill card, int Cid) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
 //        SummonedCharacter SC = new SummonedCharacter(card, true, channel.activePlayer.getName(), channel);
-//        arrCharCD[id] = cD;
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
-//            loader.setControllerFactory(c -> cD);
-//            Pane toLoad = loader.load();
-//            this.arrCharPane[id].getChildren().add(toLoad);
-//            this.arrCharPane[id].setOnMouseClicked(event -> {
-//                if (this.channel.activePlayer.getName() == this.board.getOwner() &&
-//                        !this.channel.isSelecting) {
-//                    if (this.channel.phase == Phase.MAIN_PHASE) rotateChar(SC, this.arrCharPane[id]);
-//                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
-//                }
-//            });
-//        } catch (Exception e) {
-//            System.out.println("Board failed to summon Character!");
-//            e.printStackTrace();
-//        }
+        arrSkillCD[id] = cD;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
+            loader.setControllerFactory(c -> cD);
+            Pane toLoad = loader.load();
+            this.arrSkillPane[id].getChildren().add(toLoad);
+            this.arrSkillPane[id].setOnMouseClicked(event -> {
+                if (this.channel.activePlayer.getName() == this.board.getOwner() &&
+                        !this.channel.isSelecting) {
+                    if (this.channel.phase == Phase.MAIN_PHASE) discardSkill(cD, this.arrCharPane[id]);
+                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("Board failed to summon Character!");
+            e.printStackTrace();
+        }
 
     }
 
@@ -161,6 +165,10 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     public void attackChar(CardDisplay cD) {
         System.out.println("ATTACK CARD");
+    }
+
+    public void discardSkill(CardDisplay cD, AnchorPane AP) {
+
     }
 
     public void ResetOnAction(AnchorPane[] arrPane) {
@@ -197,11 +205,27 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                         "-fx-border-width: 0.5em;"+
                         "-fx-border-color: green"
                 );
-                int finalI = i;
+                int ID = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
                     ResetStyle();
-                    publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, finalI, event.owner));
-                    publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPower()));
+                    publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, ID, event.owner));
+                    publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPowVal()));
+                });
+            }
+        }
+    }
+    public void doSelectSkillSlotAvailable(RequestSummonEvent event) {
+        for (int i = 0; i < 6; i++) {
+            if (arrSkillPane[i].getChildren().size() == 0) {
+                arrSkillPane[i].setStyle(
+                        "-fx-border-radius: 0.5em;" +
+                        "-fx-border-width: 0.5em;"+
+                        "-fx-border-color: deepskyblue"
+                );
+                int ID = i;
+                arrSkillPane[i].setOnMouseClicked(e -> {
+                    ResetStyle();
+                    publish("REQUEST_SKILL_TARGET", new RequestSkillTargetEvent((Skill) event.card, ID, event.owner));
                 });
             }
         }
@@ -212,7 +236,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     @Override
     public void onRequestSummon(RequestSummonEvent e) {
-        if (e.owner == this.board.getOwner()) {
+        if (e.owner.equals(this.board.getOwner())) {
             if (e.card instanceof Character) {
                 doSelectCharSlotAvailable(e);
             }
@@ -221,9 +245,37 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        if (e.owner == this.board.getOwner()) {
+        if (e.owner.equals(this.board.getOwner())) {
             addChartoBoard(e.id, e.C);
             this.channel.isSelecting = false;
+        }
+    }
+
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (e.owner.equals(this.board.getOwner())) {
+            addSkilltoBoard(e.Sid, e.S, e.Cid);
+            this.channel.isSelecting = false;
+        }
+    }
+
+    @Override
+    public void onRequestSkillTarget(RequestSkillTargetEvent event) {
+        // $ Select Skill Target
+        for (int i = 0; i < 6; i++) {
+            if (arrCharPane[i].getChildren().size() == 1) {
+                arrCharPane[i].setStyle(
+                        "-fx-border-radius: 0.5em;" +
+                        "-fx-border-width: 0.5em;"+
+                        "-fx-border-color: green"
+                );
+                int ID = i;
+                arrCharPane[i].setOnMouseClicked(e -> {
+                    ResetStyle();
+                    publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, ID, event.owner));
+                    publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
+                });
+            }
         }
     }
 
@@ -233,6 +285,10 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             this.onRequestSummon((RequestSummonEvent) event);
         } else if (event instanceof SummonCharacterEvent) {
             this.onSummonCharacterEvent((SummonCharacterEvent) event);
+        } else if (event instanceof SummonSkillEvent) {
+            this.onSummonSkillEvent((SummonSkillEvent) event);
+        } else if (event instanceof RequestSkillTargetEvent) {
+            this.onRequestSkillTarget((RequestSkillTargetEvent) event);
         }
     }
 

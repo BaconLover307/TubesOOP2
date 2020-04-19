@@ -84,10 +84,10 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public void destroy() {
         // TODO remove this card and remove every skill attached
-        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
         for (Skill skill : attachedSkill) {
             doDiscardSkill(skill);
         }
+        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
     }
 
     @Override

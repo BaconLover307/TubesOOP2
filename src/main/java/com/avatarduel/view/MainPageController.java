@@ -1,12 +1,10 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
-import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Land;
-import com.avatarduel.model.cards.card.Aura;
-import com.avatarduel.model.cards.card.Card;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
@@ -25,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
@@ -440,8 +439,15 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onRequestSummon(RequestSummonEvent e) {
-        if (this.channel.activePlayer.equals(e.owner)) {
-            if (e.card instanceof Character) {
+        if (e.card instanceof Skill) {
+            if (this.player1.getBoard().isCharSlotEmpty() && this.player2.getBoard().isCharSlotEmpty()) {
+                if (this.player1.getName().equals(e.owner)) {
+                    this.board1.doSelectSkillSlotAvailable(e);
+                    this.channel.isSelecting = true;
+                }
+            } else {
+                AlertPlayer noTarget = new AlertPlayer("There are no Characters to target!", Alert.AlertType.WARNING, "No Target!");
+                noTarget.show();
             }
         }
     }

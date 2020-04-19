@@ -44,7 +44,7 @@ public class Character extends Card {
      * Mengambil nilai power karakter
      * @return nilai power
      */
-    public int getPower() {return this.powVal;}
+    public int getPowVal() {return this.powVal;}
 
     /**
      * Menambah/Mengurangi nilai attack karakter

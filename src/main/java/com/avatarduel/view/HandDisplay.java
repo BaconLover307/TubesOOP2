@@ -130,8 +130,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             AlertChoice landChoice = new AlertChoice("Summon Character", "Discard", ("Character Card " + cD.getCard().getName() + " selected."), "Character Card");
             String ret = landChoice.showAndReturn();
             if (ret.equals("Summon Character")) {
-                if (this.channel.activePlayer.getPowers().getPower(cD.getCard().getElement()).getSize() >= ((Character) cD.getCard()).getPower()) {
-                    if (channel.activePlayer.getBoard().isCharAvailable()) {
+                if (this.channel.activePlayer.getPowers().getPower(cD.getCard().getElement()).getSize() >= ((Character) cD.getCard()).getPowVal()) {
+                    if (channel.activePlayer.getBoard().isCharSlotAvailable()) {
                         publish("REQUEST_SUMMON", new RequestSummonEvent(cD.getCard(), channel.activePlayer.getName()));
                         this.channel.isSelecting = true;
                     } else {
@@ -152,6 +152,17 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             AlertChoice landChoice = new AlertChoice("Summon Skill", "Discard", ("Skill Card " + cD.getCard().getName() + " selected."), "Skill Card");
             String ret = landChoice.showAndReturn();
             if (ret.equals("Summon Skill")) {
+                if (this.channel.activePlayer.getPowers().getPower(cD.getCard().getElement()).getSize() >= ((Skill) cD.getCard()).getPowVal()) {
+                    if (channel.activePlayer.getBoard().isSkillSlotAvailable()) {
+                        publish("REQUEST_SUMMON", new RequestSummonEvent(cD.getCard(), channel.activePlayer.getName()));
+                    } else {
+                        AlertPlayer noSlot = new AlertPlayer("Skill slot unavailable!", Alert.AlertType.WARNING, "Slot Unavailable");
+                        noSlot.show();
+                    }
+                } else {
+                        AlertPlayer insufficientPower = new AlertPlayer("Your " + cD.getCard().getElement() + " power is not enough!" , Alert.AlertType.WARNING, "Insufficient Power");
+                        insufficientPower.show();
+                }
                 // TODO Publish Request Summon SKill
 //                if (this.hand.isUsedLand()) {
 //                AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card i?n this turn!", Alert.AlertType.WARNING, "Used Land!");

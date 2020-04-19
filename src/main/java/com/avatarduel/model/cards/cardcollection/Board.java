@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.SummonedSkill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -49,10 +50,12 @@ public class Board implements Subscriber, Publisher,
     public void addChartoBoard(int id, SummonedCharacter C) {this.charBoard[id] = C;}
     public SummonedCharacter getCharwithId(int id) {return this.charBoard[id];}
 
-    public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {this.skillBoard[id] = s;}
+    public void addSkilltoBoard(int id, Skill s) {
+        this.skillBoard[id] = s;
+    }
     public Skill getSkillwithId(int id) {return this.skillBoard[id];}
 
-    public boolean[] getAvailableChar() {
+    public boolean[] getAvailableCharSlot() {
         boolean[] id = new boolean[SIZE];
         for (int i = 0; i<SIZE; i++ ) {
             if (this.charBoard[i] ==null) id[i] = true;
@@ -61,10 +64,10 @@ public class Board implements Subscriber, Publisher,
         return id;
     }
 
-    public boolean isCharAvailable() {
+    public boolean isCharSlotAvailable() {
         int i = 0;
         int count = 0;
-        boolean[] bool = getAvailableChar();
+        boolean[] bool = getAvailableCharSlot();
         while (i<SIZE) {
             if (!bool[i]) {
                 count = count + 1;
@@ -73,7 +76,18 @@ public class Board implements Subscriber, Publisher,
         }
         return count<SIZE;
     }
-    public boolean[] getAvailableSkill() {
+
+    public boolean isCharSlotEmpty() {
+        int i = 0;
+        boolean[] bool = getAvailableCharSlot();
+        while (i<SIZE) {
+            if (!bool[i]) return false;
+            i++;
+        }
+        return true;
+    }
+
+    public boolean[] getAvailableSkillSlot() {
         boolean[] id = new boolean[SIZE];
         for (int i = 0; i<SIZE; i++ ) {
             if (this.skillBoard[i] ==null) id[i] = true;
@@ -82,9 +96,9 @@ public class Board implements Subscriber, Publisher,
         return id;
     }
 
-    public boolean isSkillAvailable() {
+    public boolean isSkillSlotAvailable() {
         int i = 0;
-        boolean[] bool = getAvailableSkill();
+        boolean[] bool = getAvailableSkillSlot();
         while (!bool[i] && i<SIZE) {
             i++;
         }
@@ -126,20 +140,34 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (this.getOwner() == e.owner) {
+            addSkilltoBoard(e.Sid, e.S);
+        }
         // TODO Masukin e.S ke array skill 
         // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
-        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
+//        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
     }
 
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
         // TODO remove skill dari skill board
+        if (e.S.getClass() == Aura.class) {
+            e.S = (Aura) e.S;
+            //e.SC.getCharCard().setAttack(-1*(e.S.getAttVal()));
+            //e.SC.getCharCard().setDefense(-1*(e.S.getDefVal()));
+        }
         e.SC.getAttachedSkill().remove(e.S); 
     }
 
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
-        // TODO remove e.SC dari array summonedchar board
+        // remove e.SC dari array summonedchar board
+        for (int i=0;i<6;i++) {
+            if (charBoard[i] == e.SC) {
+                charBoard[i] = null;
+                break;
+            }
+        }
     }
 
 }

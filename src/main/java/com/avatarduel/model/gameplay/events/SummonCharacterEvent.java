@@ -16,6 +16,8 @@ public class SummonCharacterEvent implements BaseEvent {
     /**
      * Membuat event baru
      * @param C kartu karakter yang di summon
+     * @param id id kartu karakter yang di summon
+     * @param owner pemilik kartu karakter yang di summon
      */
     public SummonCharacterEvent(Character C, int id, String owner){
         this.C = C;

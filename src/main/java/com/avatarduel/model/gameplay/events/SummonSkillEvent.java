@@ -10,13 +10,22 @@ import com.avatarduel.model.cards.card.Skill;
 public class SummonSkillEvent implements BaseEvent {
     
     public Skill S;
+    public int Sid;
+    public int Cid;
+    public String owner;
 
     /**
      * Membuat event baru
      * @param S skill yang disummon
+     * @param Sid skill yang disummon
+     * @param Cid id target dari skill
+     * @param owner pemilik kartu skill yang disummon
      */
-    public SummonSkillEvent(Skill S){
+    public SummonSkillEvent(Skill S, int Sid, int Cid, String owner){
         this.S = S;
+        this.Sid = Sid;
+        this.Cid = Cid;
+        this.owner = owner;
     }
 
     /**
