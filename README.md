@@ -7,4 +7,15 @@
 1. jalankan perintah cmd `gradlew run`
 
 # Screenshot aplikasi
-![Screenshot aplikasi](startscreen.jpg)
+## Tampilan Menu Utama
+![Screenshot aplikasi](doc\\startScreen.png)
+
+## Tampilan dalam permainan
+
+![Screenshot permainan1](doc\\gameplay1.png)
+
+
+![Screenshot permainan2](doc\\gameplay2.png)
+
+
+![Screenshot permainan3](doc\\gameplay3.png)
