@@ -1,6 +1,8 @@
 package com.avatarduel.model.cards.card;
 
 import java.util.ArrayList;
+
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.SummonCharClickedEvent;
@@ -45,6 +47,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel.addSubscriber("SUMMON_CHAR_CLICKED", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
         this.gameplayChannel.addSubscriber("DRAW_PHASE", this);
+        this.gameplayChannel.addSubscriber("REPOSITION_CHARACTER", this);
     }
     
     public Character getCharCard() {return this.CharCard;}
@@ -184,11 +187,38 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onDrawEvent(DrawEvent e) {
-        if((this.gameplayChannel.phase.equals("DRAW_PHASE"))
+        if((this.gameplayChannel.phase == Phase.DRAW_PHASE)
              && this.gameplayChannel.activePlayer.getName() == this.owner){
             this.isAlreadyAttack = false;
         }
     }
+
+    @Override
+    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
+        if (e.SC.equals(this) && e.owner == this.owner) {
+            rotate();
+        }
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        if(event instanceof AttackCharacterEvent){
+            this.onAttackCharacter((AttackCharacterEvent) event);
+        }
+        else if(event instanceof SkillCardAttachedEvent){
+            this.onSkillCardAttached((SkillCardAttachedEvent) event);
+        }
+        else if(event instanceof CardClickedEvent){
+            this.onCardClicked((CardClickedEvent) event);
+        }
+        else if(event instanceof DrawEvent){
+            this.onDrawEvent((DrawEvent) event);
+        }
+        else if(event instanceof RepositionCharacterEvent){
+            this.onRepositionCharacterEvent((RepositionCharacterEvent) event);
+        }
+    }
+
 
 
 }

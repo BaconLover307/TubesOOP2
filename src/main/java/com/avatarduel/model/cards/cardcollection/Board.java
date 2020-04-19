@@ -19,9 +19,11 @@ import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
 public class Board implements Subscriber, Publisher,
-    SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
-    DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler,
-    RepositionCharacterEvent.RepositionCharacterEventHandler {
+        SummonCharacterEvent.SummonCharacterEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
+        DiscardSkillEvent.DiscardSkillEventHandler,
+        DestroyCharacterEvent.DestroyCharacterEventHandler
+    {
 
     private static final int SIZE = 6;
     
@@ -48,10 +50,12 @@ public class Board implements Subscriber, Publisher,
     public void addChartoBoard(int id, SummonedCharacter C) {this.charBoard[id] = C;}
     public SummonedCharacter getCharwithId(int id) {return this.charBoard[id];}
 
-    public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {this.skillBoard[id] = s;}
+    public void addSkilltoBoard(int id, Skill s) {
+        this.skillBoard[id] = s;
+    }
     public Skill getSkillwithId(int id) {return this.skillBoard[id];}
 
-    public boolean[] getAvailableChar() {
+    public boolean[] getAvailableCharSlot() {
         boolean[] id = new boolean[SIZE];
         for (int i = 0; i<SIZE; i++ ) {
             if (this.charBoard[i] ==null) id[i] = true;
@@ -60,9 +64,41 @@ public class Board implements Subscriber, Publisher,
         return id;
     }
 
-    public boolean isCharAvailable() {
+    public boolean isCharSlotAvailable() {
         int i = 0;
-        boolean[] bool = getAvailableChar();
+        int count = 0;
+        boolean[] bool = getAvailableCharSlot();
+        while (i<SIZE) {
+            if (!bool[i]) {
+                count = count + 1;
+            }
+            i++;
+        }
+        return count<SIZE;
+    }
+
+    public boolean isCharSlotEmpty() {
+        int i = 0;
+        boolean[] bool = getAvailableCharSlot();
+        while (i<SIZE) {
+            if (!bool[i]) return false;
+            i++;
+        }
+        return true;
+    }
+
+    public boolean[] getAvailableSkillSlot() {
+        boolean[] id = new boolean[SIZE];
+        for (int i = 0; i<SIZE; i++ ) {
+            if (this.skillBoard[i] ==null) id[i] = true;
+            else id[i] = false;
+        }
+        return id;
+    }
+
+    public boolean isSkillSlotAvailable() {
+        int i = 0;
+        boolean[] bool = getAvailableSkillSlot();
         while (!bool[i] && i<SIZE) {
             i++;
         }
@@ -92,9 +128,6 @@ public class Board implements Subscriber, Publisher,
         else if (e.getClass() == DestroyCharacterEvent.class) {
             this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
         }
-        else if (e.getClass() == RepositionCharacterEvent.class) {
-            this.onRepositionCharacterEvent((RepositionCharacterEvent) e);
-        }
     }
     
     @Override
@@ -107,9 +140,12 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (this.getOwner() == e.owner) {
+            addSkilltoBoard(e.Sid, e.S);
+        }
         // TODO Masukin e.S ke array skill 
         // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
-        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
+//        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
     }
 
     @Override
@@ -134,10 +170,6 @@ public class Board implements Subscriber, Publisher,
         }
     }
 
-    @Override
-    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
-        // TODO rotate tampilan e.SC
-    }
 }
 
 

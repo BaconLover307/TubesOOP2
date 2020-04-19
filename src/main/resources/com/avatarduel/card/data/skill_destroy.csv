@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+id'/t'name'/t'element'/t'description'/t'imagepath'/t'power
+93'/t'Guru Laghima's Teachings'/t'AIR'/t'New growth cannot exist without first the destruction of the old.'/t'com/avatarduel/card/image/skill/Guru Laghima's Teachings.png'/t'4
+94'/t'Hurricane Winds'/t'AIR'/t'What the airbenders had lacked in skill and power, they made up for in numbers.'/t'com/avatarduel/card/image/skill/Hurricane Winds.png'/t'3
+95'/t'Kyoshi's Triumph'/t'AIR'/t'A powerful gust of wind washes over the surprised Chin and strips him of all his clothes, except for his underwear.'/t'com/avatarduel/card/image/skill/Kyoshi's Triumph.png'/t'4
+96'/t'Tornado'/t'AIR'/t'An Avatar-level airbender can create massive tornadoes and hurricanes at will.'/t'com/avatarduel/card/image/skill/Tornado.png'/t'3
+97'/t'Creeping Crystal'/t'EARTH'/t'Jennamite, otherwise known as creeping crystal, grows at remarkably fast speeds when it comes into contact with organic matter.'/t'com/avatarduel/card/image/skill/Creeping Crystal.png'/t'3
+98'/t'Earth Shackles'/t'EARTH'/t'With proper timing, an earthbender can bind an opponent's arms with triangle-shaped slabs.'/t'com/avatarduel/card/image/skill/Earth Shackles.png'/t'3
+99'/t'Rock Bullet'/t'EARTH'/t'A master earthbender can launch shrapnel-like fragments of earth with great speed.'/t'com/avatarduel/card/image/skill/Rock Bullets.png'/t'4
+100'/t'Rockslide'/t'EARTH'/t'An earthbender can cause many rocks of a multitude of sizes to rain down on their opponent.'/t'com/avatarduel/card/image/skill/Rockslide.png'/t'4
+101'/t'Agni Kai'/t'FIRE'/t'A fight for one's honor and is won only when one opponent burns the other.'/t'com/avatarduel/card/image/skill/Agni Kai.png'/t'4
+102'/t'Dragon Fire'/t'FIRE'/t'"Their fire was beautiful. I saw so many colors, colors I've never imagined. "'/t'com/avatarduel/card/image/skill/Dragon Fire.png'/t'4
+103'/t'Fire Breath'/t'FIRE'/t'Iroh was the last outsider to face the masters. They deemed him worthy and passed the secret onto him as well.'/t'com/avatarduel/card/image/skill/Fire Breath.png'/t'3
+104'/t'Raze'/t'FIRE'/t'From our airships, we will rain fire over their lands, a fire that will destroy everything; and out of the ashes, a new world will be born.'/t'com/avatarduel/card/image/skill/Raze.png'/t'3
+105'/t'Dessication'/t'WATER'/t'"They're called fire lilies. They only bloom a few weeks a year. And like all plants and all living things, they're filled with water. "'/t'com/avatarduel/card/image/skill/Dessication.png'/t'3
+106'/t'Ocean's Wrath'/t'WATER'/t'It its wrath, the Ocean Spirit La laid waste to the Fire Nation's armies.'/t'com/avatarduel/card/image/skill/Ocean's Wrath.png'/t'4
+107'/t'Sever Bending'/t'WATER'/t'"When he took my bending, the sensation was somehow familiar. I later recognized it as my brother's bloodbending grip. "'/t'com/avatarduel/card/image/skill/Sever Bending.png'/t'4
+108'/t'Whirlpool'/t'WATER'/t'The Great Serpent is trapped, caught in the maelstrom.'/t'com/avatarduel/card/image/skill/Whirlpool.png'/t'3
+=======
 id,name,element,description,imagepath,power
 93,Guru Laghima's Teachings,AIR,New growth cannot exist without first the destruction of the old.,com/avatarduel/card/image/skill/Guru Laghima's Teachings.png,4
 94,Hurricane Winds,AIR,"What the airbenders had lacked in skill and power they made up for in numbers.",com/avatarduel/card/image/skill/Hurricane Winds.png,3
@@ -15,3 +34,4 @@ id,name,element,description,imagepath,power
 106,Ocean's Wrath,WATER,"It its wrath the Ocean Spirit La laid waste to the Fire Nation's armies.",com/avatarduel/card/image/skill/Ocean's Wrath.png,4
 107,Sever Bending,WATER,"When he took my bending the sensation was somehow familiar. I later recognized it as my brother's bloodbending grip. ",com/avatarduel/card/image/skill/Sever Bending.png,4
 108,Whirlpool,WATER,"The Great Serpent is trapped caught in the maelstrom.",com/avatarduel/card/image/skill/Whirlpool.png,3
+>>>>>>> 804c5596f4358f6c16870d110a60b9d75cf2367d

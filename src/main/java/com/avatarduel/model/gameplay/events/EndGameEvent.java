@@ -35,7 +35,7 @@ public class EndGameEvent implements BaseEvent {
      */
     @Override
     public void execute() {
-        System.out.print("Permainan Selesai! " + getLoser() + "kalah!");
+        System.out.println("Permainan Selesai! " + getLoser() + "kalah!");
     }
     
 }

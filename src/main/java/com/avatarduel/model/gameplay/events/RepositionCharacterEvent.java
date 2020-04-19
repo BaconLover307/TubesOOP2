@@ -8,13 +8,16 @@ import com.avatarduel.model.gameplay.BaseEvent;
 public class RepositionCharacterEvent implements BaseEvent {
     
     public SummonedCharacter SC;
+    public String owner;
 
     /**
      * Membuat event baru
      * @param SC kartu karakter yang di posisinya diubah
+     * @param SC pemilik kartu
      */
-    public RepositionCharacterEvent(SummonedCharacter SC) {
+    public RepositionCharacterEvent(SummonedCharacter SC, String owner) {
         this.SC = SC;
+        this.owner = owner;
     }
 
     /**
