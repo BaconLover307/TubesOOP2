@@ -156,9 +156,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
             File destroyCSVFile = new File(getClass().getResource(DESTROY_CSV_FILE_PATH).toURI());
-            File powerupCSVFile = new File(getClass().getResource(POWERUP_CSV_FILE_PATH).toURI());
-            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerupCSVFile, cardAmount);
-            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerupCSVFile, cardAmount);
+            File powerUpCSVFile = new File(getClass().getResource(POWERUP_CSV_FILE_PATH).toURI());
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerUpCSVFile, cardAmount);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerUpCSVFile, cardAmount);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);
@@ -278,8 +278,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 this.channel.isSelecting = false;
-                this.board1.ResetAll();
-                this.board2.ResetAll();
+                this.board1.ResetStyle();
+                this.board2.ResetStyle();
             }
         });
 
@@ -291,9 +291,19 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         // DEBUG
         this.hand1Dis.addCard(display);
         this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
         this.hand1Dis.addCard(display2);
         this.hand1Dis.addCard(display2);
         this.hand1Dis.addCard(display2);
+        this.hand2Dis.addCard(display);
+        this.hand2Dis.addCard(display);
+        this.hand2Dis.addCard(display2);
+        this.hand2Dis.addCard(display2);
+        this.hand2Dis.addCard(display2);
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {

@@ -3,6 +3,7 @@ package com.avatarduel.view;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Land;
+import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.cards.cardcollection.Board;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -113,12 +114,33 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                     if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
                 }
             });
-
-
         } catch (Exception e) {
             System.out.println("Board failed to summon Character!");
             e.printStackTrace();
         }
+
+    }
+
+    public void addSkilltoBoard(int id, Skill card) {
+        CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
+//        SummonedCharacter SC = new SummonedCharacter(card, true, channel.activePlayer.getName(), channel);
+//        arrCharCD[id] = cD;
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
+//            loader.setControllerFactory(c -> cD);
+//            Pane toLoad = loader.load();
+//            this.arrCharPane[id].getChildren().add(toLoad);
+//            this.arrCharPane[id].setOnMouseClicked(event -> {
+//                if (this.channel.activePlayer.getName() == this.board.getOwner() &&
+//                        !this.channel.isSelecting) {
+//                    if (this.channel.phase == Phase.MAIN_PHASE) rotateChar(SC, this.arrCharPane[id]);
+//                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
+//                }
+//            });
+//        } catch (Exception e) {
+//            System.out.println("Board failed to summon Character!");
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -148,7 +170,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void ResetAll() {
+    public void ResetStyle() {
         for (int i=0; i<6; i++) {
 //            arrCharPane[i].setOnMouseClicked(null);
             arrCharPane[i].setStyle(null);
@@ -177,7 +199,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int finalI = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
-                    ResetAll();
+                    ResetStyle();
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, finalI, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPower()));
                 });
@@ -196,8 +218,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             }
         }
     }
-
-
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {

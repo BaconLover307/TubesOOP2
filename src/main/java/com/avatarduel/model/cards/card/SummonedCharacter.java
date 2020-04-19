@@ -175,7 +175,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     @Override
     public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
         if (e.SC.equals(this) && e.owner == this.owner) {
-            isAttack = !isAttack;
+            rotate();
         }
     }
 

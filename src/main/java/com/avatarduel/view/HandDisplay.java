@@ -125,6 +125,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
                 this.hand.removeCard(cD.getCard());
                 this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
             }
+
         } else if (cD.getCard() instanceof Character) {
             AlertChoice landChoice = new AlertChoice("Summon Character", "Discard", ("Character Card " + cD.getCard().getName() + " selected."), "Character Card");
             String ret = landChoice.showAndReturn();
@@ -133,7 +134,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
                     if (channel.activePlayer.getBoard().isCharAvailable()) {
                         publish("REQUEST_SUMMON", new RequestSummonEvent(cD.getCard(), channel.activePlayer.getName()));
                         this.channel.isSelecting = true;
-                        System.out.println("Requesting...");
                     } else {
                         AlertPlayer noSlot = new AlertPlayer("Character slot unavailable!", Alert.AlertType.WARNING, "Slot Unavailable");
                         noSlot.show();
@@ -142,20 +142,12 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
                     AlertPlayer insufficientPower = new AlertPlayer("Your " + cD.getCard().getElement() + " power is not enough!" , Alert.AlertType.WARNING, "Insufficient Power");
                     insufficientPower.show();
                 }
-
-                // TODO Publish Request Summon Skill
-//                if (this.hand.isUsedLand()) {
-//                    AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card in this turn!", Alert.AlertType.WARNING, "Used Land!");
-//                    hasUsedLand.show();
-//                } else {
-//                    this.hand.doUseLand((Land) cD.getCard());
-//                }
-
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
                 this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
             }
+
         } else if (cD.getCard() instanceof Skill) {
             AlertChoice landChoice = new AlertChoice("Summon Skill", "Discard", ("Skill Card " + cD.getCard().getName() + " selected."), "Skill Card");
             String ret = landChoice.showAndReturn();

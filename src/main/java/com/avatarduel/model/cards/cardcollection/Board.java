@@ -63,7 +63,28 @@ public class Board implements Subscriber, Publisher,
 
     public boolean isCharAvailable() {
         int i = 0;
+        int count = 0;
         boolean[] bool = getAvailableChar();
+        while (i<SIZE) {
+            if (!bool[i]) {
+                count = count + 1;
+            }
+            i++;
+        }
+        return count<SIZE;
+    }
+    public boolean[] getAvailableSkill() {
+        boolean[] id = new boolean[SIZE];
+        for (int i = 0; i<SIZE; i++ ) {
+            if (this.skillBoard[i] ==null) id[i] = true;
+            else id[i] = false;
+        }
+        return id;
+    }
+
+    public boolean isSkillAvailable() {
+        int i = 0;
+        boolean[] bool = getAvailableSkill();
         while (!bool[i] && i<SIZE) {
             i++;
         }
