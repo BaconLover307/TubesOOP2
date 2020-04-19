@@ -10,15 +10,18 @@ public class AttackCharacterEvent implements BaseEvent {
 
     public SummonedCharacter fromCard;
     public SummonedCharacter toCard;
+    public int id;
 
     /**
      * Membuat event baru
      * @param fromCard kartu milik activePlayer
      * @param toCard kartu milik kartu lawan yang ingin diserang
+     * @param id id kartu target
      */
-    public AttackCharacterEvent(SummonedCharacter fromCard, SummonedCharacter toCard){
+    public AttackCharacterEvent(SummonedCharacter fromCard, SummonedCharacter toCard, int id){
         this.fromCard = fromCard;
         this.toCard = toCard;
+        this.id = id;
     }
 
     /**

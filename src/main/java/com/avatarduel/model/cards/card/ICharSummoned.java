@@ -20,12 +20,14 @@ public interface ICharSummoned {
     /**
      * Melakukan attack ke kartu karakter lain
      * @param target kartu karakter lain
+     * @param id id target
      */
-    public void doAttack(SummonedCharacter target);
+    public void doAttack(SummonedCharacter target, int id);
 
     /**
      * Menghancurkan kartu karakter yang di summon
+     * @param id id karakter yang akan dihancurkan
      */
-    public void doDestroy();
+    public void doDestroy(int id);
 
 }

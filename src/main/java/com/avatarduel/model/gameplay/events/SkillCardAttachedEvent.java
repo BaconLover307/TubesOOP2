@@ -11,15 +11,18 @@ public class SkillCardAttachedEvent implements BaseEvent {
 
     public Skill skillCard;
     public SummonedCharacter charCard;
+    public int id;
 
     /**
      * Membuat event baru
      * @param skillCard skill card yang akan dikenakan ke karakter
      * @param charCard kartu karakter yang akan diberi skill
+     * @param id id kartu karakter
      */
-    public SkillCardAttachedEvent(Skill skillCard, SummonedCharacter charCard){
+    public SkillCardAttachedEvent(Skill skillCard, SummonedCharacter charCard, int id){
         this.skillCard = skillCard;
         this.charCard = charCard;
+        this.id = id;
     }
 
     /**

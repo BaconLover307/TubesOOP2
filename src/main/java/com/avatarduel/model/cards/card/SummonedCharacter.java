@@ -74,8 +74,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel.sendEvent(topic, event);
     }
 
-    public void doAttack(SummonedCharacter target) {
-        this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target));
+    public void doAttack(SummonedCharacter target, int ID) {
+        this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target, ID));
     }
     public void doAttackPlayer(String target) {
         this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(this.CharCard.getAttack(), target));
@@ -85,12 +85,12 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.publish("DISCARD_SKILL", new DiscardSkillEvent(this, S));
     }
 
-    public void doDestroy() {
+    public void doDestroy(int id) {
         // TODO remove this card and remove every skill attached
         for (Skill skill : attachedSkill) {
             doDiscardSkill(skill);
         }
-        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
+        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this, id));
     }
 
 
@@ -124,7 +124,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 //                this.auraDef = this.auraDef + ((Aura) e.skillCard).getDefVal();
             }
             if(e.skillCard instanceof Destroy){
-                this.doDestroy();
+                this.doDestroy(e.id);
             }
             
             if(e.skillCard instanceof PowerUp){
@@ -141,7 +141,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                 if (e.toCard.getPositionValue() < e.fromCard.getPositionValue()) // attack/defense value this < attack fromCard
                 {
                     if (e.toCard.getPosition()){ // karakter this dalam posisi attack (isAttack == true)
-
+                        System.out.println("Attacking player");
                         this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(
                             e.fromCard.getPositionValue() - e.toCard.getPositionValue(), 
                             e.toCard.owner
@@ -156,7 +156,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                     
                     }
                     e.fromCard.setAlreadyAttack();
-                    this.doDestroy();
+                    this.doDestroy(e.id);
                 } else {
                     AlertPlayer fail = new AlertPlayer("Attack failed! Your opponent is stronger than you think!", Alert.AlertType.WARNING, "Attack Failed");
                     fail.show();

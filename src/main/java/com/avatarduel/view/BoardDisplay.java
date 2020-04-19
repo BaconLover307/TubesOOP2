@@ -148,16 +148,10 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void discardCharFromBoard(SummonedCharacter SC) {
-        for (int i = 0; i<6; i++) {
-            if (this.getBoard().getSkillwithId(i) != null) {
-                if (this.getBoard().getCharwithId(i).equals(SC)) {
-                    this.arrCharCD[i] = null;
-                    this.arrCharPane[i].getChildren().clear();
-                    this.arrCharPane[i].setOnMouseClicked(null);
-                }
-            }
-        }
+    public void discardCharFromBoard(SummonedCharacter SC, int id) {
+        this.arrCharCD[id] = null;
+        this.arrCharPane[id].getChildren().clear();
+        this.arrCharPane[id].setOnMouseClicked(null);
     }
 
     public void discardSkillFromBoard(Skill s) {
@@ -205,9 +199,11 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                     System.out.println("ATTACK CARD");
                 }
             }
-        } else { 
-            AlertPlayer alert = new AlertPlayer("Your character cannot attack in this turn!", Alert.AlertType.WARNING, "Character Cannot Attack");
-            alert.show(); 
+        } else {
+            // TODO ATTACK PLAYER
+            AlertPlayer alert = new AlertPlayer("Attacking directly to the opponent!", Alert.AlertType.INFORMATION, "Attack Player");
+            alert.show();
+            SC.doAttackPlayer();
         }
     }
 
@@ -338,7 +334,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 arrCharPane[i].setOnMouseClicked(e -> {
                     publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
-                    publish("ATTACH_SKILL", new SkillCardAttachedEvent(event.skill, board.getCharwithId(ID)));
+                    publish("ATTACH_SKILL", new SkillCardAttachedEvent(event.skill, board.getCharwithId(ID), ID));
                 });
             }
         }
@@ -368,7 +364,8 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                         arrCharPane[i].setOnMouseClicked(e -> {
                             this.channel.isSelecting = false;
                             resetStyle();
-                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, getBoard().getCharwithId(ID)));
+                            event.SC.doAttack(getBoard().getCharwithId(ID), ID);
+//                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, ID));
                         });
                     }
                 }
@@ -382,12 +379,14 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
+        if (e.SC.getOwner().equals(this.getBoard().getOwner()))
         discardSkillFromBoard(e.S);
     }
 
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
-        discardCharFromBoard(e.SC);
+        if (e.SC.getOwner().equals(this.getBoard().getOwner()))
+        discardCharFromBoard(e.SC, e.id);
     }
 
     @Override

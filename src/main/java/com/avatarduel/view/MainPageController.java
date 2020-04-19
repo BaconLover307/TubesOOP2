@@ -37,7 +37,6 @@ import java.util.ResourceBundle;
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        UseLandEvent.UseLandEventHandler,
         RequestSummonEvent.RequestSummonEventHandler,
         ChangePlayerEvent.ChangePlayerEventHandler,
         SummonSkillEvent.SummonSkillEventHandler,
@@ -281,7 +280,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("END_GAME", this);
-        this.channel.addSubscriber("USE_LAND", this);
         this.channel.addSubscriber("REQUEST_SUMMON", this);
         this.channel.addSubscriber("SUMMON_SKILL", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
@@ -477,9 +475,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         }
         else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
-        }
-        else if (event instanceof UseLandEvent) {
-            this.onUseLandEvent((UseLandEvent) event);
         }
         else if (event instanceof RequestSummonEvent) {
             this.onRequestSummon((RequestSummonEvent) event);

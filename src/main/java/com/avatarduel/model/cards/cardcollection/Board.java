@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.cards.card.Aura;
-import com.avatarduel.model.cards.card.SummonedSkill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
@@ -13,10 +12,8 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
-import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
-import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
 public class Board implements Subscriber, Publisher,
         SummonCharacterEvent.SummonCharacterEventHandler,
@@ -140,7 +137,7 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        if (this.getOwner() == e.owner) {
+        if (this.getOwner().equals(e.owner)) {
             addSkilltoBoard(e.Sid, e.S);
         }
     }
@@ -151,7 +148,7 @@ public class Board implements Subscriber, Publisher,
         if (e.S instanceof Aura) {
             Aura aura = (Aura) e.S;
             for (int i=0;i<6;i++) {
-                if (charBoard[i] == e.SC) {
+                if (charBoard[i].equals(e.SC)) {
                     charBoard[i].getCharCard().setAttack(e.SC.getCharCard().getAttack() - aura.getAttVal());
                     charBoard[i].getCharCard().setAttack(e.SC.getCharCard().getDefense() - aura.getDefVal());
                     break;
@@ -164,35 +161,11 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
         // remove e.SC dari array summonedchar board
-        for (int i=0;i<6;i++) {
-            if (charBoard[i] == e.SC) {
-                charBoard[i] = null;
-                break;
+        if (this.owner.equals(e.SC.getOwner())) {
+            if (charBoard[e.id].equals(e.SC)) {
+                charBoard[e.id] = null;
             }
         }
     }
 
 }
-
-
-//     public static void run(String[] hojun, String[] qila) {
-//         Map<String, Integer> h = new HashMap<String, Integer>();
-//         for (String a : hojun) {
-//             Integer freq = h.get(a);
-//             h.put(a, (freq == null) ? 1 : freq++);
-//         }
-
-//         for (String a : qila) {
-//             Integer freq = h.get(a);
-//             h.put(a, (freq == null) ? 1 : freq--);
-//         }
-
-//         for (Map.Entry<String, Integer> a : h.entrySet()) {
-//             if (a.getValue()>0) {
-//                 for (int i =1; i <= a.getValue(); i++) {
-//                     System.out.println(a.getKey());
-//                 }
-//             }
-//         }
-//     }
-// }

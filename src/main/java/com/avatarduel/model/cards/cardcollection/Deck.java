@@ -30,9 +30,7 @@ import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Card;
 import java.lang.Math;
 
-public class Deck extends CardCollection implements Publisher, Subscriber
-    // CardClickedEvent.CardClickedEventHandler
-    {
+public class Deck extends CardCollection implements Publisher {
 
     public Deck(GameplayChannel channel, String player){
         super(channel, player);
@@ -115,18 +113,12 @@ public class Deck extends CardCollection implements Publisher, Subscriber
 
         Collections.shuffle(destroyRows);
         int amountDestroy = amount - (2*amountCharLand) - (2*amountAuraPU);
-        //System.out.println(amountDestroy);
         for (int m=0; m<amountDestroy; m++)
         {
             this.addDestroyFromArr(destroyRows.get(m % destroyRows.size()));
         }
         
         this.shuffle();
-        /*System.out.println(this.size());
-         for (int a=0;a<this.getSize();a++) {
-            System.out.println(this.get(a).getClass() + "| ");
-        } */
-        //System.out.println("x"); 
     }
 
 	public void addCard(Card C){
@@ -166,21 +158,5 @@ public class Deck extends CardCollection implements Publisher, Subscriber
     public void publish(String topic, BaseEvent event){
         this.channel.sendEvent(topic, event);
     }
-
-    public void onEvent(BaseEvent e){
-        // if(e.getClass() == CardClickedEvent.class){
-        //     this.onCardClicked((CardClickedEvent) e);
-        // }
-    }
-
-    // @Override
-    // public void onCardClicked(CardClickedEvent e) {
-    //     if(this.channel.activePlayer.equals(this.player) && this.channel.phase == Phase.DRAW_PHASE) {
-    //         this.doDraw();
-    //         this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.getPlayer()));
-    //         this.publish("CHANGE_PHASE", new ChangePhaseEvent(Phase.MAIN_PHASE));
-    //     }
-
-    // }
 
 }

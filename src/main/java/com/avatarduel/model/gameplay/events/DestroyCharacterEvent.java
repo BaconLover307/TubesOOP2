@@ -9,13 +9,16 @@ import com.avatarduel.model.cards.card.SummonedCharacter;
 public class DestroyCharacterEvent implements BaseEvent {
     
     public SummonedCharacter SC;
+    public int id;
 
     /**
      * Membuat event baru
      * @param SC karakter yang di event
+     * @param id ID karakter pada board
      */
-    public DestroyCharacterEvent(SummonedCharacter SC) {
+    public DestroyCharacterEvent(SummonedCharacter SC, int ID) {
         this.SC = SC;
+        this.id = ID;
     }
 
     /**
