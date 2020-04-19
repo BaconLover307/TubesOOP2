@@ -125,7 +125,13 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
-        // TODO remove e.SC dari array summonedchar board
+        // remove e.SC dari array summonedchar board
+        for (int i=0;i<6;i++) {
+            if (charBoard[i] == e.SC) {
+                charBoard[i] = null;
+                break;
+            }
+        }
     }
 
     @Override

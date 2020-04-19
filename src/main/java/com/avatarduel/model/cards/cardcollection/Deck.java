@@ -123,10 +123,10 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         }
         
         this.shuffle();
-        System.out.println(this.size());
+        /*System.out.println(this.size());
          for (int a=0;a<this.getSize();a++) {
             System.out.println(this.get(a).getClass() + "| ");
-        }
+        } */
         //System.out.println("x"); 
     }
 
