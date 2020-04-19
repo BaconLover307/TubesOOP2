@@ -9,6 +9,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.RequestSummonEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXML;
@@ -166,6 +167,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 int finalI = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, finalI, event.owner));
+                    publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPower()));
                     ResetAll();
                 });
             }

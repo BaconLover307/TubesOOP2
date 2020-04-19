@@ -269,7 +269,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         // ? Change Here if want to enable continue without draw
         btnNext.setOnAction(event -> {
             if (getPhase() != Phase.DRAW_PHASE && !this.channel.isSelecting) doChangePhase();
-            publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) display, 3, player1.getName()));
         });
 
         this.root.setOnKeyPressed(e -> {
@@ -284,6 +283,13 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Start Game");
         gameStartAlert.show();
         doChangePhase();
+
+        // DEBUG
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display);
+        this.hand1Dis.addCard(display2);
+        this.hand1Dis.addCard(display2);
+        this.hand1Dis.addCard(display2);
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
@@ -301,7 +307,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
-        Aura card2 = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
+        Land card2 = new Land("AIR apalah", Element.AIR, "Udara", "com/avatarduel/card/image/skill/Shozin Comet.png");
         this.display = card;
         this.display2 = card2;
         setPhase(Phase.GAME_INIT);
@@ -369,10 +375,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         if (getPhase() == Phase.DRAW_PHASE) {
             this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer.getName()));
         }
-        else if (getPhase() == Phase.MAIN_PHASE) {
-            System.out.println("P1 HAND: " + this.player1.getHand().getSize());
-            System.out.println("P2 HAND: " + this.player2.getHand().getSize());
-        }
+        // else if (getPhase() == Phase.MAIN_PHASE) {
+        //     System.out.println("P1 HAND: " + this.player1.getHand().getSize());
+        //     System.out.println("P2 HAND: " + this.player2.getHand().getSize());
+        // }
         else if (getPhase() == Phase.END_PHASE) {
             Player nextPlayer = getNextPlayer();
             AlertPlayer alert = new AlertPlayer(nextPlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));

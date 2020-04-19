@@ -30,12 +30,6 @@ public class ElementPower {
     }
 
     public void usePower(int use) {
-       /* if (this.size < use) {
-            return false;
-        } else { 
-            this.size -= use;
-            return true; } */
-
         this.size -= use;
     }
 }

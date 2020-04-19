@@ -4,6 +4,8 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+import com.avatarduel.model.gameplay.events.ResetPowerEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.player.ElementPower;
 import com.avatarduel.model.player.Power;
@@ -19,7 +21,9 @@ import java.awt.Toolkit;
 import javafx.scene.Node;
 
 public class PowerDisplay implements Subscriber,
-        UseLandEvent.UseLandEventHandler {
+        UseLandEvent.UseLandEventHandler,
+        ResetPowerEvent.ResetPowerEventHandler,
+        SpendPowerEvent.SpendPowerEventHandler {
 
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private VBox box;
@@ -34,6 +38,8 @@ public class PowerDisplay implements Subscriber,
     public PowerDisplay(GameplayChannel gameplayChannel, Power P) {
         this.channel = gameplayChannel;
         this.channel.addSubscriber("USE_LAND", this);
+        this.channel.addSubscriber("SPEND_POWER_EVENT", this);
+        this.channel.addSubscriber("RESET_POWER_EVENT", this);
 
         this.power = P;
         this.box = new VBox(16*screenSize.getHeight()/1080);
@@ -94,9 +100,23 @@ public class PowerDisplay implements Subscriber,
     }
 
     @Override
+    public void onResetPowerEvent(ResetPowerEvent e) {
+        updatePower();
+    }
+
+    @Override
+    public void onSpendPowerEvent(SpendPowerEvent e) {
+        updatePower();
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof UseLandEvent) {
             onUseLandEvent((UseLandEvent) event);
+        } else if (event instanceof SpendPowerEvent) {
+            onSpendPowerEvent((SpendPowerEvent) event);
+        } else if (event instanceof ResetPowerEvent) {
+            onResetPowerEvent((ResetPowerEvent) event);
         }
 
     }
