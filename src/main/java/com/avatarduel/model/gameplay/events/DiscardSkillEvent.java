@@ -13,7 +13,7 @@ public class DiscardSkillEvent implements BaseEvent {
     public Skill S;
 
     /**
-     * 
+     * Membuat event baru
      * @param SC character yang skillnya (S) dibuang
      * @param S skill yang di dibuang
      */

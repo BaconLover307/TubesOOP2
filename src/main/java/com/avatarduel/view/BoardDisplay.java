@@ -24,6 +24,8 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         SummonCharacterEvent.SummonCharacterEventHandler,
         SummonSkillEvent.SummonSkillEventHandler,
         SelectEnemyEvent.SelectEnemyEventHandler,
+        DiscardSkillEvent.DiscardSkillEventHandler,
+        DestroyCharacterEvent.DestroyCharacterEventHandler,
         RequestSkillTargetEvent.RequestSkillTargetEventHandler {
 
     @FXML
@@ -123,7 +125,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     }
 
-    public void addSkilltoBoard(int id, Skill card, int Cid) {
+    public void addSkilltoBoard(int id, Skill card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
 //        SummonedCharacter SC = new SummonedCharacter(card, true, channel.activePlayer.getName(), channel);
         arrSkillCD[id] = cD;
@@ -132,16 +134,38 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
             this.arrSkillPane[id].getChildren().add(toLoad);
+            this.arrSkillPane[id].setOnMouseClicked(event -> {
+                if (this.channel.activePlayer.getName() == this.board.getOwner() &&
+                        !this.channel.isSelecting) {
+                    if (this.channel.phase == Phase.MAIN_PHASE) discardSkill(card, this.arrSkillPane[id]);
+                }
+            });
 
         } catch (Exception e) {
             System.out.println("Board failed to summon Character!");
             e.printStackTrace();
         }
+    }
 
+    public void discardCharFromBoard(SummonedCharacter SC) {
+        for (int i = 0; i<6; i++) {
+            if (this.getBoard().getCharwithId(i).equals(SC)) {
+                this.arrCharCD[i] = null;
+                this.arrCharPane[i].getChildren().clear();
+            }
+        }
+    }
+
+    public void discardSkillFromBoard(Skill s) {
+        for (int i = 0; i<6; i++) {
+            if (this.getBoard().getSkillwithId(i).equals(s)) {
+                this.arrSkillCD[i] = null;
+                this.arrSkillPane[i].getChildren().clear();
+            }
+        }
     }
 
     public void rotateChar(SummonedCharacter SC, AnchorPane AP) {
-        System.out.println("ROTATING CARD");
         String changePos;
         if (SC.getPosition()) changePos = "Defend";
         else changePos = "Attack";
@@ -181,7 +205,11 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     }
 
     public void discardSkill(Skill S, AnchorPane AP) {
-
+        AlertChoice discardChoice = new AlertChoice("Discard", "", ("Skill " + S.getName() + " selected. Discard Skill?"), "Change Position");
+        String ret = discardChoice.showAndReturn();
+        if (ret.equals("Discard")) {
+            publish("REQUEST_DISCARD_SKILL", new RequestDiscardSkillEvent(S));
+        }
     }
 
     public void ResetStyle() {
@@ -284,7 +312,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
         if (e.owner.equals(this.board.getOwner())) {
-            addSkilltoBoard(e.Sid, e.S, e.Cid);
+            addSkilltoBoard(e.Sid, e.S);
             this.channel.isSelecting = false;
         }
     }
@@ -301,7 +329,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int ID = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
-                    publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, ID, event.owner));
+                    publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
                     publish("ATTACH_SKILL", new SkillCardAttachedEvent(event.skill, board.getCharwithId(ID)));
                 });
@@ -344,6 +372,16 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     }
 
     @Override
+    public void onDiscardSkillEvent(DiscardSkillEvent e) {
+        discardSkillFromBoard(e.S);
+    }
+
+    @Override
+    public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
+        discardCharFromBoard(e.SC);
+    }
+
+    @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof RequestSummonEvent) {
             this.onRequestSummon((RequestSummonEvent) event);
@@ -355,6 +393,10 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             this.onRequestSkillTarget((RequestSkillTargetEvent) event);
         } else if (event instanceof SelectEnemyEvent) {
             this.onSelectEnemy((SelectEnemyEvent) event);
+        } else if (event instanceof DiscardSkillEvent) {
+            this.onDiscardSkillEvent((DiscardSkillEvent) event);
+        } else if (event instanceof DestroyCharacterEvent) {
+            this.onDestroyCharacterEvent((DestroyCharacterEvent) event);
         }
     }
 

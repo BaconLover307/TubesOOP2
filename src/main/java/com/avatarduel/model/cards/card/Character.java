@@ -50,11 +50,11 @@ public class Character extends Card {
      * Menambah/Mengurangi nilai attack karakter
      * @param value nilai penambahan/pengurangan
      */
-    public void setAttack(int value) {this.attVal = this.attVal + value;}
+    public void setAttack(int value) {this.attVal = value;}
 
     /**
      * Menambah/Mengurangi nilai defense karakter
      * @param value nilai penambahan/pengurangan
      */
-    public void setDefense(int value) {this.defVal = this.defVal + value;}
+    public void setDefense(int value) {this.defVal = value;}
 }

@@ -26,6 +26,6 @@ public interface ICharSummoned {
     /**
      * Menghancurkan kartu karakter yang di summon
      */
-    public void destroy();
+    public void doDestroy();
 
 }

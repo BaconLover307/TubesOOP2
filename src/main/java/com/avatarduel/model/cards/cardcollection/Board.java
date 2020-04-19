@@ -148,10 +148,15 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
         // TODO remove skill dari skill board
-        if (e.S.getClass() == Aura.class) {
-            e.S = (Aura) e.S;
-            //e.SC.getCharCard().setAttack(-1*(e.S.getAttVal()));
-            //e.SC.getCharCard().setDefense(-1*(e.S.getDefVal()));
+        if (e.S instanceof Aura) {
+            Aura aura = (Aura) e.S;
+            for (int i=0;i<6;i++) {
+                if (charBoard[i] == e.SC) {
+                    charBoard[i].getCharCard().setAttack(e.SC.getCharCard().getAttack() - aura.getAttVal());
+                    charBoard[i].getCharCard().setAttack(e.SC.getCharCard().getDefense() - aura.getDefVal());
+                    break;
+                }
+            }
         }
         e.SC.getAttachedSkill().remove(e.S); 
     }
