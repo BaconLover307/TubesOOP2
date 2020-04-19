@@ -10,12 +10,15 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.*;
+import com.avatarduel.model.gameplay.events.SummonCharClickedEvent;
+import com.avatarduel.model.gameplay.events.RequestSummonEvent;
+import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
@@ -157,8 +160,21 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void attackChar(SummonedCharacter SC, AnchorPane AP) {
-        System.out.println("ATTACK CARD");
+    public void attackChar(CardDisplay cD) {
+        
+        if (this.channel.lastClickedCard == null) {
+            AlertPlayer alert = new AlertPlayer("You haven't selected your character!", AlertType.WARNING, "Warning");
+            alert.show();
+        } 
+        else {
+            AlertChoice SC_Choice = new AlertChoice("Select", "", ("Character Card " + cD.getCard().getName() + " on click."), "Battle");
+            String ret = SC_Choice.showAndReturn();
+            if (ret.equals("Select"))
+            {
+                System.out.println("ATTACK CARD");
+                // this.publish("SUMMON_CHAR_CLICKED, new SummonCardClickedEvent());
+            }
+        }
     }
 
     public void discardSkill(Skill S, AnchorPane AP) {

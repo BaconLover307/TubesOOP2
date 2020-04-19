@@ -7,7 +7,6 @@ import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.EndGameEvent;
 import com.avatarduel.model.gameplay.events.ResetPowerEvent;
-import com.avatarduel.model.gameplay.events.CardClickedEvent;
 import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Character;
