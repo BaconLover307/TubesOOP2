@@ -175,7 +175,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 }
             }
         } else { 
-            AlertPlayer alert = new AlertPlayer("Your character has attacked this turn!", Alert.AlertType.WARNING, "Already Attack Character");
+            AlertPlayer alert = new AlertPlayer("Your already attack/ just summoned this turn!", Alert.AlertType.WARNING, "Already Attack Character");
             alert.show(); 
         }
     }

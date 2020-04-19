@@ -158,7 +158,6 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if((this.gameplayChannel.phase == Phase.DRAW_PHASE)
              && this.gameplayChannel.activePlayer.getName() == this.owner) {
             this.isAlreadyAttack = false;
-            this.isPowerUp = false;
         }
     }
 
