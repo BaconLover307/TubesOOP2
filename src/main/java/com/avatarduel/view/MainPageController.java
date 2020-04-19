@@ -133,6 +133,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private Player player1;
     private Player player2;
     private Card debug;
+    private Card debug11;
     private Card debug1;
     private Card debug2;
     private Card debug3;
@@ -256,7 +257,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
         // DEBUG
         this.hand1Dis.addCard(debug);
-        this.hand1Dis.addCard(debug);
+        this.hand1Dis.addCard(debug11);
         this.hand1Dis.addCard(debug1);
         this.hand1Dis.addCard(debug1);
         this.hand1Dis.addCard(debug2);
@@ -264,7 +265,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.hand1Dis.addCard(debug3);
         this.hand1Dis.addCard(debug3);
         this.hand2Dis.addCard(debug);
-        this.hand2Dis.addCard(debug);
+        this.hand2Dis.addCard(debug11);
         this.hand2Dis.addCard(debug2);
         this.hand2Dis.addCard(debug2);
         this.hand2Dis.addCard(debug3);
@@ -289,10 +290,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
+        Character card11 = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
         Character card1 = new Character("Bumi", Element.AIR, "Bumi tua", "com/avatarduel/card/image/character/Bumi.png", 1, 1, 1);
         Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/land/Eastern Air Temple.png");
-        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 3);
+        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 2);
         this.debug = card;
+        this.debug11 = card11;
         this.debug1 = card1;
         this.debug2 = card2;
         this.debug3 = card3;

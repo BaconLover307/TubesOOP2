@@ -19,6 +19,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
         RepositionCharacterEvent.RepositionCharacterEventHandler,
+        RequestDiscardSkillEvent.RequestDiscardSkillEventHandler,
         DrawEvent.DrawEventHandler
         {
 
@@ -38,13 +39,15 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel = gameplayChannel;
         this.isPowerUp = false;
         this.isAlreadyAttack = true;
+        this.attachedSkill = new ArrayList<Skill>();
         this.auraAtt = 0;
         this.auraDef = 0;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
         this.gameplayChannel.addSubscriber("SUMMON_CHAR_CLICKED", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
-        this.gameplayChannel.addSubscriber("DRAW_PHASE", this);
+        this.gameplayChannel.addSubscriber("DRAW_EVENT", this);
         this.gameplayChannel.addSubscriber("REPOSITION_CHARACTER", this);
+        this.gameplayChannel.addSubscriber("REQUEST_DISCARD_SKILL", this);
     }
 
     public String getOwner() {return this.owner;}
@@ -82,7 +85,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.publish("DISCARD_SKILL", new DiscardSkillEvent(this, S));
     }
 
-    public void destroy() {
+    public void doDestroy() {
         // TODO remove this card and remove every skill attached
         for (Skill skill : attachedSkill) {
             doDiscardSkill(skill);
@@ -105,6 +108,9 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         else if (event instanceof RepositionCharacterEvent){
             this.onRepositionCharacterEvent((RepositionCharacterEvent) event);
         }
+        else if (event instanceof RequestDiscardSkillEvent){
+            this.onRequestDiscardSkillEvent((RequestDiscardSkillEvent) event);
+        }
     }
 
     @Override
@@ -112,11 +118,13 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if (this.equals(e.charCard)) {
             this.attachedSkill.add(e.skillCard);
             if(e.skillCard instanceof Aura){
-                this.auraAtt = this.auraAtt + ((Aura) e.skillCard).getAttVal();
-                this.auraDef = this.auraDef + ((Aura) e.skillCard).getDefVal();
+                 this.getCharCard().setAttack(this.getCharCard().getAttack() + (((Aura) e.skillCard).getAttVal()));
+                 this.getCharCard().setDefense(this.getCharCard().getDefense() + (((Aura) e.skillCard).getDefVal()));
+//                this.auraAtt = this.auraAtt + ((Aura) e.skillCard).getAttVal();
+//                this.auraDef = this.auraDef + ((Aura) e.skillCard).getDefVal();
             }
             if(e.skillCard instanceof Destroy){
-                this.destroy();
+                this.doDestroy();
             }
             
             if(e.skillCard instanceof PowerUp){
@@ -148,7 +156,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                     
                     }
                     e.fromCard.setAlreadyAttack();
-                    this.destroy();
+                    this.doDestroy();
                 } else {
                     AlertPlayer fail = new AlertPlayer("Attack failed! Your opponent is stronger than you think!", Alert.AlertType.WARNING, "Attack Failed");
                     fail.show();
@@ -161,8 +169,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onDrawEvent(DrawEvent e) {
-        if((this.gameplayChannel.phase == Phase.DRAW_PHASE)
-             && this.gameplayChannel.activePlayer.getName() == this.owner) {
+        if(this.gameplayChannel.activePlayer.getName().equals(this.owner)) {
             this.isAlreadyAttack = false;
         }
     }
@@ -171,6 +178,16 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
         if (e.SC.equals(this) && e.owner == this.owner) {
             rotate();
+        }
+    }
+
+    @Override
+    public void onRequestDiscardSkillEvent(RequestDiscardSkillEvent e) {
+        for (Skill s: getAttachedSkill()) {
+            if (s.equals(e.S)) {
+                publish("DISCARD_SKILL", new DiscardSkillEvent(this, s));
+                break;
+            }
         }
     }
 
