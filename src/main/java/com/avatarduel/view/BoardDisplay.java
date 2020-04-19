@@ -186,6 +186,14 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             arrSkillPane[i].setStyle(null);
         }
     }
+    public void ResetAction() {
+        for (int i=0; i<6; i++) {
+            arrCharPane[i].setOnMouseClicked(null);
+//            arrCharPane[i].setStyle(null);
+            arrSkillPane[i].setOnMouseClicked(null);
+//            arrSkillPane[i].setStyle(null);
+        }
+    }
 
 //    public ArrayList<AnchorPane> getSelectableChar(int size) {
 //        ArrayList<AnchorPane> idList = new ArrayList<>();
@@ -208,6 +216,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 int ID = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
                     ResetStyle();
+                    ResetAction();
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPowVal()));
                 });

@@ -134,8 +134,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     private Player player1;
     private Player player2;
-    private Card display;
-    private Card display2;
+    private Card debug;
+    private Card debug1;
+    private Card debug2;
+    private Card debug3;
     private int turn;
     private boolean isSelecting;
 
@@ -288,21 +290,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         doChangePhase();
 
         // DEBUG
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display);
-        this.hand1Dis.addCard(display2);
-        this.hand1Dis.addCard(display2);
-        this.hand1Dis.addCard(display2);
-        this.hand2Dis.addCard(display);
-        this.hand2Dis.addCard(display);
-        this.hand2Dis.addCard(display2);
-        this.hand2Dis.addCard(display2);
-        this.hand2Dis.addCard(display2);
+        this.hand1Dis.addCard(debug);
+        this.hand1Dis.addCard(debug);
+        this.hand1Dis.addCard(debug1);
+        this.hand1Dis.addCard(debug1);
+        this.hand1Dis.addCard(debug2);
+        this.hand1Dis.addCard(debug2);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug);
+        this.hand2Dis.addCard(debug);
+        this.hand2Dis.addCard(debug2);
+        this.hand2Dis.addCard(debug2);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
@@ -320,9 +321,13 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
-        Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/skill/Shozin Comet.png");
-        this.display = card;
-        this.display2 = card2;
+        Character card1 = new Character("Bumi", Element.AIR, "Bumi tua", "com/avatarduel/card/image/character/Bumi.png", 1, 1, 1);
+        Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/land/Eastern Air Temple.png");
+        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 3);
+        this.debug = card;
+        this.debug1 = card1;
+        this.debug2 = card2;
+        this.debug3 = card3;
         setPhase(Phase.GAME_INIT);
         this.turn = 1;
         this.channel.activePlayer = player1;
@@ -441,13 +446,13 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void onRequestSummon(RequestSummonEvent e) {
         if (e.card instanceof Skill) {
             if (this.player1.getBoard().isCharSlotEmpty() && this.player2.getBoard().isCharSlotEmpty()) {
+                AlertPlayer noTarget = new AlertPlayer("There are no Characters to target!", Alert.AlertType.WARNING, "No Target!");
+                noTarget.show();
+            } else {
                 if (this.player1.getName().equals(e.owner)) {
                     this.board1.doSelectSkillSlotAvailable(e);
                     this.channel.isSelecting = true;
                 }
-            } else {
-                AlertPlayer noTarget = new AlertPlayer("There are no Characters to target!", Alert.AlertType.WARNING, "No Target!");
-                noTarget.show();
             }
         }
     }
