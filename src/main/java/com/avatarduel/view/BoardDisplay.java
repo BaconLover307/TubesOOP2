@@ -111,6 +111,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
+            toLoad.relocate(15, -4);
             this.arrCharPane[id].getChildren().add(toLoad);
             this.arrCharPane[id].setOnMouseClicked(event -> {
                 if (this.channel.activePlayer.getName() == this.board.getOwner() &&
@@ -133,6 +134,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
+            toLoad.relocate(15, -4);
             this.arrSkillPane[id].getChildren().add(toLoad);
             this.arrSkillPane[id].setOnMouseClicked(event -> {
                 if (this.channel.activePlayer.getName() == this.board.getOwner() &&

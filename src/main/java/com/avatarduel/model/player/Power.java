@@ -66,27 +66,7 @@ public class Power implements
     public void onEvent(BaseEvent e){
       /*  if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent)e);
-<<<<<<< HEAD
         } */
     }
 
-=======
-        } else if (e instanceof UseLandEvent){
-            this.onUseLandEvent((UseLandEvent)e);
-        }
-    }
-
-    public void onResetPowerEvent(ResetPowerEvent e){
-        this.resetAllPower();
-    }
-
-    public void onSpendPowerEvent(SpendPowerEvent e){
-        boolean success = this.getPower(e.getElement()).usePower(e.getVal());
-        this.publish(e.getSender(), e.new Handler(success));
-    }
-
-    public void onUseLandEvent(UseLandEvent e){
-        this.addCapacity(e.getLand().getElement(), 1);
-    }
->>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
 }
