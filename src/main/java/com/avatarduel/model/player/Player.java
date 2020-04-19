@@ -57,8 +57,8 @@ public class Player implements Publisher, Subscriber,
 
     /**
      * Implemen interface publisher
-     * @param topic 
-     * @param event 
+     * @param topic Topic / Header channel
+     * @param event Event yang dikirim
      */
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);

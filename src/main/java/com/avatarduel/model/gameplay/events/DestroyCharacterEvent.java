@@ -16,9 +16,9 @@ public class DestroyCharacterEvent implements BaseEvent {
      * @param SC karakter yang di event
      * @param id ID karakter pada board
      */
-    public DestroyCharacterEvent(SummonedCharacter SC, int ID) {
+    public DestroyCharacterEvent(SummonedCharacter SC, int id) {
         this.SC = SC;
-        this.id = ID;
+        this.id = id;
     }
 
     /**

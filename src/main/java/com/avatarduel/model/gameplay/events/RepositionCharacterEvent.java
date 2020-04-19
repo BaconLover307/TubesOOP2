@@ -13,7 +13,7 @@ public class RepositionCharacterEvent implements BaseEvent {
     /**
      * Membuat event baru
      * @param SC kartu karakter yang di posisinya diubah
-     * @param SC pemilik kartu
+     * @param owner pemilik kartu
      */
     public RepositionCharacterEvent(SummonedCharacter SC, String owner) {
         this.SC = SC;
