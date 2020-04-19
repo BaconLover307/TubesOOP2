@@ -71,6 +71,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         this.channel.addSubscriber("SUMMON_SKILL", this);
         this.channel.addSubscriber("DISCARD_SKILL", this);
         this.channel.addSubscriber("DESTROY_CHARACTER_EVENT", this);
+        this.channel.addSubscriber("SELECT_ENEMY", this);
 
         this.board = B;
         this.arrCharCD = new CardDisplay[6];
@@ -149,18 +150,24 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     public void discardCharFromBoard(SummonedCharacter SC) {
         for (int i = 0; i<6; i++) {
-            if (this.getBoard().getCharwithId(i).equals(SC)) {
-                this.arrCharCD[i] = null;
-                this.arrCharPane[i].getChildren().clear();
+            if (this.getBoard().getSkillwithId(i) != null) {
+                if (this.getBoard().getCharwithId(i).equals(SC)) {
+                    this.arrCharCD[i] = null;
+                    this.arrCharPane[i].getChildren().clear();
+                    this.arrCharPane[i].setOnMouseClicked(null);
+                }
             }
         }
     }
 
     public void discardSkillFromBoard(Skill s) {
         for (int i = 0; i<6; i++) {
-            if (this.getBoard().getSkillwithId(i).equals(s)) {
-                this.arrSkillCD[i] = null;
-                this.arrSkillPane[i].getChildren().clear();
+            if (this.getBoard().getSkillwithId(i) != null) {
+                if (this.getBoard().getSkillwithId(i).equals(s)) {
+                    this.arrSkillPane[i].getChildren().clear();
+                    this.arrSkillPane[i].setOnMouseClicked(null);
+                    this.arrSkillCD[i] = null;
+                }
             }
         }
     }
@@ -212,14 +219,14 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void ResetStyle() {
+    public void resetStyle() {
         for (int id=0; id<6; id++) {
             arrCharPane[id].setStyle(null);
             arrSkillPane[id].setStyle(null);
         }
     }
 
-    public void ResetBoardProperty() {
+    public void resetBoardProperty() {
         boolean[] charAvail = getBoard().getAvailableCharSlot();
         boolean[] skillAvail = getBoard().getAvailableSkillSlot();
         for (int id=0; id<6; id++) {
@@ -267,7 +274,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 arrCharPane[i].setOnMouseClicked(e -> {
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPowVal()));
-//                    ResetBoardProperty();  -> GA PERLU, UDAH DI MAINCONT
+//                    resetBoardProperty();  -> GA PERLU, UDAH DI MAINCONT
                 });
             }
         }
@@ -282,7 +289,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int ID = i;
                 arrSkillPane[i].setOnMouseClicked(e -> {
-                    ResetStyle();
+                    resetStyle();
                     publish("REQUEST_SKILL_TARGET", new RequestSkillTargetEvent((Skill) event.card, ID, event.owner));
                 });
             }
@@ -339,12 +346,15 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     @Override
     public void onSelectEnemy(SelectEnemyEvent event) {
-        if (!(event.SC.getOwner().equals(this.channel.activePlayer.getName()))) {
-            System.out.println("TEMBUSSSS");
+        if (!(event.SC.getOwner().equals(this.board.getOwner()))) {
+            System.out.println(this.board.getOwner());
             boolean avail = false;
+            boolean slot[] = this.board.getAvailableCharSlot();
             for (int i = 0; i < 6; i++) {
-                if (arrCharPane[i].getChildren().size() == 1) avail = true;
-                break;
+                if (!slot[i]) {
+                    avail = true;
+                    break;
+                }
             }
             if (avail) {
                 for (int i = 0; i < 6; i++) {
@@ -355,17 +365,16 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                                         "-fx-border-color: #ff0000"
                         );
                         int ID = i;
-                        arrSkillPane[i].setOnMouseClicked(e -> {
-                            ResetStyle();
-                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, getBoard().getCharwithId(ID)));
+                        arrCharPane[i].setOnMouseClicked(e -> {
                             this.channel.isSelecting = false;
+                            resetStyle();
+                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, getBoard().getCharwithId(ID)));
                         });
                     }
                 }
             } else {
                 AlertPlayer noTarget = new AlertPlayer("There are no enemies to target!", Alert.AlertType.INFORMATION, "No Target");
                 noTarget.show();
-                this.channel.isSelecting = false;
                 publish("ATTACK_FAIL", new AttackFailEvent(event.SC.getOwner()));
             }
         }

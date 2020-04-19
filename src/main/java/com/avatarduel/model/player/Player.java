@@ -70,16 +70,16 @@ public class Player implements Publisher, Subscriber,
      */
     @Override
     public void onEvent(BaseEvent e){
-        if (e.getClass() == AttackPlayerEvent.class){
+        if (e instanceof AttackPlayerEvent){
             this.onAttackPlayer((AttackPlayerEvent) e);
         } 
-        else if (e.getClass() == ResetPowerEvent.class){
+        else if (e instanceof ResetPowerEvent){
             this.onResetPowerEvent((ResetPowerEvent) e);
         }
-        else if (e.getClass() == SpendPowerEvent.class){
+        else if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent) e);
         }
-        else if (e.getClass() == UseLandEvent.class){
+        else if (e instanceof UseLandEvent){
             this.onUseLandEvent((UseLandEvent) e);
         }    
     }
@@ -90,7 +90,7 @@ public class Player implements Publisher, Subscriber,
      */
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
-        if(this.name == e.target){
+        if(this.name.equals(e.target)){
             this.health -= e.amount;
             if (this.health <= 0){
                 this.publish("END_GAME", new EndGameEvent(this.name));

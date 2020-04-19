@@ -43,6 +43,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         SummonSkillEvent.SummonSkillEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
         AttackFailEvent.AttackFailEventHandler,
+        AttackPlayerEvent.AttackPlayerEventHandler,
         EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
@@ -245,8 +246,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 this.channel.isSelecting = false;
-                this.board1.ResetBoardProperty();
-                this.board2.ResetBoardProperty();
+                this.board1.resetBoardProperty();
+                this.board2.resetBoardProperty();
             }
         });
 
@@ -432,20 +433,21 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onAttackFail(AttackFailEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
+        this.channel.isSelecting = false;
     }
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override
@@ -459,9 +461,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
-    public void onUseLandEvent(UseLandEvent e) {
-//        this.power1Dis.updatePower();
-//        this.power2Dis.updatePower();
+    public void onAttackPlayer(AttackPlayerEvent e) {
+        if (e.target.equals(this.player1.getName())) {
+            this.health1Text.setValue(Integer.toString(player1.getHealth()));
+        } else {
+            this.health2Text.setValue(Integer.toString(player2.getHealth()));
+        }
     }
 
     @Override
@@ -495,6 +500,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         }
         else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);
+        }
+        else if (event instanceof AttackPlayerEvent) {
+            this.onAttackPlayer((AttackPlayerEvent) event);
         }
     }
 }
