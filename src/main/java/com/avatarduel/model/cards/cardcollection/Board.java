@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Skill;
+import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.SummonedSkill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.gameplay.BaseEvent;
@@ -114,6 +115,11 @@ public class Board implements Subscriber, Publisher,
     @Override
     public void onDiscardSkillEvent(DiscardSkillEvent e) {
         // TODO remove skill dari skill board
+        if (e.S.getClass() == Aura.class) {
+            e.S = (Aura) e.S;
+            //e.SC.getCharCard().setAttack(-1*(e.S.getAttVal()));
+            //e.SC.getCharCard().setDefense(-1*(e.S.getDefVal()));
+        }
         e.SC.getAttachedSkill().remove(e.S); 
     }
 

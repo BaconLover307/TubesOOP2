@@ -113,6 +113,7 @@ public class Deck extends CardCollection implements Publisher, Subscriber
             this.addPowerUpFromArr(powerupRows.get(l % powerupRows.size()));
         } 
 
+        
         Collections.shuffle(destroyRows);
         int amountDestroy = amount - (2*amountCharLand) - (2*amountAuraPU);
         //System.out.println(amountDestroy);
@@ -122,11 +123,11 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         }
         
         this.shuffle();
-    /*    System.out.println(this.size());
+        System.out.println(this.size());
          for (int a=0;a<this.getSize();a++) {
             System.out.println(this.get(a).getClass() + "| ");
         }
-        System.out.println("x"); */
+        //System.out.println("x"); 
     }
 
 	public void addCard(Card C){
