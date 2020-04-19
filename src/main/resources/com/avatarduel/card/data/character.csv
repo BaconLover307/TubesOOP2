@@ -45,5 +45,17 @@ id	name	element	description	imagepath	attack	defense	power
 60	Toph	EARTH	Earthbending master that discover metalbending.	com/avatarduel/card/image/character/Toph.png	12	8	5
 61	Long Feng	EARTH	Grand Secretariat of Ba Sing Se and the leader of the Dai Li.	com/avatarduel/card/image/character/Long Feng.png	4	11	3
 62	June	EARTH	Bounty hunter with a shirshu as her pet.	com/avatarduel/card/image/character/June.png	5	8	2
-63	Suki	EARTH	Leader of Kyoshi Warrior.	com/avatarduel/card/image/character/Suki.png	8	8	3
+63	Suki	EARTH	Leader of the Kyoshi Warriors.	com/avatarduel/card/image/character/Suki.png	8	8	3
 64	Pipsqueak	EARTH	Strongest member of Freedom Fighters.	com/avatarduel/card/image/character/Pipsqueak.png	3	10	2
+129	Ancient One	ENERGY	The last living Lion Turtle and bearer of his kind's wisdom.	com/avatarduel/card/image/character/Ancient One.png	5	15	5
+130	Aye-aye	ENERGY	A lemur-like spirit who guarded a Spirit Oasis in the Spirit Wilds and was friends with Wan.	com/avatarduel/card/image/character/Aye-aye.png	8	8	3
+131	Chi-Blocker	ENERGY	Martial artists that have learned to combat benders by blocking their chi and disabling their bending abilities.	com/avatarduel/card/image/character/Chi-Blocker.png	5	6	1
+132	Dark Spirit	ENERGY	A spirit that has been corrupted by their imbalanced energies. The minions of Vaatu.	com/avatarduel/card/image/character/Dark Spirit.png	10	3	2
+133	Fang	ENERGY	The spirit of Avatar Roku's animal guide.	com/avatarduel/card/image/character/Fang.png	8	8	3
+134	Hei Bai	ENERGY	A spirit of a dense forest near Senlin Village.	com/avatarduel/card/image/character/Hei Bai.png	10	8	4
+135	Knowledge Seeker	ENERGY	Servants of Wan Shi Tong. They gather old books and parchments to compile more information for the library.	com/avatarduel/card/image/character/Knowledge Seeker.png	3	8	1
+136	Koh	ENERGY	A face stealing spirit. He would steal the face of anyone that expresses emotion in his presence.	com/avatarduel/card/image/character/Koh.png	12	4	3
+137	Light Spirit	ENERGY	A spirit that migrated to the human world after the Harmonic Convergence.	com/avatarduel/card/image/character/Light Spirit.png	3	10	2
+138	Raava	ENERGY	The light spirit that battles eternally against Vaatu. She now resides within the Avatar allowing them to bend all four elements.	com/avatarduel/card/image/character/Raava.png	8	16	6
+139	Vaatu	ENERGY	The dark spirit that battles eternally against Raava. His victory against the light spirit heralds a thousand years of darkness.	com/avatarduel/card/image/character/Vaatu.png	16	8	6
+140	Wan Shi Tong	ENERGY	Keeper of the spirit library. He hates humans who would use his knowledge for war and conflict.	com/avatarduel/card/image/character/Wan Shi Tong.png	6	12	4
