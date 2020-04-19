@@ -43,16 +43,11 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.auraAtt = 0;
         this.auraDef = 0;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
-<<<<<<< HEAD
         this.gameplayChannel.addSubscriber("SUMMON_CHAR_CLICKED", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
         this.gameplayChannel.addSubscriber("DRAW_EVENT", this);
         this.gameplayChannel.addSubscriber("REPOSITION_CHARACTER", this);
         this.gameplayChannel.addSubscriber("REQUEST_DISCARD_SKILL", this);
-=======
-        this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
-        this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
->>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     }
 
     public String getOwner() {return this.owner;}

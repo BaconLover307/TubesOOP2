@@ -3,17 +3,9 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.player.Player;
 
-<<<<<<< HEAD
 /**
  * Kelas untuk event mengurangi power pemain sesuai elemen
  */
-=======
-// Sent to Power to call usePower, remembers the Element and number of Power required, remembers the sender for return address
-// returns handler with boolean, true if there was enough power of the required element
-// source: Hand
-// target: Power
-//TODO sesuaiin format
->>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
 public class SpendPowerEvent implements BaseEvent {
 
     public String sender;

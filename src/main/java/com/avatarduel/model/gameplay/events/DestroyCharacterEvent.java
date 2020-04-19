@@ -3,15 +3,9 @@ package com.avatarduel.model.gameplay.events;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 
-<<<<<<< HEAD
 /**
  * Kelas untuk event destroy character
  */
-=======
-// sender: Character, Skill
-// target: Board
-// TODO apakah ini skill ?
->>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
 public class DestroyCharacterEvent implements BaseEvent {
     
     public SummonedCharacter SC;
@@ -27,7 +21,6 @@ public class DestroyCharacterEvent implements BaseEvent {
         this.id = ID;
     }
 
-<<<<<<< HEAD
     /**
      * Handler event
      */
@@ -41,9 +34,5 @@ public class DestroyCharacterEvent implements BaseEvent {
     @Override
     public void execute(){
         System.out.println("Character " + SC.getCharCard().getName() + " Destroyed!");
-=======
-    public interface DestroyCharacterEventHandler {
-        void onDestroyCharacter(DestroyCharacterEvent e);
->>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     }
 }
