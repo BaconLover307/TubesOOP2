@@ -12,12 +12,17 @@ import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
 import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Aura;
+import com.avatarduel.model.cards.card.PowerUp;
+import com.avatarduel.model.cards.card.Destroy;
 import com.avatarduel.util.CSVReader;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
+
 import com.avatarduel.util.CSVReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -60,7 +65,7 @@ public class Deck extends CardCollection implements Publisher, Subscriber
     }
 
     // * Untuk meload kartu" ke deck
-    public void loadDeck(File fileChar, File fileAura, File fileLand, int amount) throws IOException, URISyntaxException {
+    public void loadDeck(File fileChar, File fileAura, File fileLand, File fileDestroy, File filePowerUp, int amount) throws IOException, URISyntaxException {
 
         CSVReader charReader = new CSVReader(fileChar, "\t");
         charReader.setSkipHeader(true);
@@ -73,6 +78,14 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         CSVReader landReader = new CSVReader(fileLand, "\t");
         landReader.setSkipHeader(true);
         List<String[]> landRows = landReader.read();
+
+        CSVReader destroyReader = new CSVReader(fileDestroy, ",");
+        destroyReader.setSkipHeader(true);
+        List<String[]> destroyRows = destroyReader.read();
+
+        CSVReader powerupReader = new CSVReader(filePowerUp, ",");
+        powerupReader.setSkipHeader(true);
+        List<String[]> powerupRows = powerupReader.read();
 
         Collections.shuffle(charRows);
         int amountCharLand = (int) Math.floor((2*amount/5));
@@ -88,16 +101,32 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         }  
 
         Collections.shuffle(auraRows);
-        int amountSkill = amount - 2*amountCharLand;
-        for (int k=0; k<amountSkill; k++)
+        int amountAuraPU = (int) Math.floor(((amount - (2*amountCharLand))/3));
+        for (int k=0; k<amountAuraPU; k++)
         {
             this.addAuraFromArr(auraRows.get(k % auraRows.size()));
         }
+
+        Collections.shuffle(powerupRows);
+        for (int l=0; l<amountAuraPU; l++)
+        {
+            this.addPowerUpFromArr(powerupRows.get(l % powerupRows.size()));
+        } 
+
+        Collections.shuffle(destroyRows);
+        int amountDestroy = amount - (2*amountCharLand) - (2*amountAuraPU);
+        //System.out.println(amountDestroy);
+        for (int m=0; m<amountDestroy; m++)
+        {
+            this.addDestroyFromArr(destroyRows.get(m % destroyRows.size()));
+        }
         
         this.shuffle();
-        /* for (int a=0;a<this.getSize();a++) {
-            System.out.println(this.get(a).getClass());
-        } */
+    /*    System.out.println(this.size());
+         for (int a=0;a<this.getSize();a++) {
+            System.out.println(this.get(a).getClass() + "| ");
+        }
+        System.out.println("x"); */
     }
 
 	public void addCard(Card C){
@@ -114,6 +143,14 @@ public class Deck extends CardCollection implements Publisher, Subscriber
     
     public void addAuraFromArr(String[] arr) {
         addCard(new Aura(arr[1], Element.valueOf(arr[2]), arr[3], arr[4], Integer.parseInt(arr[5]), Integer.parseInt(arr[6]), Integer.parseInt(arr[7])));
+    }
+
+    public void addPowerUpFromArr(String[] arr) {
+        addCard(new PowerUp(arr[1], Element.valueOf(arr[2]), arr[3], arr[4], Integer.parseInt(arr[5])));
+    }
+
+    public void addDestroyFromArr(String[] arr) {
+        addCard(new Destroy(arr[1], Element.valueOf(arr[2]), arr[3], arr[4], Integer.parseInt(arr[5])));
     }
 
     public void doDraw(){

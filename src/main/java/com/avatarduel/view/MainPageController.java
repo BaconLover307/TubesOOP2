@@ -50,6 +50,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
+    private static final String DESTROY_CSV_FILE_PATH = "../card/data/skill_destroy.csv";
+    private static final String POWERUP_CSV_FILE_PATH = "../card/data/skill_powerup.csv";
     private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
     private static final String BOARD1_FXML_PATH = "../fxml/Board1Display.fxml";
     private static final String BOARD2_FXML_PATH = "../fxml/Board2Display.fxml";
@@ -153,8 +155,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
-            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
+            File destroyCSVFile = new File(getClass().getResource(DESTROY_CSV_FILE_PATH).toURI());
+            File powerupCSVFile = new File(getClass().getResource(POWERUP_CSV_FILE_PATH).toURI());
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerupCSVFile, cardAmount);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerupCSVFile, cardAmount);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);

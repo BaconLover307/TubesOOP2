@@ -119,7 +119,7 @@ public class AvatarDuel extends Application implements BaseView {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/avatarduel/fxml/MainPage.fxml"));
     loader.setControllerFactory(c -> new MainPageController(this.gameplay, cardAmount, playerName1, playerName2));
     Pane main = loader.load();
-    pane.relocate(0,0);
+    pane.relocate(-277.25,-156);
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
 //    Image image = new Image("com/avatarduel/asset/board.png");
