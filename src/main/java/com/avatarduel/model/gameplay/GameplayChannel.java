@@ -3,18 +3,21 @@ package com.avatarduel.model.gameplay;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.avatarduel.model.player.Player;
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 
 public class GameplayChannel implements EventChannel {
     
     private HashMap<String, ArrayList<Subscriber>> listSubscriber;
-    public String phase;
-    public String activePlayer;
-    public SummonedCharacter lastClickedCard;
+    public Phase phase;
+    public Player activePlayer;
+    public boolean isSelecting;
 
     public GameplayChannel() {
         this.listSubscriber = new HashMap<>();
-        this.phase = "GAME_INIT";
+        this.phase = Phase.GAME_INIT;
+        this.isSelecting = false;
       }
     
     public void addSubscriber(String topic, Subscriber s) {

@@ -1,35 +1,31 @@
 package com.avatarduel.model.cards.cardcollection;
 
+import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
-import com.avatarduel.model.gameplay.events.DrawEvent;
-import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
-import com.avatarduel.model.gameplay.events.SummonSkillEvent;
-import com.avatarduel.model.gameplay.events.UseLandEvent;
-import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Skill;
-import com.avatarduel.model.cards.card.Land;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 
 public class Hand extends CardCollection implements Publisher, Subscriber,
-        // UseLandEvent.UseLandEventHandler,     
+        SummonSkillEvent.SummonSkillEventHandler,
+        SummonCharacterEvent.SummonCharacterEventHandler,
         DrawEvent.DrawEventHandler {
 
-    // TODO Pindahin ke Hand Display
-    // private boolean show; // true if card is open
-    private boolean usedLand; // true if UseCard(Land) was used this turn
+    public boolean usedLand; // true if UseCard(Land) was used this turn
     private GameplayChannel channel;
 
     public Hand(GameplayChannel channel, String player) {
         super(channel, player);
-        // this.show = false;
         this.usedLand = false;
         this.channel = channel;
         channel.addSubscriber("DRAW_EVENT", this);
-        // channel.addSubscriber("USE_LAND", this);
+        channel.addSubscriber("SUMMON_CHARACTER", this);
+         channel.addSubscriber("SUMMON_SKILL", this);
     }
+
+    public boolean isUsedLand() {return usedLand;}
 
     public int findCard(String name) {
         int i = 0;
@@ -44,6 +40,10 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         }
     }
 
+    public void removeCard(Card card) {
+        this.remove(card);
+    }
+
     public Card useCard(String name) {
         /* Diasumsi bahwa ada kartu dengan nama name dalam hand */
         /* KAMUS */
@@ -55,34 +55,34 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         return C;
     }
 
-    public void displayHand() {
-        if (this.isEmpty()) {
-            System.out.println("Hand is Empty!");
-        } else {
-            for (int i = 0; i < this.size(); i++) {
-                System.out.println(this.get(i).getName());
-            }
-        }
-    }
+    // public void displayHand() {
+    //     if (this.isEmpty()) {
+    //         System.out.println("Hand is Empty!");
+    //     } else {
+    //         for (int i = 0; i < this.size(); i++) {
+    //             System.out.println(this.get(i).getName());
+    //         }
+    //     }
+    // }
 
 
-    public void doSelectChar(Character C) {
-        // TODO cek dulu elemen yg dimiliki player cukup / ngga
-        this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
-        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,C.getElement(),C.getPower()))
-        // TODO ilangin kartu C dari hand
-    }
+//    public void doUseChar(Character C) {
+//        // TODO cek dulu elemen yg dimiliki player cukup / ngga
+//        this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
+//        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,C.getElement(),C.getPower()))
+//        // TODO ilangin kartu C dari hand
+//    }
+//
+//   public void doUseSkill(Skill S) {
+//       // TODO cek dulu elemen yg dimiliki player cukup / ngga
+//       this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
+//       // TODO ilangin kartu S dari hand
+//   }
 
-    public void doSelectSkill(Skill S) {
-        // TODO cek dulu elemen yg dimiliki player cukup / ngga
-        this.publish("SUMMON_SKILL", new SummonSkillEvent(S));
-        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,S.getElement(),S.getPowVal()))
-        // TODO ilangin kartu S dari hand
-    }
-
-    public void doSelectLand(Land L) {
-        this.publish("USE_LAND", new UseLandEvent(L));
+    public void doUseLand(Land L) {
+        this.publish("USE_LAND", new UseLandEvent(L, getPlayer()));
         this.usedLand = true;
+        this.removeCard(L);
         // TODO ilangin kartu L dari hand
     }
 
@@ -92,10 +92,12 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
 
     @Override
     public void onEvent(BaseEvent e){
-        if (e instanceof DrawEvent){
+        if (e instanceof DrawEvent) {
             this.onDrawEvent((DrawEvent) e);
-        // } else if (e instanceof UseLandEvent) {
-        //     this.onUseLand((UseLandEvent) e);
+        } else if (e instanceof SummonedCharacter) {
+            this.onSummonCharacterEvent((SummonCharacterEvent) e);
+        } else if (e instanceof SummonSkillEvent) {
+            this.onSummonSkillEvent((SummonSkillEvent) e);
         }
     }
 
@@ -108,8 +110,16 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         }
     }
 
-    // @Override
-    // public void onUseLand(UseLandEvent e) {
-    //     if (this.)
-    // }
+    @Override
+    public void onSummonCharacterEvent(SummonCharacterEvent e) {
+        if (this.getPlayer().equals(e.owner))
+        removeCard(e.C);
+    }
+
+     @Override
+     public void onSummonSkillEvent(SummonSkillEvent e) {
+         if (this.getPlayer().equals(e.owner)) {
+             this.remove(e.S);
+         }
+     }
 }

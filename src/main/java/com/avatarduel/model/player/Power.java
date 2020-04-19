@@ -3,7 +3,6 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.Element;
@@ -39,6 +38,8 @@ public class Power implements
         else return this.energyPower;
     }
 
+    public String getOwner() {return this.player;}
+
     public void resetAllPower() {
         for(Element e : elements) {
             getPower(e).resetPower();
@@ -47,6 +48,10 @@ public class Power implements
 
     public void addCapacity(Element elm, int cap) {
         getPower(elm).addCapacity(cap);
+    }
+
+    public void addSize(Element elm, int size) {
+        getPower(elm).addSize(size);
     }
 
     public void usePower(Element elm, int use) {

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="box" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.cards.CardDisplay">
+<AnchorPane fx:id="box" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.avatarduel.view.CardDisplay">
    <children>
       <ImageView fx:id="card_bg" fitHeight="560.0" fitWidth="400.0" layoutX="0.0" layoutY="0.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <ImageView fx:id="card_image" fitHeight="240.0" fitWidth="260.0" pickOnBounds="true" x="70.0" y="122.0" />
@@ -30,5 +31,10 @@
             <Font name="Times New Roman" size="18.0" />
          </font>
       </Label>
+      <ImageView fx:id="card_back" fitHeight="560.0" fitWidth="400.0" pickOnBounds="true">
+         <image>
+            <Image url="@../asset/card-back.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

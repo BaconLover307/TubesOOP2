@@ -27,3 +27,10 @@ id	name	element	description	imagepath	power	attack	defense
 90	Ice Prison	WATER	This technique covers an opponent in a prison made of ice.	com/avatarduel/card/image/skill/Ice Prison.png	3	-4	2
 91	Tangle Mine	WATER	Military weapons invented by Hakoda to aid the Southern Water Tribe's quest to defeat the Fire Nation.	com/avatarduel/card/image/skill/Tangle Mine.png	2	2	-1
 92	Wolf Armor	WATER	Protective battle gear worn by the warriors of the Southern Water Tribe.	com/avatarduel/card/image/skill/Wolf Armor.png	2	2	1
+141	Ancient Wisdom	ENERGY	The last Lion Turtle granted Aang knowledge of energy bending.	com/avatarduel/card/image/skill/Ancient Wisdom.png	2	0	3
+142	Astral Giant	ENERGY	The projection of the spirit of Avatar Korra and the light spirit Raava.	com/avatarduel/card/image/skill/Astral Giant.png	4	4	2
+143	Spirit Library	ENERGY	The library of Wan Shi Tong. It is said to contain a vast collection of knowledge.	com/avatarduel/card/image/skill/Spirit Library.png	1	1	1
+144	Spirit Portal	ENERGY	The conflict had created another portal to the spirit world in the midst of Republic City.	com/avatarduel/card/image/skill/Spirit Portal.png	4	2	4
+145	Spirit Vines	ENERGY	Vines from the spirit realm that can quickly grow to encompass a territory. When agitated they simply regenerate quicker and stronger than before.	com/avatarduel/card/image/skill/Spirit Vines.png	2	-2	-2
+146	Spirit Wilds	ENERGY	Home to the spirits in the human realm. These areas can be dangerous to humans due to the wild spirits that inhabit it.	com/avatarduel/card/image/skill/Spirit Wilds.png	2	-2	-2
+147	Unbendable Spirit	ENERGY	To bend the energies of others, one's own spirit must be unbendable.	com/avatarduel/card/image/skill/Unbendable Spirit.png	1	1	1

@@ -12,6 +12,10 @@ import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 import com.avatarduel.model.cards.cardcollection.Board;
 
+/**
+ * Kelas untuk Player
+ * @author Hengky - 13518048
+ */
 public class Player implements Publisher, Subscriber,
     AttackPlayerEvent.AttackPlayerEventHandler, ResetPowerEvent.ResetPowerEventHandler,
     UseLandEvent.UseLandEventHandler, SpendPowerEvent.SpendPowerEventHandler {
@@ -24,6 +28,12 @@ public class Player implements Publisher, Subscriber,
     protected Power powers;
     protected GameplayChannel channel;
 
+    /**
+     * Membuat player baru 
+     * @param name nama player
+     * @param health health point awal
+     * @param channel gameplay channel
+     */
     public Player(String name, int health, GameplayChannel channel) {
         this.name = name;
         this.deck = new Deck(channel, name);
@@ -43,45 +53,81 @@ public class Player implements Publisher, Subscriber,
     public Hand getHand() {return this.hand;}
     public Board getBoard() {return this.board;}
     public int getHealth() {return this.health;}
-    public Power getPower() {return this.powers;}
+    public Power getPowers() {return this.powers;}
 
+    /**
+     * Implemen interface publisher
+     * @param topic 
+     * @param event 
+     */
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
     }
 
+    /**
+     * Implemen interface subscriber
+     * @param e event
+     */
+    @Override
     public void onEvent(BaseEvent e){
-        if (e.getClass() == AttackPlayerEvent.class){
+        if (e instanceof AttackPlayerEvent){
             this.onAttackPlayer((AttackPlayerEvent) e);
         } 
-        else if (e.getClass() == ResetPowerEvent.class){
+        else if (e instanceof ResetPowerEvent){
             this.onResetPowerEvent((ResetPowerEvent) e);
         }
-        else if (e.getClass() == SpendPowerEvent.class){
+        else if (e instanceof SpendPowerEvent){
             this.onSpendPowerEvent((SpendPowerEvent) e);
-        }  
+        }
+        else if (e instanceof UseLandEvent){
+            this.onUseLandEvent((UseLandEvent) e);
+        }    
     }
 
-
+    /**
+     * Implemen handler event attack player
+     * @param e event
+     */
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
-        if(this.name == e.target){
+        if(this.name.equals(e.target)){
             this.health -= e.amount;
+            System.out.println(this.getName() + this.getHealth());
             if (this.health <= 0){
                 this.publish("END_GAME", new EndGameEvent(this.name));
             }
         }
     }
 
+    /**
+     * Implemen handler event reset power
+     * @param e event
+     */
     @Override
     public void onResetPowerEvent(ResetPowerEvent e) {
-        this.powers.resetAllPower();
+        if (e.player.equals(this.name)){
+            this.powers.resetAllPower();
+            e.execute();
+        }
     }
 
+    /**
+     * Implemen handler event use land
+     * @param e event
+     */
     @Override
     public void onUseLandEvent(UseLandEvent e){
-        this.powers.addCapacity(e.land.getElement(), 1);
+        if (e.owner.equals(this.name)){
+            this.powers.addCapacity(e.land.getElement(), 1);
+            this.powers.addSize(e.land.getElement(), 1);
+            e.execute();
+        }
     }
 
+    /**
+     * Implemen handler event spend power
+     * @param e event
+     */
     @Override
     public void onSpendPowerEvent(SpendPowerEvent e) {
         if (e.sender.equals(this.name)){

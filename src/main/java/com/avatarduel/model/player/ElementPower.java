@@ -21,7 +21,7 @@ public class ElementPower {
         this.capacity += capacity;
     }
 
-    public void AddSize(int size) {
+    public void addSize(int size) {
         this.size += size;
     }
 
@@ -30,12 +30,6 @@ public class ElementPower {
     }
 
     public void usePower(int use) {
-       /* if (this.size < use) {
-            return false;
-        } else { 
-            this.size -= use;
-            return true; } */
-
         this.size -= use;
     }
 }

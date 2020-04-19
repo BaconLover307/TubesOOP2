@@ -14,7 +14,7 @@ import javax.xml.soap.Text;
 public class InputPlayer {
     private String name;
     private int player;
-    private final int LIMIT = 11;
+    private final int LIMIT = 13;
 
     public InputPlayer(int n) {
         this.player = n;

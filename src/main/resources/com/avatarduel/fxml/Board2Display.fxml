@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:controller="com.avatarduel.view.BoardDisplay" alignment="CENTER" hgap="15.0" minHeight="-Infinity" minWidth="-Infinity" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="120.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints fx:id="skill_row" minHeight="-Infinity" prefHeight="120.0" vgrow="SOMETIMES" />
+    <RowConstraints fx:id="char_row" minHeight="-Infinity" prefHeight="120.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+   <children>
+      <AnchorPane fx:id="char0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="char1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="char2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="char3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="char4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="char5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="skill0" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane fx:id="skill1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+      <AnchorPane fx:id="skill2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+      <AnchorPane fx:id="skill3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+      <AnchorPane fx:id="skill4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+      <AnchorPane fx:id="skill5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" />
+   </children>
+</GridPane>
