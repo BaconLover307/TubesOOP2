@@ -141,7 +141,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private Card debug2;
     private Card debug3;
     private int turn;
-    private boolean isSelecting;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -300,10 +299,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.hand1Dis.addCard(debug2);
         this.hand1Dis.addCard(debug3);
         this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
         this.hand2Dis.addCard(debug);
         this.hand2Dis.addCard(debug);
         this.hand2Dis.addCard(debug2);
         this.hand2Dis.addCard(debug2);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
         this.hand2Dis.addCard(debug3);
         this.hand2Dis.addCard(debug3);
     }

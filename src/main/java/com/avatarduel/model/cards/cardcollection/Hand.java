@@ -11,6 +11,7 @@ import com.avatarduel.model.gameplay.Subscriber;
 public class Hand extends CardCollection implements Publisher, Subscriber,
         // DiscardEvent.DiscardEventHandler,     
         SummonCharacterEvent.SummonCharacterEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
         DrawEvent.DrawEventHandler {
 
     public boolean usedLand; // true if UseCard(Land) was used this turn
@@ -22,6 +23,7 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         this.channel = channel;
         channel.addSubscriber("DRAW_EVENT", this);
         channel.addSubscriber("SUMMON_CHARACTER", this);
+        channel.addSubscriber("SUMMON_SKILL", this);
         // channel.addSubscriber("DISCARD", this);
     }
 
@@ -84,7 +86,6 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         this.publish("USE_LAND", new UseLandEvent(L, getPlayer()));
         this.usedLand = true;
         this.removeCard(L);
-        // TODO ilangin kartu L dari hand
     }
 
     public void publish(String topic, BaseEvent event){
@@ -115,6 +116,12 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
         if (this.getPlayer() == e.owner)
         removeCard(e.C);
+    }
+
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (this.getPlayer() == e.owner)
+        removeCard(e.S);
     }
 
     // @Override

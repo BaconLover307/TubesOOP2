@@ -32,6 +32,7 @@ import com.avatarduel.model.cards.cardcollection.Hand;
 public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         DrawEvent.DrawEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
 //        DiscardEvent.DiscardEventHandler,
         UseLandEvent.UseLandEventHandler {
 
@@ -47,6 +48,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("USE_LAND", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
+        this.channel.addSubscriber("SUMMON_SKILL", this);
 //        this.channel.addSubscriber("DISCARD", this);
 
         this.hand = hand;
@@ -190,6 +192,13 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         }
     }
 
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (hand.getPlayer() == e.owner) {
+            this.removeCard(e.S);
+        }
+    }
+
     //    @Override
 //    public void onDiscard(DiscardEvent e) {
 //        if (hand.getPlayer() == e.owner) {
@@ -209,6 +218,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             onUseLandEvent((UseLandEvent) event);
         } else if (event instanceof SummonCharacterEvent) {
             onSummonCharacterEvent((SummonCharacterEvent) event);
+        } else if (event instanceof SummonSkillEvent) {
+            onSummonSkillEvent((SummonSkillEvent) event);
 //        } else if (event instanceof DiscardEvent) {
 //            onDiscard((DiscardEvent) event);
         }

@@ -69,9 +69,7 @@ public class Board implements Subscriber, Publisher,
         int count = 0;
         boolean[] bool = getAvailableCharSlot();
         while (i<SIZE) {
-            if (!bool[i]) {
-                count = count + 1;
-            }
+            if (!bool[i]) count++;
             i++;
         }
         return count<SIZE;
@@ -98,11 +96,13 @@ public class Board implements Subscriber, Publisher,
 
     public boolean isSkillSlotAvailable() {
         int i = 0;
+        int count = 0;
         boolean[] bool = getAvailableSkillSlot();
-        while (!bool[i] && i<SIZE) {
+        while (i<SIZE) {
+            if (!bool[i]) count++;
             i++;
         }
-        return bool[i];
+        return count<SIZE;
     }
     
     // 1. Harus ada tempat kosong
