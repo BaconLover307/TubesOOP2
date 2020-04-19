@@ -2,19 +2,19 @@ package com.avatarduel.view;
 
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
+import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.cards.cardcollection.Board;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.RequestSummonEvent;
-import com.avatarduel.model.gameplay.events.SpendPowerEvent;
-import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
@@ -109,7 +109,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             this.arrCharPane[id].setOnMouseClicked(event -> {
                 if (this.channel.activePlayer.getName() == this.board.getOwner() &&
                         !this.channel.isSelecting) {
-                    if (this.channel.phase == Phase.MAIN_PHASE) rotateChar(cD);
+                    if (this.channel.phase == Phase.MAIN_PHASE) rotateChar(SC, this.arrCharPane[id]);
                     if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
                 }
             });
@@ -122,8 +122,19 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     }
 
-    public void rotateChar(CardDisplay cD) {
+    public void rotateChar(SummonedCharacter SC, AnchorPane AP) {
         System.out.println("ROTATING CARD");
+        String changePos;
+        if (SC.getPosition()) changePos = "Defend";
+        else changePos = "Attack";
+        AlertChoice rotateChoice = new AlertChoice(changePos, "", ("Summoned Character " + SC.getCharCard().getName() + " selected. Change Position?"), "Change Position");
+        String ret = rotateChoice.showAndReturn();
+        if (ret.equals(changePos)) {
+            publish("REPOSITION_CHARACTER", new RepositionCharacterEvent(SC, this.board.getOwner()));
+            if (ret.equals("Attack")) AP.setRotate(0);
+            else AP.setRotate(90);
+            System.out.println("Changed card position");
+        }
     }
 
     public void attackChar(CardDisplay cD) {
@@ -139,9 +150,9 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     public void ResetAll() {
         for (int i=0; i<6; i++) {
-            arrCharPane[i].setOnMouseClicked(null);
+//            arrCharPane[i].setOnMouseClicked(null);
             arrCharPane[i].setStyle(null);
-            arrSkillPane[i].setOnMouseClicked(null);
+//            arrSkillPane[i].setOnMouseClicked(null);
             arrSkillPane[i].setStyle(null);
         }
     }
@@ -166,9 +177,9 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int finalI = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
+                    ResetAll();
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, finalI, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPower()));
-                    ResetAll();
                 });
             }
         }
@@ -185,6 +196,8 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             }
         }
     }
+
+
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {

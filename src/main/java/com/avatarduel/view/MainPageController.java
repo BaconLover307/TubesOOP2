@@ -307,7 +307,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
-        Land card2 = new Land("AIR apalah", Element.AIR, "Udara", "com/avatarduel/card/image/skill/Shozin Comet.png");
+        Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/skill/Shozin Comet.png");
         this.display = card;
         this.display2 = card2;
         setPhase(Phase.GAME_INIT);

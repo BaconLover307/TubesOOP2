@@ -18,9 +18,11 @@ import com.avatarduel.model.gameplay.events.SummonSkillEvent;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
 public class Board implements Subscriber, Publisher,
-    SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
-    DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler,
-    RepositionCharacterEvent.RepositionCharacterEventHandler {
+        SummonCharacterEvent.SummonCharacterEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
+        DiscardSkillEvent.DiscardSkillEventHandler,
+        DestroyCharacterEvent.DestroyCharacterEventHandler
+    {
 
     private static final int SIZE = 6;
     
@@ -91,9 +93,6 @@ public class Board implements Subscriber, Publisher,
         else if (e.getClass() == DestroyCharacterEvent.class) {
             this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
         }
-        else if (e.getClass() == RepositionCharacterEvent.class) {
-            this.onRepositionCharacterEvent((RepositionCharacterEvent) e);
-        }
     }
     
     @Override
@@ -122,10 +121,6 @@ public class Board implements Subscriber, Publisher,
         // TODO remove e.SC dari array summonedchar board
     }
 
-    @Override
-    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
-        // TODO rotate tampilan e.SC
-    }
 }
 
 

@@ -143,7 +143,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
                     insufficientPower.show();
                 }
 
-                // TODO Publish Request Summon Char
+                // TODO Publish Request Summon Skill
 //                if (this.hand.isUsedLand()) {
 //                    AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card in this turn!", Alert.AlertType.WARNING, "Used Land!");
 //                    hasUsedLand.show();

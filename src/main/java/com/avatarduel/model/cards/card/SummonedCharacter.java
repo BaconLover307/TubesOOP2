@@ -1,6 +1,8 @@
 package com.avatarduel.model.cards.card;
 
 import java.util.ArrayList;
+
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
 import com.avatarduel.model.gameplay.events.CardClickedEvent;
@@ -21,7 +23,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
         CardClickedEvent.CardClickedEventHandler,
-        DrawEvent.DrawEventHandler
+        DrawEvent.DrawEventHandler,
+        RepositionCharacterEvent.RepositionCharacterEventHandler
         {
 
     private Character CharCard;
@@ -44,6 +47,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
         this.gameplayChannel.addSubscriber("DRAW_PHASE", this);
+        this.gameplayChannel.addSubscriber("REPOSITION_CHARACTER", this);
     }
     
     public Character getCharCard() {return this.CharCard;}
@@ -132,25 +136,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         }
     }
 
-    @Override
-    public void onEvent(BaseEvent event) {
-        if(event.getClass() == AttackCharacterEvent.class){
-            this.onAttackCharacter((AttackCharacterEvent) event);
-        }
-        
-        if(event.getClass() == SkillCardAttachedEvent.class){
-            this.onSkillCardAttached((SkillCardAttachedEvent) event);
-        }
-        
-        if(event.getClass() == CardClickedEvent.class){
-            this.onCardClicked((CardClickedEvent) event);
-        }
-        
-        if(event.getClass() == DrawEvent.class){
-            this.onDrawEvent((DrawEvent) event);
-        }
-    }
-
+   
     @Override
     public void publish(String topic, BaseEvent event) {
         this.gameplayChannel.sendEvent(topic, event);
@@ -158,13 +144,13 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onCardClicked(CardClickedEvent e) {
-        if((this.gameplayChannel.phase.equals("MAIN_PHASE"))
-             && this.gameplayChannel.activePlayer.getName() == this.owner){
-            this.rotate();
-            this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(this));
-        }
+//        if((this.gameplayChannel.phase == Phase.MAIN_PHASE)
+//             && this.gameplayChannel.activePlayer.getName() == this.owner){
+//            this.rotate();
+//            this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(this));
+//        }
 
-        if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
+        if(this.gameplayChannel.phase == Phase.BATTLE_PHASE){
             if (this.gameplayChannel.activePlayer.getName() == this.owner){
                 if(!this.isAlreadyAttack)
                     this.gameplayChannel.lastClickedCard = this;
@@ -180,11 +166,38 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onDrawEvent(DrawEvent e) {
-        if((this.gameplayChannel.phase.equals("DRAW_PHASE"))
+        if((this.gameplayChannel.phase == Phase.DRAW_PHASE)
              && this.gameplayChannel.activePlayer.getName() == this.owner){
             this.isAlreadyAttack = false;
         }
     }
+
+    @Override
+    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
+        if (e.SC.equals(this) && e.owner == this.owner) {
+            isAttack = !isAttack;
+        }
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        if(event instanceof AttackCharacterEvent){
+            this.onAttackCharacter((AttackCharacterEvent) event);
+        }
+        else if(event instanceof SkillCardAttachedEvent){
+            this.onSkillCardAttached((SkillCardAttachedEvent) event);
+        }
+        else if(event instanceof CardClickedEvent){
+            this.onCardClicked((CardClickedEvent) event);
+        }
+        else if(event instanceof DrawEvent){
+            this.onDrawEvent((DrawEvent) event);
+        }
+        else if(event instanceof RepositionCharacterEvent){
+            this.onRepositionCharacterEvent((RepositionCharacterEvent) event);
+        }
+    }
+
 
 
 }
