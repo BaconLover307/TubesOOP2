@@ -45,6 +45,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         UseLandEvent.UseLandEventHandler,
         RequestSummonEvent.RequestSummonEventHandler,
         ChangePlayerEvent.ChangePlayerEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
+        SummonCharacterEvent.SummonCharacterEventHandler,
         EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
@@ -279,8 +281,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 this.channel.isSelecting = false;
-                this.board1.ResetStyle();
-                this.board2.ResetStyle();
+                this.board1.ResetBoardProperty();
+                this.board2.ResetBoardProperty();
             }
         });
 
@@ -316,6 +318,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("END_GAME", this);
         this.channel.addSubscriber("USE_LAND", this);
         this.channel.addSubscriber("REQUEST_SUMMON", this);
+        this.channel.addSubscriber("SUMMON_SKILL", this);
+        this.channel.addSubscriber("SUMMON_CHARACTER", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -458,6 +462,18 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onSummonCharacterEvent(SummonCharacterEvent e) {
+        this.board1.ResetBoardProperty();
+        this.board2.ResetBoardProperty();
+    }
+
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        this.board1.ResetBoardProperty();
+        this.board2.ResetBoardProperty();
+    }
+
+    @Override
     public void onEndGame(EndGameEvent e) {
         e.execute(); 
     }
@@ -472,17 +488,29 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
-        } else if (event instanceof DisplayCardEvent) {
+        }
+        else if (event instanceof DisplayCardEvent) {
             this.onDisplayCard((DisplayCardEvent) event);
-        } else if (event instanceof DrawEvent) {
+        }
+        else if (event instanceof DrawEvent) {
             this.onDrawEvent((DrawEvent) event);
-        } else if (event instanceof ChangePlayerEvent) {
+        }
+        else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
-        } else if (event instanceof UseLandEvent) {
+        }
+        else if (event instanceof UseLandEvent) {
             this.onUseLandEvent((UseLandEvent) event);
-        } else if (event instanceof RequestSummonEvent) {
+        }
+        else if (event instanceof RequestSummonEvent) {
             this.onRequestSummon((RequestSummonEvent) event);
-        } else if (event instanceof EndGameEvent) {
+        }
+        else if (event instanceof SummonSkillEvent) {
+            this.onSummonSkillEvent((SummonSkillEvent) event);
+        }
+        else if (event instanceof SummonCharacterEvent) {
+            this.onSummonCharacterEvent((SummonCharacterEvent) event);
+        }
+        else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);
         }
     }

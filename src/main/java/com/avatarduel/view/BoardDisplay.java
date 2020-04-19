@@ -115,7 +115,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 if (this.channel.activePlayer.getName() == this.board.getOwner() &&
                         !this.channel.isSelecting) {
                     if (this.channel.phase == Phase.MAIN_PHASE) rotateChar(SC, this.arrCharPane[id]);
-                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
+                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(SC, this.arrCharPane[id]);
                 }
             });
         } catch (Exception e) {
@@ -134,13 +134,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
             this.arrSkillPane[id].getChildren().add(toLoad);
-            this.arrSkillPane[id].setOnMouseClicked(event -> {
-                if (this.channel.activePlayer.getName() == this.board.getOwner() &&
-                        !this.channel.isSelecting) {
-                    if (this.channel.phase == Phase.MAIN_PHASE) discardSkill(cD, this.arrCharPane[id]);
-                    if (this.channel.phase == Phase.BATTLE_PHASE) attackChar(cD);
-                }
-            });
+
         } catch (Exception e) {
             System.out.println("Board failed to summon Character!");
             e.printStackTrace();
@@ -163,47 +157,56 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void attackChar(CardDisplay cD) {
+    public void attackChar(SummonedCharacter SC, AnchorPane AP) {
         System.out.println("ATTACK CARD");
     }
 
-    public void discardSkill(CardDisplay cD, AnchorPane AP) {
+    public void discardSkill(Skill S, AnchorPane AP) {
 
-    }
-
-    public void ResetOnAction(AnchorPane[] arrPane) {
-        for (int i=0; i<arrPane.length; i++) {
-            arrPane[i].setOnMouseClicked(null);
-            arrPane[i].setStyle(null);
-        }
     }
 
     public void ResetStyle() {
-        for (int i=0; i<6; i++) {
-//            arrCharPane[i].setOnMouseClicked(null);
-            arrCharPane[i].setStyle(null);
-//            arrSkillPane[i].setOnMouseClicked(null);
-            arrSkillPane[i].setStyle(null);
-        }
-    }
-    public void ResetAction() {
-        for (int i=0; i<6; i++) {
-            arrCharPane[i].setOnMouseClicked(null);
-//            arrCharPane[i].setStyle(null);
-            arrSkillPane[i].setOnMouseClicked(null);
-//            arrSkillPane[i].setStyle(null);
+        for (int id=0; id<6; id++) {
+            arrCharPane[id].setStyle(null);
+            arrSkillPane[id].setStyle(null);
         }
     }
 
-//    public ArrayList<AnchorPane> getSelectableChar(int size) {
-//        ArrayList<AnchorPane> idList = new ArrayList<>();
-//        for (int i = 0; i < 6; i++) {
-//            if (arrCharPane[i].getChildren().size() == size) {
-//                idList.add(arrCharPane[i]);
-//            }
-//        }
-//        return idList;
-//    }
+    public void ResetBoardProperty() {
+        boolean[] charAvail = getBoard().getAvailableCharSlot();
+        boolean[] skillAvail = getBoard().getAvailableSkillSlot();
+        for (int id=0; id<6; id++) {
+            arrCharPane[id].setStyle(null);
+            arrCharPane[id].setOnMouseClicked(null);
+            if (!charAvail[id]) {
+                int i = id;
+                this.arrCharPane[id].setOnMouseClicked(event -> {
+                    if (this.channel.activePlayer.getName() == this.board.getOwner() &&
+                            !this.channel.isSelecting) {
+                        if (this.channel.phase == Phase.MAIN_PHASE) {
+                            rotateChar(getBoard().getCharwithId(i), this.arrCharPane[i]);
+                        }
+                        if (this.channel.phase == Phase.BATTLE_PHASE) {
+                            attackChar(getBoard().getCharwithId(i), this.arrCharPane[i]);
+                        }
+                    }
+                });
+            }
+            arrSkillPane[id].setStyle(null);
+            arrSkillPane[id].setOnMouseClicked(null);
+            if (!skillAvail[id]) {
+                int i = id;
+                this.arrSkillPane[id].setOnMouseClicked(event -> {
+                    if (this.channel.activePlayer.getName() == this.board.getOwner() &&
+                            !this.channel.isSelecting) {
+                        if (this.channel.phase == Phase.MAIN_PHASE)
+                            discardSkill(this.getBoard().getSkillwithId(i), this.arrCharPane[i]);
+                    }
+                });
+            }
+        }
+    }
+
 
     public void doSelectCharSlotAvailable(RequestSummonEvent event) {
         for (int i = 0; i < 6; i++) {
@@ -215,10 +218,9 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int ID = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
-                    ResetStyle();
-                    ResetAction();
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPowVal()));
+//                    ResetBoardProperty();  -> GA PERLU, UDAH DI MAINCONT
                 });
             }
         }
@@ -280,7 +282,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 );
                 int ID = i;
                 arrCharPane[i].setOnMouseClicked(e -> {
-                    ResetStyle();
                     publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
                 });

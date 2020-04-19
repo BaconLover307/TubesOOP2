@@ -163,14 +163,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
                         AlertPlayer insufficientPower = new AlertPlayer("Your " + cD.getCard().getElement() + " power is not enough!" , Alert.AlertType.WARNING, "Insufficient Power");
                         insufficientPower.show();
                 }
-                // TODO Publish Request Summon SKill
-//                if (this.hand.isUsedLand()) {
-//                AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card i?n this turn!", Alert.AlertType.WARNING, "Used Land!");
-//                    hasUsedLand.show();
-//                } else {
-//                    this.hand.doUseLand((Land) cD.getCard());
-//                }
-                System.out.println("Nanti request ya..");
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
