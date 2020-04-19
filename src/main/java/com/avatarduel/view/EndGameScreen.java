@@ -1,5 +1,6 @@
 package com.avatarduel.view;
 
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -22,8 +23,7 @@ public class EndGameScreen implements BaseView {
 
     public EndGameScreen(String winner) {
 
-        TilePane endmenu = new TilePane(Orientation.VERTICAL);
-        endmenu.setPadding(new Insets(SCREENH/2 - 50, 10, 10,(SCREENW/2)-105));
+        BorderPane endmenu = new BorderPane();
         Image image = new Image("com/avatarduel/asset/main-menu.png");
         BackgroundImage backgroundImage = new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
@@ -33,17 +33,16 @@ public class EndGameScreen implements BaseView {
         Background background = new Background(backgroundImage);
         endmenu.setBackground(background);
 
-        Text text = new Text();
-        text.setText("CONGRATULATION! " + winner + " WIN THIS GAME!");
-        text.setX(SCREENW/5-(50));
-        text.setY(SCREENH/2);
+
+        Label text = new Label("CONGRATULATION! \n" + winner + " wins!");
         text.setStyle(
-            "-fx-text-fill: #DFD7D1;" +
-            "-fx-font-family: Herculanum;" +
-            "-fx-font-size: 50;" 
+            "-fx-text-fill: #302C28;" +
+            "-fx-font-family: 'Times New Roman';" +
+            "-fx-font-size: 70;" +
+            "-fx-text-alignment: center;"
         );
 
-        endmenu.getChildren().add(text);
+        endmenu.setCenter(text);
 
         Scene s = new Scene(endmenu);
         Stage stage = new Stage();
