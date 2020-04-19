@@ -52,6 +52,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public ArrayList<Skill> getAttachedSkill() {return this.attachedSkill;}
     public void setAlreadyAttack() {this.isAlreadyAttack = true;}
     public boolean getAlreadyAttack() { return this.isAlreadyAttack; }
+    public int getAuraAtt() {return this.auraAtt;}
+    public int getAuraDef() {return this.auraDef;}
 
     public void rotate() {this.isAttack = !this.isAttack;}
 
