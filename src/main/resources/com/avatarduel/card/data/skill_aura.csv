@@ -8,22 +8,29 @@ id	name	element	description	imagepath	power	attack	defense
 71	Hot Air Balloon	AIR	Air balloon created by Mechanist, originally developed for the Fire Nation	com/avatarduel/card/image/skill/Hot Air Balloon.png	3	3	2
 72	Crystal Armor	EARTH	Armor made of crystal that makes the person cannot move.	com/avatarduel/card/image/skill/Crystal Armor.png	3	-4	2
 73	Earth Sink	EARTH	Make the person sink to the ground.	com/avatarduel/card/image/skill/Earth Sink.png	2	-4	2
-74	Lava Bending	EARTH	Manipulate molten earth.	com/avatarduel/card/image/skill/Lavabending.png	4	4	-2
-75	Metal Bending	EARTH	Ability to bend metal.	com/avatarduel/card/image/skill/Metalbending.png	4	1	3
+74	Lavabending	EARTH	Manipulate molten earth.	com/avatarduel/card/image/skill/Lavabending.png	4	4	-2
+75	Metalbending	EARTH	Ability to bend metal.	com/avatarduel/card/image/skill/Metalbending.png	4	1	3
 76	Rock Gloves	EARTH	Favored weapons of Ba Sing Se's secret police force, known as the Dai Li.	com/avatarduel/card/image/skill/Rock Gloves.png	1	-2	-2
 77	Slinky Tank	EARTH	Stone vehicles provided both transportation and protection during the invasion of the Fire Nation.	com/avatarduel/card/image/skill/Slinky Tank.png	3	-1	5
 78	Surface Rocks	EARTH	Largse rocks used as projectiles of Royal Earthbender Guards.	com/avatarduel/card/image/skill/Surface Rocks.png	2	3	0
 79	Blue Fire	FIRE	Bend completely blue flames, which are hotter than the orange flames.	com/avatarduel/card/image/skill/Blue Fire.png	3	3	0
-80	Combustion Bending	FIRE	Ignite objects with their mind instead of traditional firebending methods.	com/avatarduel/card/image/skill/Combustionbending.png	3	3	0
+80	Combustionbending	FIRE	Ignite objects with their mind instead of traditional firebending methods.	com/avatarduel/card/image/skill/Combustionbending.png	3	3	0
 81	Fire Armor	FIRE	Fire Nation armor.	com/avatarduel/card/image/skill/Fire Armor.png	1	0	2
-82	Lightning Bending	FIRE	Manipulate lightning by separating the yin and yang energies.	com/avatarduel/card/image/skill/Lightningbending.png	4	4	-2
+82	Lightningbending	FIRE	Manipulate lightning by separating the yin and yang energies.	com/avatarduel/card/image/skill/Lightningbending.png	4	4	-2
 83	Shozin Comet	FIRE	Formerly known as the Great Comet. A celestial object that passes close to the Earth every one hundred years, just skimming the surface of the upper atmosphere.	com/avatarduel/card/image/skill/Shozin Comet.png	4	4	-1
 84	Trebuchets	FIRE	Large weapons to conduct long-range artilery warfare.	com/avatarduel/card/image/skill/Trebuchets.png	2	2	0
 85	Wall of Flames	FIRE	Wall of concentrated flames acts as a barrier to incoming attacks.	com/avatarduel/card/image/skill/Wall of Flames.png	3	0	3
-86	Blood Bending	WATER	Ability that allows waterbender to manipulate person's movement.	com/avatarduel/card/image/skill/Bloodbending.png	4	4	1
+86	Bloodbending	WATER	Ability that allows waterbender to manipulate person's movement.	com/avatarduel/card/image/skill/Bloodbending.png	4	4	1
 87	Club	WATER	A blunt force weapon used for striking. Mostly used by Sokka.	com/avatarduel/card/image/skill/Club.png	1	1	1
 88	Full Moon	WATER	Enhance the ability of water bending.	com/avatarduel/card/image/skill/Full Moon.png	4	4	2
 89	Ice Claws	WATER	Drawing water around the fingers and freezing it.	com/avatarduel/card/image/skill/Ice Claws.png	3	3	0
 90	Ice Prison	WATER	This technique covers an opponent in a prison made of ice.	com/avatarduel/card/image/skill/Ice Prison.png	3	-4	2
 91	Tangle Mine	WATER	Military weapons invented by Hakoda to aid the Southern Water Tribe's quest to defeat the Fire Nation.	com/avatarduel/card/image/skill/Tangle Mine.png	2	2	-1
 92	Wolf Armor	WATER	Protective battle gear worn by the warriors of the Southern Water Tribe.	com/avatarduel/card/image/skill/Wolf Armor.png	2	2	1
+141	Ancient Wisdom	ENERGY	The last Lion Turtle granted Aang knowledge of energy bending.	com/avatarduel/card/image/skill/Ancient Wisdom.png	2	0	3
+142	Astral Giant	ENERGY	The projection of the spirit of Avatar Korra and the light spirit Raava.	com/avatarduel/card/image/skill/Astral Giant.png	4	4	2
+143	Spirit Library	ENERGY	The library of Wan Shi Tong. It is said to contain a vast collection of knowledge.	com/avatarduel/card/image/skill/Spirit Library.png	1	1	1
+144	Spirit Portal	ENERGY	The conflict had created another portal to the spirit world in the midst of Republic City.	com/avatarduel/card/image/skill/Spirit Portal.png	4	2	4
+145	Spirit Vines	ENERGY	Vines from the spirit realm that can quickly grow to encompass a territory. When agitated they simply regenerate quicker and stronger than before.	com/avatarduel/card/image/skill/Spirit Vines.png	2	-2	-2
+146	Spirit Wilds	ENERGY	Home to the spirits in the human realm. These areas can be dangerous to humans due to the wild spirits that inhabit it.	com/avatarduel/card/image/skill/Spirit Wilds.png	2	-2	-2
+147	Unbendable Spirit	ENERGY	To bend the energies of others, one's own spirit must be unbendable.	com/avatarduel/card/image/skill/Unbendable Spirit.png	1	1	1
