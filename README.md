@@ -7,4 +7,4 @@
 1. jalankan perintah cmd `gradlew run`
 
 # Screenshot aplikasi
-![Screenshot aplikasi](start screen.png)
+![Screenshot aplikasi](start screen.jpg)
