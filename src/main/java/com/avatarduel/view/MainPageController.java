@@ -245,8 +245,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 this.channel.isSelecting = false;
-                this.board1.ResetBoardProperty();
-                this.board2.ResetBoardProperty();
+                this.board1.resetBoardProperty();
+                this.board2.resetBoardProperty();
             }
         });
 
@@ -432,20 +432,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onAttackFail(AttackFailEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
-        this.board1.ResetBoardProperty();
-        this.board2.ResetBoardProperty();
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override

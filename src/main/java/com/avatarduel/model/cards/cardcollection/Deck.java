@@ -77,14 +77,14 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         CSVReader landReader = new CSVReader(fileLand, "\t");
         landReader.setSkipHeader(true);
         List<String[]> landRows = landReader.read();
-//
-//        CSVReader destroyReader = new CSVReader(fileDestroy, ",");
-//        destroyReader.setSkipHeader(true);
-//        List<String[]> destroyRows = destroyReader.read();
-//
-//        CSVReader powerupReader = new CSVReader(filePowerUp, ",");
-//        powerupReader.setSkipHeader(true);
-//        List<String[]> powerupRows = powerupReader.read();
+
+        CSVReader destroyReader = new CSVReader(fileDestroy, "\t");
+        destroyReader.setSkipHeader(true);
+        List<String[]> destroyRows = destroyReader.read();
+
+        CSVReader powerupReader = new CSVReader(filePowerUp, "\t");
+        powerupReader.setSkipHeader(true);
+        List<String[]> powerupRows = powerupReader.read();
 
         Collections.shuffle(charRows);
         int amountCharLand = (int) Math.floor((2*amount/5));
@@ -105,21 +105,21 @@ public class Deck extends CardCollection implements Publisher, Subscriber
         {
             this.addAuraFromArr(auraRows.get(k % auraRows.size()));
         }
-//
-//        Collections.shuffle(powerupRows);
-//        for (int l=0; l<amountAuraPU; l++)
-//        {
-//            this.addPowerUpFromArr(powerupRows.get(l % powerupRows.size()));
-//        }
-//
-//
-//        Collections.shuffle(destroyRows);
-//        int amountDestroy = amount - (2*amountCharLand) - (2*amountAuraPU);
-//        //System.out.println(amountDestroy);
-//        for (int m=0; m<amountDestroy; m++)
-//        {
-//            this.addDestroyFromArr(destroyRows.get(m % destroyRows.size()));
-//        }
+
+        Collections.shuffle(powerupRows);
+        for (int l=0; l<amountAuraPU; l++)
+        {
+            this.addPowerUpFromArr(powerupRows.get(l % powerupRows.size()));
+        }
+
+
+        Collections.shuffle(destroyRows);
+        int amountDestroy = amount - (2*amountCharLand) - (2*amountAuraPU);
+        //System.out.println(amountDestroy);
+        for (int m=0; m<amountDestroy; m++)
+        {
+            this.addDestroyFromArr(destroyRows.get(m % destroyRows.size()));
+        }
         
         this.shuffle();
         /*System.out.println(this.size());
