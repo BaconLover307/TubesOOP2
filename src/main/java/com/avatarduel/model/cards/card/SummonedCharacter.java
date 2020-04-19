@@ -28,6 +28,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     private String owner;
     private boolean isPowerUp, isAlreadyAttack;
     private GameplayChannel gameplayChannel;
+    private int auraAtt, auraDef;
 
     public SummonedCharacter(Character charCard, boolean isAttack, String player, GameplayChannel gameplayChannel) {
         this.CharCard = charCard;
@@ -36,6 +37,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.gameplayChannel = gameplayChannel;
         this.isPowerUp = false;
         this.isAlreadyAttack = true;
+        this.auraAtt = 0;
+        this.auraDef = 0;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
         this.gameplayChannel.addSubscriber("SUMMON_CHAR_CLICKED", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
@@ -54,9 +57,9 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public int getPositionValue() {
         if (isAttack) {
-            return CharCard.getAttack();
+            return CharCard.getAttack() + this.auraAtt;
         } else {
-            return CharCard.getDefense();
+            return CharCard.getDefense() + this.auraDef;
         }
     }
 
@@ -106,8 +109,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         if (this.equals(e.charCard)) {
             this.attachedSkill.add(e.skillCard);
             if(e.skillCard instanceof Aura){
-                this.getCharCard().setAttack(this.getCharCard().getAttack() + (((Aura) e.skillCard).getAttVal()));
-                this.getCharCard().setDefense(this.getCharCard().getDefense() + (((Aura) e.skillCard).getDefVal()));
+                this.auraAtt = this.auraAtt + ((Aura) e.skillCard).getAttVal();
+                this.auraDef = this.auraDef + ((Aura) e.skillCard).getDefVal();
             }
             if(e.skillCard instanceof Destroy){
                 this.destroy();
