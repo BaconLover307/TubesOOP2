@@ -101,7 +101,7 @@ public class CardDisplay implements Initializable, Publisher, Subscriber, Flippa
             this.bg = new Image("com/avatarduel/asset/card-character.png");
             String atr = "ATK/" + Integer.toString(((Character)this.card).getAttack()) +
                     "  DEF/" +Integer.toString(((Character)this.card).getDefense()) +
-                    "  POW/" + Integer.toString(((Character)this.card).getPower());
+                    "  POW/" + Integer.toString(((Character)this.card).getPowVal());
             this.card_attribute.setText(atr);
         }
         else if (card instanceof Land) {

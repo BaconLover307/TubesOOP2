@@ -1,23 +1,14 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Element;
 import com.avatarduel.model.Phase;
-import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Land;
-import com.avatarduel.model.cards.card.Aura;
-import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.ChangePhaseEvent;
-import com.avatarduel.model.gameplay.events.ChangePlayerEvent;
-import com.avatarduel.model.gameplay.events.DisplayCardEvent;
-import com.avatarduel.model.gameplay.events.DrawEvent;
-import com.avatarduel.model.gameplay.events.ResetPowerEvent;
-import com.avatarduel.model.gameplay.events.SpendPowerEvent;
-import com.avatarduel.model.gameplay.events.EndGameEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.player.Player;
 import com.avatarduel.model.player.Power;
 import com.avatarduel.view.cards.CardDisplay;
@@ -31,30 +22,40 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
 
-import javax.naming.Name;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
-        ChangePlayerEvent.ChangePlayerEventHandler, EndGameEvent.EndGameEventHandler {
+        UseLandEvent.UseLandEventHandler,
+        RequestSummonEvent.RequestSummonEventHandler,
+        ChangePlayerEvent.ChangePlayerEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
+        SummonCharacterEvent.SummonCharacterEventHandler,
+        EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
+    private static final String DESTROY_CSV_FILE_PATH = "../card/data/skill_destroy.csv";
+    private static final String POWERUP_CSV_FILE_PATH = "../card/data/skill_powerup.csv";
     private static final String CARD_FXML_PATH = "../fxml/CardDisplay.fxml";
+    private static final String BOARD1_FXML_PATH = "../fxml/Board1Display.fxml";
+    private static final String BOARD2_FXML_PATH = "../fxml/Board2Display.fxml";
     private static final String CUR_PHASE_STYLE_PATH = "com/avatarduel/css/curPhaseStyle.css";
     private static final String PHASE_STYLE_PATH = "com/avatarduel/css/phaseStyle.css";
     private static final double SCREENW = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -100,8 +101,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public ScrollPane hand2Pane;
     @FXML
     public HBox hand2HBox;
+
+    public BoardDisplay board1;
     @FXML
     public AnchorPane board1Pane;
+    public BoardDisplay board2;
     @FXML
     public AnchorPane board2Pane;
 
@@ -132,10 +136,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     private Player player1;
     private Player player2;
-    private Card display;
-    private Card display2;
+    private Card debug;
+    private Card debug1;
+    private Card debug2;
+    private Card debug3;
     private int turn;
-    private Phase phase;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -152,8 +157,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             File charCSVFile = new File(getClass().getResource(CHAR_CSV_FILE_PATH).toURI());
             File landCSVFile = new File(getClass().getResource(LAND_CSV_FILE_PATH).toURI());
             File auraCSVFile = new File(getClass().getResource(AURA_CSV_FILE_PATH).toURI());
-            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
-            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, cardAmount);
+            File destroyCSVFile = new File(getClass().getResource(DESTROY_CSV_FILE_PATH).toURI());
+            File powerUpCSVFile = new File(getClass().getResource(POWERUP_CSV_FILE_PATH).toURI());
+            this.player1.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerUpCSVFile, cardAmount);
+            this.player2.getDeck().loadDeck(charCSVFile, auraCSVFile, landCSVFile, destroyCSVFile, powerUpCSVFile, cardAmount);
         } catch (Exception e) {
             System.out.println("Failed to load CSV Files!");
             System.out.println("Error = " + e);
@@ -169,13 +176,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.health2Text = new SimpleStringProperty(Integer.toString(player2.getHealth()));
         this.health2.textProperty().bind(health2Text);
 
-
-
-        // Power Display Setup
-        power1Dis = new PowerDisplay(this.channel, player1.getPower());
-        this.power1Pane.getChildren().add(power1Dis.getPane());
-        power2Dis = new PowerDisplay(this.channel, player2.getPower());
-        this.power2Pane.getChildren().add(power2Dis.getPane());
 
         // Hand Display Setup
         this.hand1Dis = new HandDisplay(this.channel, player1.getHand());
@@ -194,6 +194,34 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         deck1.textProperty().bind(deck1Count);
         this.deck2Count = new SimpleStringProperty(Integer.toString(player2.getDeck().getSize()));
         deck2.textProperty().bind(deck2Count);
+
+        // Board setup
+        this.board1 = new BoardDisplay(this.channel, this.player1.getBoard());
+        try {
+            FXMLLoader loader1 = new FXMLLoader(getClass().getResource(BOARD1_FXML_PATH));
+            loader1.setControllerFactory(c -> this.board1);
+            this.board1Pane.getChildren().add(loader1.load());
+        } catch (Exception e) {
+            System.out.println("Board1 failed to load!");
+            e.printStackTrace();
+        }
+
+
+        this.board2 = new BoardDisplay(this.channel, this.player2.getBoard());
+        try {
+            FXMLLoader loader2 = new FXMLLoader(getClass().getResource(BOARD2_FXML_PATH));
+            loader2.setControllerFactory(c -> this.board2);
+            this.board2Pane.getChildren().add(loader2.load());
+        } catch (Exception e) {
+            System.out.println("Board2 failed to load!");
+            e.printStackTrace();
+        }
+
+        // Power Display Setup
+        power1Dis = new PowerDisplay(this.channel, player1.getPowers());
+        this.power1Pane.getChildren().add(power1Dis.getPane());
+        power2Dis = new PowerDisplay(this.channel, player2.getPowers());
+        this.power2Pane.getChildren().add(power2Dis.getPane());
 
 //        this.hand1HBox = this.hand1Dis.getHandBox();
 ////        this.hand2HBox = this.hand2Dis.getHandBox();
@@ -227,12 +255,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 //        }
 //        this.name1.setText("abcdefghijkl");
 
-
+        // ACTION SETUP
         deck1.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
+            if (getPhase() == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
         });
         deck2.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE && turn == 2) player2.getDeck().doDraw();
+            if (getPhase() == Phase.DRAW_PHASE && turn == 2) player2.getDeck().doDraw();
         });
 
         hand1Pane.setOnScroll(event -> {
@@ -246,11 +274,47 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
         // ? Change Here if want to enable continue without draw
         btnNext.setOnAction(event -> {
-            if (this.phase != Phase.DRAW_PHASE) doChangePhase();
+            if (getPhase() != Phase.DRAW_PHASE && !this.channel.isSelecting) doChangePhase();
         });
-        AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Start Game");
+
+        this.root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                this.channel.isSelecting = false;
+                this.board1.ResetBoardProperty();
+                this.board2.ResetBoardProperty();
+            }
+        });
+
+        // START GAME
+        AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Start Game");
         gameStartAlert.show();
         doChangePhase();
+
+        // DEBUG
+        this.hand1Dis.addCard(debug);
+        this.hand1Dis.addCard(debug);
+        this.hand1Dis.addCard(debug1);
+        this.hand1Dis.addCard(debug1);
+        this.hand1Dis.addCard(debug2);
+        this.hand1Dis.addCard(debug2);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand1Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug);
+        this.hand2Dis.addCard(debug);
+        this.hand2Dis.addCard(debug2);
+        this.hand2Dis.addCard(debug2);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
+        this.hand2Dis.addCard(debug3);
     }
 
     public MainPageController(GameplayChannel channel, int cardAmount, String P1, String P2) {
@@ -261,27 +325,38 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("DISPLAY_CARD", this);
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("END_GAME", this);
+        this.channel.addSubscriber("USE_LAND", this);
+        this.channel.addSubscriber("REQUEST_SUMMON", this);
+        this.channel.addSubscriber("SUMMON_SKILL", this);
+        this.channel.addSubscriber("SUMMON_CHARACTER", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
         this.player2 = new Player(P2, 80, channel);
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
-        Aura card2 = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
-        this.display = card;
-        this.display2 = card2;
-        this.phase = Phase.GAME_INIT;
+        Character card1 = new Character("Bumi", Element.AIR, "Bumi tua", "com/avatarduel/card/image/character/Bumi.png", 1, 1, 1);
+        Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/land/Eastern Air Temple.png");
+        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 3);
+        this.debug = card;
+        this.debug1 = card1;
+        this.debug2 = card2;
+        this.debug3 = card3;
+        setPhase(Phase.GAME_INIT);
         this.turn = 1;
-        this.channel.activePlayer = player1.getName();
+        this.channel.activePlayer = player1;
+
     }
 
-    public String getNextPlayer() {
-        if (turn == 2) return player1.getName();
-        else return player2.getName();
+    public Player getNextPlayer() {
+        if (turn == 2) return player1;
+        else return player2;
     }
 
-    public void setPhase(Phase p) {this.phase = p;}
+    public void setPhase(Phase p) {this.channel.phase = p;}
+    public Phase getPhase() {return this.channel.phase;}
+
     public Label getPhaseBox() {
-        switch (this.phase) {
+        switch (getPhase()) {
             case DRAW_PHASE: return this.drawPhaseBox;
             case MAIN_PHASE: return this.mainPhaseBox;
             case BATTLE_PHASE: return this.battlePhaseBox;
@@ -291,7 +366,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public Phase getNextPhase() {
-        int idx = this.phase.ordinal();
+        int idx = getPhase().ordinal();
         int nextIdx = idx + 1;
         Phase[] phases = Phase.values();
         nextIdx %= phases.length;
@@ -299,10 +374,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         return phases[nextIdx];
     }
 
+    // PUBLISH
     public void doChangePhase() {
         Phase p;
         try {
-            if (this.phase != Phase.GAME_INIT) {
+            if (getPhase() != Phase.GAME_INIT) {
                 getPhaseBox().getStylesheets().clear();
                 getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
             }
@@ -316,25 +392,29 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         e.execute();
     }
 
-
     @Override
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
 
+    // ONEVENT
     public void onChangePhase(ChangePhaseEvent e) {
         setPhase(e.phase);
-        if (this.phase != Phase.GAME_INIT) {
+        if (getPhase() != Phase.GAME_INIT) {
             getPhaseBox().getStylesheets().clear();
             getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         }
         this.cardPane.getChildren().clear();
-        if (e.phase == Phase.DRAW_PHASE) {
-            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer));   
+        if (getPhase() == Phase.DRAW_PHASE) {
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer.getName()));
         }
-        if (e.phase == Phase.END_PHASE) {
-            String nextPlayer = getNextPlayer();
-            AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
+        // else if (getPhase() == Phase.MAIN_PHASE) {
+        //     System.out.println("P1 HAND: " + this.player1.getHand().getSize());
+        //     System.out.println("P2 HAND: " + this.player2.getHand().getSize());
+        // }
+        else if (getPhase() == Phase.END_PHASE) {
+            Player nextPlayer = getNextPlayer();
+            AlertPlayer alert = new AlertPlayer(nextPlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
             alert.show();
-            this.publish("CHANGE_PLAYER", new ChangePlayerEvent(getNextPlayer()));
+            this.publish("CHANGE_PLAYER", new ChangePlayerEvent(nextPlayer));
             doChangePhase();
         }
     }
@@ -352,7 +432,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void onDrawEvent(DrawEvent event) {
-        if (this.phase != Phase.GAME_INIT) {
+        if (getPhase() != Phase.GAME_INIT) {
             if (event.h == this.player1.getName()) {
                 this.deck1Count.setValue(Integer.toString(player1.getDeck().getSize()));
             } else if (event.h == this.player2.getName()) {
@@ -366,7 +446,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void onChangePlayer(ChangePlayerEvent e) {
         this.channel.activePlayer = e.nextPlayer;
         this.turn = turn%2+1;
-        if (this.channel.activePlayer == player1.getName()) {
+        if (this.channel.activePlayer.equals(player1)) {
             hand1Dis.flipOpen();
             hand2Dis.flipClose();
         } else {
@@ -376,21 +456,70 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
+    public void onRequestSummon(RequestSummonEvent e) {
+        if (e.card instanceof Skill) {
+            if (this.player1.getBoard().isCharSlotEmpty() && this.player2.getBoard().isCharSlotEmpty()) {
+                AlertPlayer noTarget = new AlertPlayer("There are no Characters to target!", Alert.AlertType.WARNING, "No Target!");
+                noTarget.show();
+            } else {
+                if (this.player1.getName().equals(e.owner)) {
+                    this.board1.doSelectSkillSlotAvailable(e);
+                    this.channel.isSelecting = true;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onSummonCharacterEvent(SummonCharacterEvent e) {
+        this.board1.ResetBoardProperty();
+        this.board2.ResetBoardProperty();
+    }
+
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        this.board1.ResetBoardProperty();
+        this.board2.ResetBoardProperty();
+    }
+
+    @Override
     public void onEndGame(EndGameEvent e) {
         e.execute(); 
+    }
+
+    @Override
+    public void onUseLandEvent(UseLandEvent e) {
+        this.power1Dis.updatePower();
+        this.power2Dis.updatePower();
     }
 
     @Override
     public void onEvent(BaseEvent event) {
         if (event instanceof ChangePhaseEvent) {
             this.onChangePhase((ChangePhaseEvent) event);
-        } else if (event instanceof DisplayCardEvent) {
+        }
+        else if (event instanceof DisplayCardEvent) {
             this.onDisplayCard((DisplayCardEvent) event);
-        } else if (event instanceof DrawEvent) {
+        }
+        else if (event instanceof DrawEvent) {
             this.onDrawEvent((DrawEvent) event);
-        } else if (event instanceof ChangePlayerEvent) {
+        }
+        else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
-        } else if (event instanceof EndGameEvent) {
+        }
+        else if (event instanceof UseLandEvent) {
+            this.onUseLandEvent((UseLandEvent) event);
+        }
+        else if (event instanceof RequestSummonEvent) {
+            this.onRequestSummon((RequestSummonEvent) event);
+        }
+        else if (event instanceof SummonSkillEvent) {
+            this.onSummonSkillEvent((SummonSkillEvent) event);
+        }
+        else if (event instanceof SummonCharacterEvent) {
+            this.onSummonCharacterEvent((SummonCharacterEvent) event);
+        }
+        else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);
         }
     }

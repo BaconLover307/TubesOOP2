@@ -10,13 +10,19 @@ import com.avatarduel.model.cards.card.Character;
 public class SummonCharacterEvent implements BaseEvent {
     
     public Character C;
+    public int id;
+    public String owner;
 
     /**
      * Membuat event baru
      * @param C kartu karakter yang di summon
+     * @param id id kartu karakter yang di summon
+     * @param owner pemilik kartu karakter yang di summon
      */
-    public SummonCharacterEvent(Character C){
+    public SummonCharacterEvent(Character C, int id, String owner){
         this.C = C;
+        this.id = id;
+        this.owner = owner;
     }
 
     /**
@@ -30,6 +36,6 @@ public class SummonCharacterEvent implements BaseEvent {
      * Menampilkan ke command-line
      */
     public void execute(){
-        System.out.println("Character " + C.getName() + " Summoned!");
+        System.out.println("Character " + C.getName() + " summoned by " + owner + "!");
     }
 }

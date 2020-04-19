@@ -3,7 +3,6 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.ResetPowerEvent;
 import com.avatarduel.model.gameplay.events.SpendPowerEvent;
 import com.avatarduel.model.gameplay.events.UseLandEvent;
 import com.avatarduel.model.Element;

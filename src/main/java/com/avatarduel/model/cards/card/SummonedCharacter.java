@@ -1,9 +1,11 @@
 package com.avatarduel.model.cards.card;
 
 import java.util.ArrayList;
+
+import com.avatarduel.model.Phase;
 import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 import com.avatarduel.model.gameplay.events.DrawEvent;
-import com.avatarduel.model.gameplay.events.CardClickedEvent;
+import com.avatarduel.model.gameplay.events.SummonCharClickedEvent;
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.RepositionCharacterEvent;
@@ -13,6 +15,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
+import com.avatarduel.model.Phase;
 
 /**
  * Merupakan kelas yang mengimplementasi interface ICharSummoned (kartu yang disummon ke arena)
@@ -20,7 +23,7 @@ import com.avatarduel.model.gameplay.events.AttackCharacterEvent;
 public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         SkillCardAttachedEvent.SkillCardAttachedEventHandler, 
         AttackCharacterEvent.AttackCharacterEventHandler,
-        CardClickedEvent.CardClickedEventHandler,
+        SummonCharClickedEvent.SummonCharClickedEventHandler,
         DrawEvent.DrawEventHandler
         {
 
@@ -41,14 +44,16 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
         this.isPowerUp = false;
         this.isAlreadyAttack = true;
         this.gameplayChannel.addSubscriber("ATTACK_CHARACTER_EVENT", this);
-        this.gameplayChannel.addSubscriber("CLICKED_EVENT", this);
+        this.gameplayChannel.addSubscriber("SUMMON_CHAR_CLICKED", this);
         this.gameplayChannel.addSubscriber("ATTACH_SKILL", this);
         this.gameplayChannel.addSubscriber("DRAW_PHASE", this);
+        this.gameplayChannel.addSubscriber("REPOSITION_CHARACTER", this);
     }
     
     public Character getCharCard() {return this.CharCard;}
     public boolean getPosition() {return this.isAttack;}
     public ArrayList<Skill> getAttachedSkill() {return this.attachedSkill;}
+    public void setAlreadyAttack() {this.isAlreadyAttack = true;}
 
     public void rotate() {
         if (this.isAttack) {
@@ -80,10 +85,10 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     public void destroy() {
         // TODO remove this card and remove every skill attached
-        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
         for (Skill skill : attachedSkill) {
             doDiscardSkill(skill);
         }
+        this.publish("DESTROY_CHARACTER_EVENT", new DestroyCharacterEvent(this));
     }
 
     @Override
@@ -116,7 +121,6 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                             e.fromCard.getPositionValue() - e.toCard.getPositionValue(), 
                             e.toCard.owner
                             ));
-                    
                     }
                     else if(e.fromCard.isPowerUp){ 
 
@@ -125,7 +129,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                             e.toCard.owner
                             ));
                     
-                    }     
+                    }
+                    e.fromCard.setAlreadyAttack();     
                 }
                 this.destroy();
             }
@@ -142,8 +147,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
             this.onSkillCardAttached((SkillCardAttachedEvent) event);
         }
         
-        if(event.getClass() == CardClickedEvent.class){
-            this.onCardClicked((CardClickedEvent) event);
+        if(event.getClass() == SummonCharClickedEvent.class){
+            this.onSummonCharClicked((SummonCharClickedEvent) event);
         }
         
         if(event.getClass() == DrawEvent.class){
@@ -157,21 +162,23 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     }
 
     @Override
-    public void onCardClicked(CardClickedEvent e) {
-        if((this.gameplayChannel.phase.equals("MAIN_PHASE"))
-             && this.gameplayChannel.activePlayer == this.owner){
+    public void onSummonCharClicked(SummonCharClickedEvent e) {
+        if((this.gameplayChannel.phase == Phase.MAIN_PHASE)
+             && this.gameplayChannel.activePlayer.getName() == e.SC.owner){
             this.rotate();
-            this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(this));
+            this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(e.SC));
+        }
+        else if ((this.gameplayChannel.phase == Phase.MAIN_PHASE && this.gameplayChannel.isSelecting)) {
+            this.gameplayChannel.lastClickedCard = e.SC;
         }
 
-        if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
-            if (this.gameplayChannel.activePlayer == this.owner){
+        if(this.gameplayChannel.phase == Phase.BATTLE_PHASE){
+            if (this.gameplayChannel.activePlayer.getName() == e.SC.owner){
                 if(!this.isAlreadyAttack)
-                    this.gameplayChannel.lastClickedCard = this;
-                // TODO publish  //jika ingin menandakan di board lastclickedcard-nya
+                    this.gameplayChannel.lastClickedCard = e.SC;
             }else{
                 if(this.gameplayChannel.lastClickedCard != null){
-                    this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this.gameplayChannel.lastClickedCard, this));
+                    this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this.gameplayChannel.lastClickedCard, e.SC));
                     this.gameplayChannel.lastClickedCard = null;
                 }
             }
@@ -180,11 +187,38 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onDrawEvent(DrawEvent e) {
-        if((this.gameplayChannel.phase.equals("DRAW_PHASE"))
-             && this.gameplayChannel.activePlayer == this.owner){
+        if((this.gameplayChannel.phase == Phase.DRAW_PHASE)
+             && this.gameplayChannel.activePlayer.getName() == this.owner){
             this.isAlreadyAttack = false;
         }
     }
+
+    @Override
+    public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
+        if (e.SC.equals(this) && e.owner == this.owner) {
+            rotate();
+        }
+    }
+
+    @Override
+    public void onEvent(BaseEvent event) {
+        if(event instanceof AttackCharacterEvent){
+            this.onAttackCharacter((AttackCharacterEvent) event);
+        }
+        else if(event instanceof SkillCardAttachedEvent){
+            this.onSkillCardAttached((SkillCardAttachedEvent) event);
+        }
+        else if(event instanceof CardClickedEvent){
+            this.onCardClicked((CardClickedEvent) event);
+        }
+        else if(event instanceof DrawEvent){
+            this.onDrawEvent((DrawEvent) event);
+        }
+        else if(event instanceof RepositionCharacterEvent){
+            this.onRepositionCharacterEvent((RepositionCharacterEvent) event);
+        }
+    }
+
 
 
 }

@@ -1,19 +1,20 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
+import com.avatarduel.model.player.Player;
 
 /**
  * Kelas untuk event ganti pemain saat ganti turn
  */
 public class ChangePlayerEvent implements BaseEvent{
 
-    public String nextPlayer;
+    public Player nextPlayer;
 
     /**
      * Membuat event change player baru
      * @param nextPlayer pemain selanjutnya
      */
-    public ChangePlayerEvent(String nextPlayer) {
+    public ChangePlayerEvent(Player nextPlayer) {
         this.nextPlayer = nextPlayer;
     }
 
