@@ -31,6 +31,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     private int auraAtt, auraDef;
 
     public SummonedCharacter(Character charCard, boolean isAttack, String player, GameplayChannel gameplayChannel) {
+        this.attachedSkill = new ArrayList<Skill>();
         this.CharCard = charCard;
         this.isAttack = isAttack;
         this.owner = player;
