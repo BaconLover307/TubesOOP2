@@ -175,7 +175,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 }
             }
         } else { 
-            AlertPlayer alert = new AlertPlayer("Your already attack/ just summoned this turn!", Alert.AlertType.WARNING, "Already Attack Character");
+            AlertPlayer alert = new AlertPlayer("Your character cannot attack in this turn!", Alert.AlertType.WARNING, "Character Cannot Attack");
             alert.show(); 
         }
     }
@@ -312,6 +312,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     @Override
     public void onSelectEnemy(SelectEnemyEvent event) {
         if (!(event.SC.getOwner().equals(this.channel.activePlayer.getName()))) {
+            System.out.println("TEMBUSSSS");
             boolean avail = false;
             for (int i = 0; i < 6; i++) {
                 if (arrCharPane[i].getChildren().size() == 1) avail = true;

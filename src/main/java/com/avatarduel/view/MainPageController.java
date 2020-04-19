@@ -291,7 +291,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         Character card = new Character("Aang", Element.AIR, "Aang pemuda avatar", "com/avatarduel/card/image/character/Aang.png", 1, 1, 1);
         Character card1 = new Character("Bumi", Element.AIR, "Bumi tua", "com/avatarduel/card/image/character/Bumi.png", 1, 1, 1);
         Land card2 = new Land("Air apalah", Element.AIR, "Udara", "com/avatarduel/card/image/land/Eastern Air Temple.png");
-        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 3);
+        Aura card3 = new Aura("Entah", Element.AIR, "Aura Udara something", "com/avatarduel/card/image/skill/Tornado.png", 1, 3, 2);
         this.debug = card;
         this.debug1 = card1;
         this.debug2 = card2;
