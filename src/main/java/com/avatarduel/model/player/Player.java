@@ -84,10 +84,13 @@ public class Player implements Publisher, Subscriber,
         }    
     }
 
+<<<<<<< HEAD
     /**
      * Implemen handler event attack player
      * @param e event
      */
+=======
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
         if(this.name.equals(e.target)){

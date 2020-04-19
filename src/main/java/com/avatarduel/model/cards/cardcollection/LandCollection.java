@@ -10,6 +10,7 @@ public class LandCollection extends CardCollection {
     private int firePower;
     private int airPower;
     private int earthPower;
+    private int energyPower;
 
 	public LandCollection(GameplayChannel channel, String player) {
         super(channel, player);
@@ -17,16 +18,19 @@ public class LandCollection extends CardCollection {
         this.firePower = 0;
         this.airPower = 0;
         this.earthPower = 0;
+        this.energyPower = 0;
     }
 
     public int getWaterPower(){ return this.waterPower; }
     public int getFirePower(){ return this.firePower; }
     public int getAirPower(){ return this.airPower; }
     public int getEarthPower(){ return this.earthPower; }
+    public int getEnergyPower(){ return this.energyPower; }
     public void setWaterPower(int power){ this.waterPower = power; }
     public void setFirePower(int power){ this.firePower = power; }
     public void setAirPower(int power){ this.airPower = power; }
     public void setEarthPower(int power){ this.earthPower = power; }
+    public void setEnergyPower(int power){ this.energyPower = power; }
 
     public int getLands(Element element){
         int lands = 0;
@@ -53,6 +57,7 @@ public class LandCollection extends CardCollection {
         this.setFirePower(getLands(Element.FIRE));
         this.setAirPower(getLands(Element.AIR));
         this.setEarthPower(getLands(Element.EARTH));
+        this.setEnergyPower(getLands(Element.ENERGY));
     }
 
     public void displayPower(Element elm) {
@@ -68,6 +73,9 @@ public class LandCollection extends CardCollection {
                 break;
             case EARTH:
                 System.out.println(this.getEarthPower() + "/" + this.getLands(Element.EARTH));
+                break;
+            case ENERGY:
+                System.out.println(this.getEnergyPower() + "/" + this.getLands(Element.ENERGY));
                 break;
             default:
                 break;
@@ -96,11 +104,18 @@ public class LandCollection extends CardCollection {
                 this.airPower -= n;
                 return true;
             }
-        } else {
+        } else if (element == Element.EARTH){
             if (n > this.getEarthPower()){
                 return false;
             } else {
                 this.earthPower -= n;
+                return true;
+            }
+        } else {
+            if (n > this.getEnergyPower()){
+                return false;
+            } else {
+                this.energyPower -= n;
                 return true;
             }
         }

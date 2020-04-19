@@ -10,10 +10,14 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
+<<<<<<< HEAD
 import com.avatarduel.model.gameplay.events.DestroyCharacterEvent;
+=======
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
 import com.avatarduel.model.gameplay.events.DiscardSkillEvent;
 import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
 import com.avatarduel.model.gameplay.events.SummonSkillEvent;
+import com.avatarduel.model.gameplay.events.SkillCardAttachedEvent;
 
 public class Board implements Subscriber, Publisher,
         SummonCharacterEvent.SummonCharacterEventHandler,
@@ -22,7 +26,13 @@ public class Board implements Subscriber, Publisher,
         DestroyCharacterEvent.DestroyCharacterEventHandler
     {
 
+<<<<<<< HEAD
     private static final int SIZE = 6;
+=======
+public class Board implements Subscriber, Publisher,
+    SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
+    DiscardSkillEvent.DiscardSkillEventHandler {
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     
     private SummonedCharacter[] charBoard;
     private Skill[] skillBoard;
@@ -106,11 +116,14 @@ public class Board implements Subscriber, Publisher,
     // 2. Harus ada karakter yg ditarget
     // TODO s arahin ke target 
 
+<<<<<<< HEAD
     @Override
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
     }
 
+=======
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     @Override
     public void onEvent(BaseEvent e){
         if (e instanceof SummonCharacterEvent){
@@ -137,9 +150,15 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onSummonSkillEvent(SummonSkillEvent e) {
+<<<<<<< HEAD
         if (this.getOwner().equals(e.owner)) {
             addSkilltoBoard(e.Sid, e.S);
         }
+=======
+        // TODO Masukin e.S ke map skill 
+        // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
+        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
     }
 
     @Override
@@ -157,6 +176,15 @@ public class Board implements Subscriber, Publisher,
         }
         e.SC.getAttachedSkill().remove(e.S); 
     }
+<<<<<<< HEAD
+=======
+
+    @Override
+    public void publish(String topic, BaseEvent event) {
+        this.channel.sendEvent(topic, event);
+    }
+}
+>>>>>>> 049247d754f04e88e961d8755b36abe8a7b461cf
 
     @Override
     public void onDestroyCharacterEvent(DestroyCharacterEvent e) {
