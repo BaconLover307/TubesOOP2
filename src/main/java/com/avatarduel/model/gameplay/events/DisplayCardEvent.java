@@ -1,8 +1,7 @@
 package com.avatarduel.model.gameplay.events;
 
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.view.cards.CardDisplay;
+import com.avatarduel.view.CardDisplay;
 
 /**
  * Kelas untuk event menampilkan kartu

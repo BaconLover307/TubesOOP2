@@ -1,4 +1,4 @@
-package com.avatarduel.view.cards;
+package com.avatarduel.view;
 
 
 import com.avatarduel.AvatarDuel;
@@ -134,13 +134,13 @@ public class CardDisplay implements Initializable, Publisher, Subscriber, Flippa
 
     }
 
-    public CardDisplay(GameplayChannel gameplayChannel, Card C) {
-        this.channel = gameplayChannel;
-        this.card = C;
-        this.show = false;
-        this.cardHeight = 560;
-        this.cardWidth = 400;
-    }
+//    public CardDisplay(GameplayChannel gameplayChannel, Card C) {
+//        this.channel = gameplayChannel;
+//        this.card = C;
+//        this.show = false;
+//        this.cardHeight = 560;
+//        this.cardWidth = 400;
+//    }
 
     public CardDisplay(GameplayChannel gameplayChannel, Card C, double width, double height) {
         this.channel = gameplayChannel;

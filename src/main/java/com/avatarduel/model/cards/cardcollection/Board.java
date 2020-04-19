@@ -69,7 +69,9 @@ public class Board implements Subscriber, Publisher,
         int count = 0;
         boolean[] bool = getAvailableCharSlot();
         while (i<SIZE) {
-            if (!bool[i]) count++;
+            if (!bool[i]) {
+                count = count + 1;
+            }
             i++;
         }
         return count<SIZE;
@@ -96,13 +98,11 @@ public class Board implements Subscriber, Publisher,
 
     public boolean isSkillSlotAvailable() {
         int i = 0;
-        int count = 0;
         boolean[] bool = getAvailableSkillSlot();
-        while (i<SIZE) {
-            if (!bool[i]) count++;
+        while (!bool[i] && i<SIZE) {
             i++;
         }
-        return count<SIZE;
+        return bool[i];
     }
     
     // 1. Harus ada tempat kosong
@@ -143,9 +143,6 @@ public class Board implements Subscriber, Publisher,
         if (this.getOwner() == e.owner) {
             addSkilltoBoard(e.Sid, e.S);
         }
-        // TODO Masukin e.S ke array skill 
-        // targetin skill ke summoned char (last clicked) pakai SkillCardAttachedEvent
-//        this.publish("ATTACH_SKILL", new SkillCardAttachedEvent(e.S,channel.lastClickedCard));
     }
 
     @Override
