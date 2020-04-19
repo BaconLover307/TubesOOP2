@@ -22,7 +22,7 @@ public class EndGameScreen implements BaseView {
 
         TilePane endmenu = new TilePane(Orientation.VERTICAL);
         endmenu.setPadding(new Insets(SCREENH/2 - 50, 10, 10,(SCREENW/2)-105));
-        Image image = new Image("main-menu.png");
+        Image image = new Image("com/avatarduel/asset/main-menu.png");
         BackgroundImage backgroundImage = new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
