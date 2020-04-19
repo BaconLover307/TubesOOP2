@@ -136,7 +136,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onAttackCharacter(AttackCharacterEvent e) {
-        if (this == e.toCard) {
+        if (this.equals(e.toCard)) {
             if (e.fromCard.getPosition()) { // karakter yg menyerang harus dalam posisi attack
                 if (e.toCard.getPositionValue() < e.fromCard.getPositionValue()) // attack/defense value this < attack fromCard
                 {
@@ -176,7 +176,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
 
     @Override
     public void onRepositionCharacterEvent(RepositionCharacterEvent e) {
-        if (e.SC.equals(this) && e.owner == this.owner) {
+        if (e.SC.equals(this) && e.owner.equals(this.owner)) {
             rotate();
         }
     }

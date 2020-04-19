@@ -346,13 +346,15 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     @Override
     public void onSelectEnemy(SelectEnemyEvent event) {
-        System.out.println("HUHEHUE");
         if (!(event.SC.getOwner().equals(this.board.getOwner()))) {
-            System.out.println("TEMBUSSSS");
+            System.out.println(this.board.getOwner());
             boolean avail = false;
+            boolean slot[] = this.board.getAvailableCharSlot();
             for (int i = 0; i < 6; i++) {
-                if (arrCharPane[i].getChildren().size() == 1) avail = true;
-                break;
+                if (!slot[i]) {
+                    avail = true;
+                    break;
+                }
             }
             if (avail) {
                 for (int i = 0; i < 6; i++) {
@@ -364,16 +366,15 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                         );
                         int ID = i;
                         arrCharPane[i].setOnMouseClicked(e -> {
+                            this.channel.isSelecting = false;
                             resetStyle();
                             publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, getBoard().getCharwithId(ID)));
-                            this.channel.isSelecting = false;
                         });
                     }
                 }
             } else {
                 AlertPlayer noTarget = new AlertPlayer("There are no enemies to target!", Alert.AlertType.INFORMATION, "No Target");
                 noTarget.show();
-                this.channel.isSelecting = false;
                 publish("ATTACK_FAIL", new AttackFailEvent(event.SC.getOwner()));
             }
         }

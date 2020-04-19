@@ -197,8 +197,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             onUseLandEvent((UseLandEvent) event);
         } else if (event instanceof SummonCharacterEvent) {
             onSummonCharacterEvent((SummonCharacterEvent) event);
-//        } else if (event instanceof DiscardEvent) {
-//            onDiscard((DiscardEvent) event);
         }
     }
 }

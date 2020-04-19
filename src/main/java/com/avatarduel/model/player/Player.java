@@ -90,7 +90,7 @@ public class Player implements Publisher, Subscriber,
      */
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
-        if(this.name == e.target){
+        if(this.name.equals(e.target)){
             this.health -= e.amount;
             if (this.health <= 0){
                 this.publish("END_GAME", new EndGameEvent(this.name));

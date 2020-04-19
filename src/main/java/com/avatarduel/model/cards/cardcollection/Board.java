@@ -116,23 +116,23 @@ public class Board implements Subscriber, Publisher,
 
     @Override
     public void onEvent(BaseEvent e){
-        if (e.getClass() == SummonCharacterEvent.class){
+        if (e instanceof SummonCharacterEvent){
             this.onSummonCharacterEvent((SummonCharacterEvent) e);
         }
-        else if (e.getClass() == SummonSkillEvent.class) {
+        else if (e instanceof SummonSkillEvent) {
             this.onSummonSkillEvent((SummonSkillEvent) e);
         }
-        else if (e.getClass() == DiscardSkillEvent.class) {
+        else if (e instanceof DiscardSkillEvent) {
             this.onDiscardSkillEvent((DiscardSkillEvent) e);
         }
-        else if (e.getClass() == DestroyCharacterEvent.class) {
+        else if (e instanceof DestroyCharacterEvent) {
             this.onDestroyCharacterEvent((DestroyCharacterEvent) e);
         }
     }
     
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        if (this.getOwner() == e.owner) {
+        if (this.getOwner().equals(e.owner)) {
             SummonedCharacter SC = new SummonedCharacter(e.C, true, channel.activePlayer.getName(), channel);
             addChartoBoard(e.id, SC);
         }
