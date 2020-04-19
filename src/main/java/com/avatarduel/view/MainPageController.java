@@ -10,11 +10,7 @@ import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.player.Player;
-import com.avatarduel.model.player.Power;
-import com.avatarduel.view.cards.CardDisplay;
 //import com.avatarduel.view.cards.CharDisplay;
-import com.avatarduel.util.CSVReader;
-import com.sun.javafx.css.Stylesheet;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +18,6 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -47,6 +42,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePlayerEvent.ChangePlayerEventHandler,
         SummonSkillEvent.SummonSkillEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
+        AttackFailEvent.AttackFailEventHandler,
         EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
@@ -223,38 +219,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         power2Dis = new PowerDisplay(this.channel, player2.getPowers());
         this.power2Pane.getChildren().add(power2Dis.getPane());
 
-//        this.hand1HBox = this.hand1Dis.getHandBox();
-////        this.hand2HBox = this.hand2Dis.getHandBox();
-//        System.out.println("SIZE HAND P1 = " + this.player1.getHand().getSize());
-//        System.out.println("SIZE HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHand().getSize());
-//        System.out.println("JUMLAH CHILD HAND P1 DI HANDDISPLAY = " + this.hand1Dis.getHandBox().getChildren().size());
-//        System.out.println("JUMLAH CHILD HAND P1 DI hand1Hbox= " + this.hand1HBox.getChildren().size());
-
-
-        // ! TESTING PURPOSES
-//        FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-//        cardLoader.setControllerFactory(c -> new CardDisplay(this.channel, display));
-//        try {
-//            this.cardPane.getChildren().add(cardLoader.load());
-//        } catch (Exception e) {
-//            System.out.println("Error = " + e);
-//        }
-//        FXMLLoader cardLoader1 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-//        CardDisplay coba1 = new CardDisplay(this.channel, display, 80, 112);
-//        FXMLLoader cardLoader2 = new FXMLLoader(getClass().getResource(CARD_FXML_PATH));
-//        CardDisplay coba2 = new CardDisplay(this.channel, display2, 80, 112);
-//        coba1.showCard();
-//        coba2.showCard();
-//        cardLoader1.setControllerFactory(c -> coba1);
-//        cardLoader2.setControllerFactory(c -> coba2);
-//        try {
-//            this.hand1HBox.getChildren().add(cardLoader1.load());
-//            this.hand1HBox.getChildren().add(cardLoader2.load());
-//        } catch (Exception e) {
-//            System.out.println("Error = " + e);
-//        }
-//        this.name1.setText("abcdefghijkl");
-
         // ACTION SETUP
         deck1.setOnMouseReleased(e -> {
             if (getPhase() == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
@@ -299,20 +263,10 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.hand1Dis.addCard(debug2);
         this.hand1Dis.addCard(debug3);
         this.hand1Dis.addCard(debug3);
-        this.hand1Dis.addCard(debug3);
-        this.hand1Dis.addCard(debug3);
-        this.hand1Dis.addCard(debug3);
-        this.hand1Dis.addCard(debug3);
-        this.hand1Dis.addCard(debug3);
         this.hand2Dis.addCard(debug);
         this.hand2Dis.addCard(debug);
         this.hand2Dis.addCard(debug2);
         this.hand2Dis.addCard(debug2);
-        this.hand2Dis.addCard(debug3);
-        this.hand2Dis.addCard(debug3);
-        this.hand2Dis.addCard(debug3);
-        this.hand2Dis.addCard(debug3);
-        this.hand2Dis.addCard(debug3);
         this.hand2Dis.addCard(debug3);
         this.hand2Dis.addCard(debug3);
     }
@@ -329,6 +283,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("REQUEST_SUMMON", this);
         this.channel.addSubscriber("SUMMON_SKILL", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
+        this.channel.addSubscriber("ATTACK_FAIL", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -464,10 +419,18 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             } else {
                 if (this.player1.getName().equals(e.owner)) {
                     this.board1.doSelectSkillSlotAvailable(e);
-                    this.channel.isSelecting = true;
+                } else {
+                    this.board2.doSelectSkillSlotAvailable(e);
                 }
+                this.channel.isSelecting = true;
             }
         }
+    }
+
+    @Override
+    public void onAttackFail(AttackFailEvent e) {
+        this.board1.ResetBoardProperty();
+        this.board2.ResetBoardProperty();
     }
 
     @Override
@@ -489,8 +452,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onUseLandEvent(UseLandEvent e) {
-        this.power1Dis.updatePower();
-        this.power2Dis.updatePower();
+//        this.power1Dis.updatePower();
+//        this.power2Dis.updatePower();
     }
 
     @Override
@@ -518,6 +481,9 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         }
         else if (event instanceof SummonCharacterEvent) {
             this.onSummonCharacterEvent((SummonCharacterEvent) event);
+        }
+        else if (event instanceof AttackFailEvent) {
+            this.onAttackFail((AttackFailEvent) event);
         }
         else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);

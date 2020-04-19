@@ -2,7 +2,6 @@ package com.avatarduel.view;
 
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Skill;
 import com.avatarduel.model.cards.card.SummonedCharacter;
 import com.avatarduel.model.cards.cardcollection.Board;
@@ -10,16 +9,11 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.SummonCharClickedEvent;
-import com.avatarduel.model.gameplay.events.RequestSummonEvent;
-import com.avatarduel.model.gameplay.events.SpendPowerEvent;
-import com.avatarduel.model.gameplay.events.SummonCharacterEvent;
-import com.avatarduel.view.cards.CardDisplay;
+import com.avatarduel.model.gameplay.events.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 
 import java.net.URL;
@@ -29,6 +23,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         RequestSummonEvent.RequestSummonEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
         SummonSkillEvent.SummonSkillEventHandler,
+        SelectEnemyEvent.SelectEnemyEventHandler,
         RequestSkillTargetEvent.RequestSkillTargetEventHandler {
 
     @FXML
@@ -160,20 +155,28 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
         }
     }
 
-    public void attackChar(CardDisplay cD) {
-        
-        if (this.channel.lastClickedCard == null) {
-            AlertPlayer alert = new AlertPlayer("You haven't selected your character!", AlertType.WARNING, "Warning");
-            alert.show();
-        } 
-        else {
-            AlertChoice SC_Choice = new AlertChoice("Select", "", ("Character Card " + cD.getCard().getName() + " on click."), "Battle");
-            String ret = SC_Choice.showAndReturn();
-            if (ret.equals("Select"))
-            {
-                System.out.println("ATTACK CARD");
-                // this.publish("SUMMON_CHAR_CLICKED, new SummonCardClickedEvent());
+    public void attackChar(SummonedCharacter SC, AnchorPane AP) {
+        if (!SC.getAlreadyAttack()) {
+            if (!SC.getPosition()) {
+                AlertPlayer isDef = new AlertPlayer("Your character is in Defense Position!", Alert.AlertType.WARNING, "Defensive Character");
+                isDef.show();
+            } else {
+                AlertChoice SC_Choice = new AlertChoice("Yes", "", (SC.getCharCard().getName() + " selected. Attack enemy?"), "Battle");
+                String ret = SC_Choice.showAndReturn();
+                if (ret.equals("Yes")) {
+                    AP.setStyle(
+                            "-fx-border-radius: 0.5em;" +
+                            "-fx-border-width: 0.5em;"+
+                            "-fx-border-color: orange"
+                    );
+                    publish("SELECT_ENEMY", new SelectEnemyEvent(SC));
+                    this.channel.isSelecting = true;
+                    System.out.println("ATTACK CARD");
+                }
             }
+        } else { 
+            AlertPlayer alert = new AlertPlayer("Your already attack/ just summoned this turn!", Alert.AlertType.WARNING, "Already Attack Character");
+            alert.show(); 
         }
     }
 
@@ -300,7 +303,41 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 arrCharPane[i].setOnMouseClicked(e -> {
                     publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
+                    publish("ATTACH_SKILL", new SkillCardAttachedEvent(event.skill, board.getCharwithId(ID)));
                 });
+            }
+        }
+    }
+
+    @Override
+    public void onSelectEnemy(SelectEnemyEvent event) {
+        if (!(event.SC.getOwner().equals(this.channel.activePlayer.getName()))) {
+            boolean avail = false;
+            for (int i = 0; i < 6; i++) {
+                if (arrCharPane[i].getChildren().size() == 1) avail = true;
+                break;
+            }
+            if (avail) {
+                for (int i = 0; i < 6; i++) {
+                    if (arrCharPane[i].getChildren().size() == 1) {
+                        arrCharPane[i].setStyle(
+                                "-fx-border-radius: 0.5em;" +
+                                        "-fx-border-width: 0.5em;" +
+                                        "-fx-border-color: #ff0000"
+                        );
+                        int ID = i;
+                        arrSkillPane[i].setOnMouseClicked(e -> {
+                            ResetStyle();
+                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, getBoard().getCharwithId(ID)));
+                            this.channel.isSelecting = false;
+                        });
+                    }
+                }
+            } else {
+                AlertPlayer noTarget = new AlertPlayer("There are no enemies to target!", Alert.AlertType.INFORMATION, "No Target");
+                noTarget.show();
+                this.channel.isSelecting = false;
+                publish("ATTACK_FAIL", new AttackFailEvent(event.SC.getOwner()));
             }
         }
     }
@@ -315,6 +352,8 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
             this.onSummonSkillEvent((SummonSkillEvent) event);
         } else if (event instanceof RequestSkillTargetEvent) {
             this.onRequestSkillTarget((RequestSkillTargetEvent) event);
+        } else if (event instanceof SelectEnemyEvent) {
+            this.onSelectEnemy((SelectEnemyEvent) event);
         }
     }
 

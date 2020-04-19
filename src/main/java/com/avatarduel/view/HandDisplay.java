@@ -1,6 +1,5 @@
 package com.avatarduel.view;
 
-import com.avatarduel.AvatarDuel;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.cards.card.*;
 import com.avatarduel.model.cards.card.Character;
@@ -9,30 +8,18 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.events.*;
-import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
-import java.awt.*;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 import com.avatarduel.model.cards.cardcollection.Hand;
 
 public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         DrawEvent.DrawEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
-        SummonSkillEvent.SummonSkillEventHandler,
 //        DiscardEvent.DiscardEventHandler,
         UseLandEvent.UseLandEventHandler {
 
@@ -48,7 +35,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("USE_LAND", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
-        this.channel.addSubscriber("SUMMON_SKILL", this);
 //        this.channel.addSubscriber("DISCARD", this);
 
         this.hand = hand;
@@ -192,13 +178,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         }
     }
 
-    @Override
-    public void onSummonSkillEvent(SummonSkillEvent e) {
-        if (hand.getPlayer() == e.owner) {
-            this.removeCard(e.S);
-        }
-    }
-
     //    @Override
 //    public void onDiscard(DiscardEvent e) {
 //        if (hand.getPlayer() == e.owner) {
@@ -218,8 +197,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             onUseLandEvent((UseLandEvent) event);
         } else if (event instanceof SummonCharacterEvent) {
             onSummonCharacterEvent((SummonCharacterEvent) event);
-        } else if (event instanceof SummonSkillEvent) {
-            onSummonSkillEvent((SummonSkillEvent) event);
 //        } else if (event instanceof DiscardEvent) {
 //            onDiscard((DiscardEvent) event);
         }
