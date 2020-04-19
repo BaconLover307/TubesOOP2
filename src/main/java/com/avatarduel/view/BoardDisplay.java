@@ -156,22 +156,27 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
     }
 
     public void attackChar(SummonedCharacter SC, AnchorPane AP) {
-        if (!SC.getPosition()) {
-            AlertPlayer isDef = new AlertPlayer("Your character is in Defense Position!", Alert.AlertType.WARNING, "Defensive Character");
-            isDef.show();
-        } else {
-            AlertChoice SC_Choice = new AlertChoice("Yes", "", (SC.getCharCard().getName() + " selected. Attack enemy?"), "Battle");
-            String ret = SC_Choice.showAndReturn();
-            if (ret.equals("Yes")) {
-                AP.setStyle(
-                        "-fx-border-radius: 0.5em;" +
-                        "-fx-border-width: 0.5em;"+
-                        "-fx-border-color: orange"
-                );
-                publish("SELECT_ENEMY", new SelectEnemyEvent(SC));
-                this.channel.isSelecting = true;
-                System.out.println("ATTACK CARD");
+        if (!SC.getAlreadyAttack()) {
+            if (!SC.getPosition()) {
+                AlertPlayer isDef = new AlertPlayer("Your character is in Defense Position!", Alert.AlertType.WARNING, "Defensive Character");
+                isDef.show();
+            } else {
+                AlertChoice SC_Choice = new AlertChoice("Yes", "", (SC.getCharCard().getName() + " selected. Attack enemy?"), "Battle");
+                String ret = SC_Choice.showAndReturn();
+                if (ret.equals("Yes")) {
+                    AP.setStyle(
+                            "-fx-border-radius: 0.5em;" +
+                            "-fx-border-width: 0.5em;"+
+                            "-fx-border-color: orange"
+                    );
+                    publish("SELECT_ENEMY", new SelectEnemyEvent(SC));
+                    this.channel.isSelecting = true;
+                    System.out.println("ATTACK CARD");
+                }
             }
+        } else { 
+            AlertPlayer alert = new AlertPlayer("Your character has attacked this turn!", Alert.AlertType.WARNING, "Already Attack Character");
+            alert.show(); 
         }
     }
 

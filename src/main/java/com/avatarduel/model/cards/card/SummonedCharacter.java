@@ -48,6 +48,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     public boolean getPosition() {return this.isAttack;}
     public ArrayList<Skill> getAttachedSkill() {return this.attachedSkill;}
     public void setAlreadyAttack() {this.isAlreadyAttack = true;}
+    public boolean getAlreadyAttack() { return this.isAlreadyAttack; }
 
     public void rotate() {this.isAttack = !this.isAttack;}
 
