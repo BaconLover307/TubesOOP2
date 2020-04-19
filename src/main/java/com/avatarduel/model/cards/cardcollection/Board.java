@@ -21,6 +21,8 @@ public class Board implements Subscriber, Publisher,
     SummonCharacterEvent.SummonCharacterEventHandler, SummonSkillEvent.SummonSkillEventHandler,
     DiscardSkillEvent.DiscardSkillEventHandler, DestroyCharacterEvent.DestroyCharacterEventHandler,
     RepositionCharacterEvent.RepositionCharacterEventHandler {
+
+    private static final int SIZE = 6;
     
     private SummonedCharacter[] charBoard;
     private Skill[] skillBoard;
@@ -30,21 +32,41 @@ public class Board implements Subscriber, Publisher,
     public Board(GameplayChannel channel, String owner) {
         this.channel = channel;
         this.owner = owner;
-        charBoard = new SummonedCharacter[6];
-        skillBoard = new Skill[6];
-        for (int i=0;i<6;i++) {charBoard[i] = null;}
-        for (int j=0;j<6;j++) {skillBoard[j] = null;}
+        charBoard = new SummonedCharacter[SIZE];
+        skillBoard = new Skill[SIZE];
+        for (int i=0; i<SIZE; i++) {charBoard[i] = null;}
+        for (int j=0; j<SIZE; j++) {skillBoard[j] = null;}
         channel.addSubscriber("SUMMON_CHARACTER",this);
         channel.addSubscriber("SUMMON_SKILL",this);
         channel.addSubscriber("DISCARD_SKILL",this);
         channel.addSubscriber("DESTROY_CHARACTER_EVENT",this);
     }
 
+    public String getOwner() {return this.owner;}
+
     public void addChartoBoard(int id, SummonedCharacter C) {this.charBoard[id] = C;}
     public SummonedCharacter getCharwithId(int id) {return this.charBoard[id];}
 
     public void addSkilltoBoard(int id, Skill s, SummonedCharacter target) {this.skillBoard[id] = s;}
     public Skill getSkillwithId(int id) {return this.skillBoard[id];}
+
+    public boolean[] getAvailableChar() {
+        boolean[] id = new boolean[SIZE];
+        for (int i = 0; i<SIZE; i++ ) {
+            if (this.charBoard[i] ==null) id[i] = true;
+            else id[i] = false;
+        }
+        return id;
+    }
+
+    public boolean isCharAvailable() {
+        int i = 0;
+        boolean[] bool = getAvailableChar();
+        while (!bool[i] && i<SIZE) {
+            i++;
+        }
+        return bool[i];
+    }
     
     // 1. Harus ada tempat kosong
     // 2. Harus ada karakter yg ditarget
@@ -76,8 +98,10 @@ public class Board implements Subscriber, Publisher,
     
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        SummonedCharacter C = new SummonedCharacter(e.C, true, channel.activePlayer, channel);
-        // TODO Masukin C ke array SummonedChar
+        if (this.getOwner() == e.owner) {
+            SummonedCharacter SC = new SummonedCharacter(e.C, true, channel.activePlayer.getName(), channel);
+            addChartoBoard(e.id, SC);
+        }
     }
 
     @Override

@@ -159,13 +159,13 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     @Override
     public void onCardClicked(CardClickedEvent e) {
         if((this.gameplayChannel.phase.equals("MAIN_PHASE"))
-             && this.gameplayChannel.activePlayer == this.owner){
+             && this.gameplayChannel.activePlayer.getName() == this.owner){
             this.rotate();
             this.publish("REPOSITION_CHARACTER_EVENT", new RepositionCharacterEvent(this));
         }
 
         if(this.gameplayChannel.phase.equals("BATTLE_PHASE")){
-            if (this.gameplayChannel.activePlayer == this.owner){
+            if (this.gameplayChannel.activePlayer.getName() == this.owner){
                 if(!this.isAlreadyAttack)
                     this.gameplayChannel.lastClickedCard = this;
                 // TODO publish  //jika ingin menandakan di board lastclickedcard-nya
@@ -181,7 +181,7 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     @Override
     public void onDrawEvent(DrawEvent e) {
         if((this.gameplayChannel.phase.equals("DRAW_PHASE"))
-             && this.gameplayChannel.activePlayer == this.owner){
+             && this.gameplayChannel.activePlayer.getName() == this.owner){
             this.isAlreadyAttack = false;
         }
     }

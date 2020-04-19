@@ -8,9 +8,7 @@ import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
-import com.avatarduel.model.gameplay.events.DiscardEvent;
-import com.avatarduel.model.gameplay.events.DrawEvent;
-import com.avatarduel.model.gameplay.events.UseLandEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.view.cards.CardDisplay;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +31,7 @@ import com.avatarduel.model.cards.cardcollection.Hand;
 
 public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         DrawEvent.DrawEventHandler,
+        SummonCharacterEvent.SummonCharacterEventHandler,
 //        DiscardEvent.DiscardEventHandler,
         UseLandEvent.UseLandEventHandler {
 
@@ -47,6 +46,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         this.channel = gameplayChannel;
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("USE_LAND", this);
+        this.channel.addSubscriber("SUMMON_CHARACTER", this);
 //        this.channel.addSubscriber("DISCARD", this);
 
         this.hand = hand;
@@ -77,14 +77,13 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
     public void addCard(Card card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
         cardList.add(cD);
-        this.hand.addCard(card);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
             loader.setControllerFactory(c -> cD);
             Pane toLoad = loader.load();
 //            toLoad.setPrefWidth(CARD_SIZEW);
             toLoad.setOnMouseClicked(event -> {
-                if (this.showHand && this.channel.phase == Phase.MAIN_PHASE) selectCard(cD);
+                if (this.showHand && this.channel.phase == Phase.MAIN_PHASE && !this.channel.isSelecting) selectCard(cD);
             });
             this.handBox.getChildren().add(toLoad);
         } catch (Exception e) {
@@ -130,6 +129,20 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             AlertChoice landChoice = new AlertChoice("Summon Character", "Discard", ("Character Card " + cD.getCard().getName() + " selected."), "Character Card");
             String ret = landChoice.showAndReturn();
             if (ret.equals("Summon Character")) {
+                if (this.channel.activePlayer.getPowers().getPower(cD.getCard().getElement()).getSize() >= ((Character) cD.getCard()).getPower()) {
+                    if (channel.activePlayer.getBoard().isCharAvailable()) {
+                        publish("REQUEST_SUMMON", new RequestSummonEvent(cD.getCard(), channel.activePlayer.getName()));
+                        this.channel.isSelecting = true;
+                        System.out.println("Requesting...");
+                    } else {
+                        AlertPlayer noSlot = new AlertPlayer("Character slot unavailable!", Alert.AlertType.WARNING, "Slot Unavailable");
+                        noSlot.show();
+                    }
+                } else {
+                    AlertPlayer insufficientPower = new AlertPlayer("Your " + cD.getCard().getElement() + " power is not enough!" , Alert.AlertType.WARNING, "Insufficient Power");
+                    insufficientPower.show();
+                }
+
                 // TODO Publish Request Summon Char
 //                if (this.hand.isUsedLand()) {
 //                    AlertPlayer hasUsedLand = new AlertPlayer("You have used a Land card in this turn!", Alert.AlertType.WARNING, "Used Land!");
@@ -137,7 +150,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
 //                } else {
 //                    this.hand.doUseLand((Land) cD.getCard());
 //                }
-                System.out.println("Nanti request ya..");
+
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
@@ -175,7 +188,14 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         }
     }
 
-//    @Override
+    @Override
+    public void onSummonCharacterEvent(SummonCharacterEvent e) {
+        if (hand.getPlayer() == e.owner) {
+            this.removeCard(e.C);
+        }
+    }
+
+    //    @Override
 //    public void onDiscard(DiscardEvent e) {
 //        if (hand.getPlayer() == e.owner) {
 //            this.removeCard(e.card);
@@ -192,6 +212,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             onDrawEvent((DrawEvent) event);
         } else if (event instanceof UseLandEvent) {
             onUseLandEvent((UseLandEvent) event);
+        } else if (event instanceof SummonCharacterEvent) {
+            onSummonCharacterEvent((SummonCharacterEvent) event);
 //        } else if (event instanceof DiscardEvent) {
 //            onDiscard((DiscardEvent) event);
         }

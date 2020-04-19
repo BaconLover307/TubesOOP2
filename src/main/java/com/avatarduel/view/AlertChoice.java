@@ -30,22 +30,48 @@ public class AlertChoice {
         alert.setContentText(this.text);
 
         ButtonType button1 = new ButtonType(choice1);
-        ButtonType button2 = new ButtonType(choice2);
         ButtonType cancel = new ButtonType("Cancel");
-        alert.getButtonTypes().setAll(button1, button2, cancel);
+        ButtonType button2;
+        if (!choice2.equals("")) {
+            button2 = new ButtonType(choice2);
+            alert.getButtonTypes().setAll(button1, button2, cancel);
+            Optional<ButtonType> result = alert.showAndWait();
 
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.get() == button1) {
-            alert.close();
-            return choice1;
-        } else if (result.get() == button2) {
-            alert.close();
-            return choice2;
+            if (result.get() == button1) {
+                alert.close();
+                return choice1;
+            } else if (result.get() == button2) {
+                alert.close();
+                return choice2;
+            } else {
+                alert.close();
+                return "";
+            }
         } else {
-            alert.close();
-            return "";
+            alert.getButtonTypes().setAll(button1, cancel);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == button1) {
+                alert.close();
+                return choice1;
+            } else {
+                alert.close();
+                return "";
+            }
         }
+
+//        Optional<ButtonType> result = alert.showAndWait();
+//
+//        if (result.get() == button1) {
+//            alert.close();
+//            return choice1;
+//        } else if (result.get() == button2) {
+//            alert.close();
+//            return choice2;
+//        } else {
+//            alert.close();
+//            return "";
+//        }
     }
 
 }

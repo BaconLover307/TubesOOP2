@@ -1,17 +1,16 @@
 package com.avatarduel.model.cards.cardcollection;
 
+import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.events.*;
-import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.model.cards.card.Character;
-import com.avatarduel.model.cards.card.Skill;
-import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 
 public class Hand extends CardCollection implements Publisher, Subscriber,
         // DiscardEvent.DiscardEventHandler,     
+        SummonCharacterEvent.SummonCharacterEventHandler,
         DrawEvent.DrawEventHandler {
 
     public boolean usedLand; // true if UseCard(Land) was used this turn
@@ -22,6 +21,7 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         this.usedLand = false;
         this.channel = channel;
         channel.addSubscriber("DRAW_EVENT", this);
+        channel.addSubscriber("SUMMON_CHARACTER", this);
         // channel.addSubscriber("DISCARD", this);
     }
 
@@ -66,12 +66,12 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
     // }
 
 
-    public void doUseChar(Character C) {
-        // TODO cek dulu elemen yg dimiliki player cukup / ngga
-        this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
-        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,C.getElement(),C.getPower()))
-        // TODO ilangin kartu C dari hand
-    }
+//    public void doUseChar(Character C) {
+//        // TODO cek dulu elemen yg dimiliki player cukup / ngga
+//        this.publish("SUMMON_CHARACTER", new SummonCharacterEvent(C));
+//        // this.publish("SPEND_POWER_EVENT", new SpendPowerEvent(channel.activePlayer,C.getElement(),C.getPower()))
+//        // TODO ilangin kartu C dari hand
+//    }
 
     public void doUseSkill(Skill S) {
         // TODO cek dulu elemen yg dimiliki player cukup / ngga
@@ -93,8 +93,10 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
 
     @Override
     public void onEvent(BaseEvent e){
-        if (e instanceof DrawEvent){
+        if (e instanceof DrawEvent) {
             this.onDrawEvent((DrawEvent) e);
+        } else if (e instanceof SummonedCharacter) {
+            this.onSummonCharacterEvent((SummonCharacterEvent) e);
         // } else if (e instanceof DiscardEvent) {
         //     this.onDiscard((DiscardEvent) e);
         }
@@ -107,6 +109,12 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
             this.usedLand = false;
             e.execute();
         }
+    }
+
+    @Override
+    public void onSummonCharacterEvent(SummonCharacterEvent e) {
+        if (this.getPlayer() == e.owner)
+        removeCard(e.C);
     }
 
     // @Override

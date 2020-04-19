@@ -106,6 +106,7 @@ public class Player implements Publisher, Subscriber,
     public void onResetPowerEvent(ResetPowerEvent e) {
         if (e.player.equals(this.name)){
             this.powers.resetAllPower();
+            e.execute();
         }
     }
 
@@ -118,6 +119,7 @@ public class Player implements Publisher, Subscriber,
         if (e.owner.equals(this.name)){
             this.powers.addCapacity(e.land.getElement(), 1);
             this.powers.addSize(e.land.getElement(), 1);
+            e.execute();
         }
     }
 

@@ -7,7 +7,6 @@ import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.cards.card.Land;
 import com.avatarduel.model.cards.card.Aura;
 import com.avatarduel.model.cards.card.Card;
-import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
@@ -25,27 +24,29 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
 
-import javax.naming.Name;
 import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable, Publisher, Subscriber,
         ChangePhaseEvent.ChangePhaseEventHandler,
         DisplayCardEvent.DisplayCardEventHandler,
         UseLandEvent.UseLandEventHandler,
-        ChangePlayerEvent.ChangePlayerEventHandler, EndGameEvent.EndGameEventHandler {
+        RequestSummonEvent.RequestSummonEventHandler,
+        ChangePlayerEvent.ChangePlayerEventHandler,
+        EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
     private static final String AURA_CSV_FILE_PATH = "../card/data/skill_aura.csv";
@@ -135,7 +136,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     private Card display;
     private Card display2;
     private int turn;
-    private Phase phase;
+    private boolean isSelecting;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -203,8 +204,8 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.board2 = new BoardDisplay(this.channel, this.player2.getBoard());
         try {
             FXMLLoader loader2 = new FXMLLoader(getClass().getResource(BOARD2_FXML_PATH));
-            loader2.setControllerFactory(c -> this.board1);
-            this.board1Pane.getChildren().add(loader2.load());
+            loader2.setControllerFactory(c -> this.board2);
+            this.board2Pane.getChildren().add(loader2.load());
         } catch (Exception e) {
             System.out.println("Board2 failed to load!");
             e.printStackTrace();
@@ -248,12 +249,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 //        }
 //        this.name1.setText("abcdefghijkl");
 
-
+        // ACTION SETUP
         deck1.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
+            if (getPhase() == Phase.DRAW_PHASE && turn == 1) player1.getDeck().doDraw();
         });
         deck2.setOnMouseReleased(e -> {
-            if (phase == Phase.DRAW_PHASE && turn == 2) player2.getDeck().doDraw();
+            if (getPhase() == Phase.DRAW_PHASE && turn == 2) player2.getDeck().doDraw();
         });
 
         hand1Pane.setOnScroll(event -> {
@@ -267,9 +268,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
         // ? Change Here if want to enable continue without draw
         btnNext.setOnAction(event -> {
-            if (this.phase != Phase.DRAW_PHASE) doChangePhase();
+            if (getPhase() != Phase.DRAW_PHASE && !this.channel.isSelecting) doChangePhase();
+            publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) display, 3, player1.getName()));
         });
-        AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer + "'s Turn!", AlertType.INFORMATION, "Start Game");
+
+        this.root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                this.channel.isSelecting = false;
+                this.board1.ResetAll();
+                this.board2.ResetAll();
+            }
+        });
+
+        // START GAME
+        AlertPlayer gameStartAlert = new AlertPlayer("Start Game! " + channel.activePlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Start Game");
         gameStartAlert.show();
         doChangePhase();
     }
@@ -283,6 +295,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("END_GAME", this);
         this.channel.addSubscriber("USE_LAND", this);
+        this.channel.addSubscriber("REQUEST_SUMMON", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -291,19 +304,22 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         Aura card2 = new Aura("Shozin Comet", Element.FIRE, "Komet sing edan", "com/avatarduel/card/image/skill/Shozin Comet.png", 1, 1, 1);
         this.display = card;
         this.display2 = card2;
-        this.phase = Phase.GAME_INIT;
+        setPhase(Phase.GAME_INIT);
         this.turn = 1;
-        this.channel.activePlayer = player1.getName();
+        this.channel.activePlayer = player1;
+
     }
 
-    public String getNextPlayer() {
-        if (turn == 2) return player1.getName();
-        else return player2.getName();
+    public Player getNextPlayer() {
+        if (turn == 2) return player1;
+        else return player2;
     }
 
-    public void setPhase(Phase p) {this.phase = p;}
+    public void setPhase(Phase p) {this.channel.phase = p;}
+    public Phase getPhase() {return this.channel.phase;}
+
     public Label getPhaseBox() {
-        switch (this.phase) {
+        switch (getPhase()) {
             case DRAW_PHASE: return this.drawPhaseBox;
             case MAIN_PHASE: return this.mainPhaseBox;
             case BATTLE_PHASE: return this.battlePhaseBox;
@@ -313,7 +329,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public Phase getNextPhase() {
-        int idx = this.phase.ordinal();
+        int idx = getPhase().ordinal();
         int nextIdx = idx + 1;
         Phase[] phases = Phase.values();
         nextIdx %= phases.length;
@@ -321,10 +337,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         return phases[nextIdx];
     }
 
+    // PUBLISH
     public void doChangePhase() {
         Phase p;
         try {
-            if (this.phase != Phase.GAME_INIT) {
+            if (getPhase() != Phase.GAME_INIT) {
                 getPhaseBox().getStylesheets().clear();
                 getPhaseBox().getStylesheets().add(PHASE_STYLE_PATH);
             }
@@ -338,26 +355,29 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         e.execute();
     }
 
-
     @Override
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
 
+    // ONEVENT
     public void onChangePhase(ChangePhaseEvent e) {
         setPhase(e.phase);
-        this.channel.phase = e.phase;
-        if (this.phase != Phase.GAME_INIT) {
+        if (getPhase() != Phase.GAME_INIT) {
             getPhaseBox().getStylesheets().clear();
             getPhaseBox().getStylesheets().add(CUR_PHASE_STYLE_PATH);
         }
         this.cardPane.getChildren().clear();
-        if (e.phase == Phase.DRAW_PHASE) {
-            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer));   
+        if (getPhase() == Phase.DRAW_PHASE) {
+            this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer.getName()));
         }
-        if (e.phase == Phase.END_PHASE) {
-            String nextPlayer = getNextPlayer();
-            AlertPlayer alert = new AlertPlayer(nextPlayer + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
+        else if (getPhase() == Phase.MAIN_PHASE) {
+            System.out.println("P1 HAND: " + this.player1.getHand().getSize());
+            System.out.println("P2 HAND: " + this.player2.getHand().getSize());
+        }
+        else if (getPhase() == Phase.END_PHASE) {
+            Player nextPlayer = getNextPlayer();
+            AlertPlayer alert = new AlertPlayer(nextPlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
             alert.show();
-            this.publish("CHANGE_PLAYER", new ChangePlayerEvent(getNextPlayer()));
+            this.publish("CHANGE_PLAYER", new ChangePlayerEvent(nextPlayer));
             doChangePhase();
         }
     }
@@ -375,7 +395,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     public void onDrawEvent(DrawEvent event) {
-        if (this.phase != Phase.GAME_INIT) {
+        if (getPhase() != Phase.GAME_INIT) {
             if (event.h == this.player1.getName()) {
                 this.deck1Count.setValue(Integer.toString(player1.getDeck().getSize()));
             } else if (event.h == this.player2.getName()) {
@@ -389,12 +409,20 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     public void onChangePlayer(ChangePlayerEvent e) {
         this.channel.activePlayer = e.nextPlayer;
         this.turn = turn%2+1;
-        if (this.channel.activePlayer == player1.getName()) {
+        if (this.channel.activePlayer.equals(player1)) {
             hand1Dis.flipOpen();
             hand2Dis.flipClose();
         } else {
             hand2Dis.flipOpen();
             hand1Dis.flipClose();
+        }
+    }
+
+    @Override
+    public void onRequestSummon(RequestSummonEvent e) {
+        if (this.channel.activePlayer.equals(e.owner)) {
+            if (e.card instanceof Character) {
+            }
         }
     }
 
@@ -419,10 +447,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             this.onDrawEvent((DrawEvent) event);
         } else if (event instanceof ChangePlayerEvent) {
             this.onChangePlayer((ChangePlayerEvent) event);
-        } else if (event instanceof EndGameEvent) {
-            this.onEndGame((EndGameEvent) event);
         } else if (event instanceof UseLandEvent) {
             this.onUseLandEvent((UseLandEvent) event);
+        } else if (event instanceof RequestSummonEvent) {
+            this.onRequestSummon((RequestSummonEvent) event);
+        } else if (event instanceof EndGameEvent) {
+            this.onEndGame((EndGameEvent) event);
         }
     }
 }
