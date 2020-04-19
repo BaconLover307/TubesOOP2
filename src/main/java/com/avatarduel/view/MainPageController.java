@@ -450,7 +450,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onEndGame(EndGameEvent e) {
-        e.execute(); 
+        if (e.getLoser().equals(player1.getName())){
+            EndGameScreen endGameScreen = new EndGameScreen(player2.getName());
+        } else {
+            EndGameScreen endGameScreen = new EndGameScreen(player1.getName());
+        }
+        this.channel.phase = Phase.GAME_INIT;
     }
 
     @Override

@@ -48,6 +48,7 @@ public class AvatarDuel extends Application implements BaseView {
 
   @Override
   public void start(Stage stage) {
+    EndGameScreen end = new EndGameScreen("Hengky");
     window = stage;
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();

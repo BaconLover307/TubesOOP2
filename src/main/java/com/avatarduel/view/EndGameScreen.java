@@ -12,13 +12,15 @@ import com.avatarduel.view.BaseView;
 import javafx.scene.image.Image;
 import javafx.geometry.Insets;
 import java.awt.Dimension;
-
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
 
 public class EndGameScreen implements BaseView {
 
     private BackgroundSize backgroundSize = new BackgroundSize(SCREENW, SCREENH, false, false, false, false);
 
-    public EndGameScreen() {
+    public EndGameScreen(String winner) {
 
         TilePane endmenu = new TilePane(Orientation.VERTICAL);
         endmenu.setPadding(new Insets(SCREENH/2 - 50, 10, 10,(SCREENW/2)-105));
@@ -31,8 +33,21 @@ public class EndGameScreen implements BaseView {
         Background background = new Background(backgroundImage);
         endmenu.setBackground(background);
 
+        Text text = new Text();
+        text.setText("CONGRATULATION! " + winner + " WIN THIS GAME!");
+        text.setX(SCREENW/5-(50));
+        text.setY(SCREENH/2);
+        text.setStyle(
+            "-fx-text-fill: #DFD7D1;" +
+            "-fx-font-family: Herculanum;" +
+            "-fx-font-size: 50;" 
+        );
+
+        endmenu.getChildren().add(text);
+
         Scene s = new Scene(endmenu);
         Stage stage = new Stage();
+        stage.setTitle("Avatar Duel - K3 G08");
         stage.setScene(s);
         stage.setMaximized(true);
         stage.show();
