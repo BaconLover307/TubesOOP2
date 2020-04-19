@@ -12,13 +12,14 @@ public class GameplayChannel implements EventChannel {
     private HashMap<String, ArrayList<Subscriber>> listSubscriber;
     public Phase phase;
     public Player activePlayer;
-    public SummonedCharacter lastClickedCard;
+    public SummonedCharacter lastClickedCard; // karakter milik active player di arena yang diclicked
     public boolean isSelecting;
 
     public GameplayChannel() {
         this.listSubscriber = new HashMap<>();
         this.phase = Phase.GAME_INIT;
         this.isSelecting = false;
+        this.lastClickedCard = null;
       }
     
     public void addSubscriber(String topic, Subscriber s) {
