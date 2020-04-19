@@ -1,16 +1,19 @@
 @font-face {
-src: url("../asset/Herculanum.ttf");
+    src: url("../asset/Herculanum.ttf");
 }
 
 .label {
     -fx-font-family: 'Herculanum';
     -fx-font-size: 30pt;
-    -fx-text-fill: #000000;
+    -fx-background-color: #54261C;
+    -fx-background-radius: 2em;
+    -fx-text-fill: #DFD7D1;
+    -fx-alignment: center;
 }
 
 .button {
     -fx-font-family: 'Herculanum';
-    -fx-font-size: 30pt;
+    -fx-font-size: 24pt;
     -fx-background-color: #4A3B2E;
     -fx-background-radius: 2em;
     -fx-text-fill: #DFD7D1;
@@ -22,4 +25,3 @@ src: url("../asset/Herculanum.ttf");
 .button:pressed {
     -fx-background-color: #785F4A;
 }
-

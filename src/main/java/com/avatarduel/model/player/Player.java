@@ -38,9 +38,12 @@ public class Player implements Publisher, Subscriber,
         channel.addSubscriber("SPEND_POWER_EVENT", this);
     }
 
-    public String getName(){
-        return this.name;
-    }
+    public String getName() {return this.name;}
+    public Deck getDeck() {return this.deck;}
+    public Hand getHand() {return this.hand;}
+    public Board getBoard() {return this.board;}
+    public int getHealth() {return this.health;}
+    public Power getPower() {return this.powers;}
 
     public void publish(String topic, BaseEvent event) {
         this.channel.sendEvent(topic, event);
@@ -58,14 +61,13 @@ public class Player implements Publisher, Subscriber,
         }  
     }
 
-    public Deck getDeck() {return this.deck;}
 
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
         if(this.name == e.target){
             this.health -= e.amount;
             if (this.health <= 0){
-                this.publish("GAMESTATE", new EndGameEvent(this.name));
+                this.publish("END_GAME", new EndGameEvent(this.name));
             }
         }
     }

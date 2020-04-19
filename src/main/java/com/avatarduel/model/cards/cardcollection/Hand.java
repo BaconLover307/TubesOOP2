@@ -104,6 +104,7 @@ public class Hand extends CardCollection implements Publisher, Subscriber,
         if(this.getPlayer().equals(e.h)){
             this.add(e.c);
             this.usedLand = false;
+            e.execute();
         }
     }
 

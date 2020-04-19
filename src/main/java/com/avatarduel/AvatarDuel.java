@@ -1,8 +1,12 @@
 package com.avatarduel;
+import com.avatarduel.model.cards.cardcollection.Deck;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.util.List;
 
+import com.avatarduel.util.CSVReader;
 import com.avatarduel.view.MainPageController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -26,9 +30,9 @@ import javafx.event.EventHandler;
 import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.view.Settings;
 import com.avatarduel.view.InputPlayer;
+import com.avatarduel.model.cards.card.Land;
 
 public class AvatarDuel extends Application {
-
   private GameplayChannel gameplay;
   Stage window;
   Scene inGame, mainMenu;
@@ -44,6 +48,9 @@ public class AvatarDuel extends Application {
   private int cardAmount = 60;
   private String playerName1, playerName2;
 
+  private static final String CHAR_CSV_FILE_PATH = "card/data/character.csv";
+  private static final String AURA_CSV_FILE_PATH = "card/data/skill_aura.csv";
+  private static final String LAND_CSV_FILE_PATH = "card/data/land.csv";
 
   @Override
   public void start(Stage stage) {
@@ -51,28 +58,26 @@ public class AvatarDuel extends Application {
     stage.setTitle("Avatar Duel - K3 G08");
     gameplay = new GameplayChannel();
 
+
     Button btnStart = new Button("START");
     Button btnSetting = new Button("SETTINGS");
     Button btnExit = new Button("EXIT");
 
     btnStart.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-    btnStart.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent e) {
-        try {
-          InputPlayer inpP1 = new InputPlayer(1);
-          inpP1.showInputPlayer();
-          playerName1 = inpP1.getName();
-          InputPlayer inpP2 = new InputPlayer(2);
-          inpP2.showInputPlayer();
-          playerName2 = inpP2.getName();
-          if (playerName1.equals(playerName2)) {
-            playerName2 = playerName2 + "*";
-          }
-          MainScreen(window);
-        } catch (Exception err) {
-          err.printStackTrace();
+    btnStart.setOnAction(e -> {
+      try {
+        InputPlayer inpP1 = new InputPlayer(1);
+        inpP1.showInputPlayer();
+        playerName1 = inpP1.getName();
+        InputPlayer inpP2 = new InputPlayer(2);
+        inpP2.showInputPlayer();
+        playerName2 = inpP2.getName();
+        if (playerName1.equals(playerName2)) {
+          playerName2 = playerName2 + "*";
         }
+        MainScreen(window);
+      } catch (Exception err) {
+        err.printStackTrace();
       }
     });
 
@@ -121,14 +126,14 @@ public class AvatarDuel extends Application {
     Pane main = loader.load();
     pane.getChildren().add(main);
     Scene scene = new Scene(pane);
-    Image image = new Image("com/avatarduel/asset/board.png");
-    BackgroundImage backgroundImage = new BackgroundImage(image,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.DEFAULT,
-            backgroundSize);
-    Background background = new Background(backgroundImage);
-    pane.setBackground(background);
+//    Image image = new Image("com/avatarduel/asset/board.png");
+//    BackgroundImage backgroundImage = new BackgroundImage(image,
+//            BackgroundRepeat.NO_REPEAT,
+//            BackgroundRepeat.NO_REPEAT,
+//            BackgroundPosition.DEFAULT,
+//            backgroundSize);
+//    Background background = new Background(backgroundImage);
+//    pane.setBackground(background);
 
     stage.setScene(scene);
     stage.setMaximized(true);
