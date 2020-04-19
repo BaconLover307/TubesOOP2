@@ -128,7 +128,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
 
     public void addSkilltoBoard(int id, Skill card) {
         CardDisplay cD = new CardDisplay(this.channel, card, CARD_SIZEW, CARD_SIZEH);
-//        SummonedCharacter SC = new SummonedCharacter(card, true, channel.activePlayer.getName(), channel);
         arrSkillCD[id] = cD;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/CardDisplay.fxml"));
@@ -200,10 +199,8 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 }
             }
         } else {
-            // TODO ATTACK PLAYER
-            AlertPlayer alert = new AlertPlayer("Attacking directly to the opponent!", Alert.AlertType.INFORMATION, "Attack Player");
+            AlertPlayer alert = new AlertPlayer("Your character cannot attack in this turn!", Alert.AlertType.WARNING, "Character Cannot Attack");
             alert.show();
-            SC.doAttackPlayer();
         }
     }
 
@@ -370,9 +367,12 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                     }
                 }
             } else {
-                AlertPlayer noTarget = new AlertPlayer("There are no enemies to target!", Alert.AlertType.INFORMATION, "No Target");
-                noTarget.show();
-                publish("ATTACK_FAIL", new AttackFailEvent(event.SC.getOwner()));
+                // TODO ATTACK PLAYER
+                AlertPlayer alert = new AlertPlayer("Attacking directly to the opponent!", Alert.AlertType.INFORMATION, "Attack Player");
+                alert.show();
+                event.SC.doAttackPlayer(this.board.getOwner());
+                this.channel.isSelecting = false;
+
             }
         }
     }

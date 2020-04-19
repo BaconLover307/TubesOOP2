@@ -92,6 +92,7 @@ public class Player implements Publisher, Subscriber,
     public void onAttackPlayer(AttackPlayerEvent e) {
         if(this.name.equals(e.target)){
             this.health -= e.amount;
+            System.out.println(this.getName() + this.getHealth());
             if (this.health <= 0){
                 this.publish("END_GAME", new EndGameEvent(this.name));
             }

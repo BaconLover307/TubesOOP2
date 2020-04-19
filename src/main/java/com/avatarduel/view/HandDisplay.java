@@ -20,7 +20,7 @@ import com.avatarduel.model.cards.cardcollection.Hand;
 public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         DrawEvent.DrawEventHandler,
         SummonCharacterEvent.SummonCharacterEventHandler,
-//        DiscardEvent.DiscardEventHandler,
+        SummonSkillEvent.SummonSkillEventHandler,
         UseLandEvent.UseLandEventHandler {
 
     private Hand hand;
@@ -35,7 +35,7 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
         this.channel.addSubscriber("DRAW_EVENT", this);
         this.channel.addSubscriber("USE_LAND", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
-//        this.channel.addSubscriber("DISCARD", this);
+        this.channel.addSubscriber("SUMMON_SKILL", this);
 
         this.hand = hand;
         this.handBox = new HBox(CARD_SIZEW * 70 / 80);
@@ -137,8 +137,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             }
 
         } else if (cD.getCard() instanceof Skill) {
-            AlertChoice landChoice = new AlertChoice("Summon Skill", "Discard", ("Skill Card " + cD.getCard().getName() + " selected."), "Skill Card");
-            String ret = landChoice.showAndReturn();
+            AlertChoice skillChoice = new AlertChoice("Summon Skill", "Discard", ("Skill Card " + cD.getCard().getName() + " selected."), "Skill Card");
+            String ret = skillChoice.showAndReturn();
             if (ret.equals("Summon Skill")) {
                 if (this.channel.activePlayer.getPowers().getPower(cD.getCard().getElement()).getSize() >= ((Skill) cD.getCard()).getPowVal()) {
                     if (channel.activePlayer.getBoard().isSkillSlotAvailable()) {
@@ -161,30 +161,29 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
 
     @Override
     public void onDrawEvent(DrawEvent e) {
-        if (hand.getPlayer() == e.h) this.addCard(e.c);
+        if (hand.getPlayer().equals(e.h)) this.addCard(e.c);
     }
 
     @Override
     public void onUseLandEvent(UseLandEvent e) {
-        if (hand.getPlayer() == e.owner) {
+        if (hand.getPlayer().equals(e.owner)) {
             this.removeCard(e.land);
         }
     }
 
     @Override
     public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        if (hand.getPlayer() == e.owner) {
+        if (hand.getPlayer().equals(e.owner)) {
             this.removeCard(e.C);
         }
     }
 
-    //    @Override
-//    public void onDiscard(DiscardEvent e) {
-//        if (hand.getPlayer() == e.owner) {
-//            this.removeCard(e.card);
-//            this.hand.removeCard(e.card);
-//        }
-//    }
+    @Override
+    public void onSummonSkillEvent(SummonSkillEvent e) {
+        if (hand.getPlayer().equals(e.owner)) {
+            this.removeCard(e.S);
+        }
+    }
 
     @Override
     public void publish(String topic, BaseEvent event) {this.channel.sendEvent(topic, event);}
@@ -197,6 +196,8 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             onUseLandEvent((UseLandEvent) event);
         } else if (event instanceof SummonCharacterEvent) {
             onSummonCharacterEvent((SummonCharacterEvent) event);
+        } else if (event instanceof SummonSkillEvent) {
+            onSummonSkillEvent((SummonSkillEvent) event);
         }
     }
 }

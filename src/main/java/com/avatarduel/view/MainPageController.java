@@ -284,6 +284,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("SUMMON_SKILL", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
         this.channel.addSubscriber("ATTACK_FAIL", this);
+        this.channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -460,11 +461,17 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
 
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
+        System.out.println("P1: " + player1.getHealth());
+        System.out.println("P2: " + player2.getHealth());
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
         if (e.target.equals(this.player1.getName())) {
             this.health1Text.setValue(Integer.toString(player1.getHealth()));
         } else {
             this.health2Text.setValue(Integer.toString(player2.getHealth()));
         }
+        this.board1.resetBoardProperty();
+        this.board2.resetBoardProperty();
     }
 
     @Override
