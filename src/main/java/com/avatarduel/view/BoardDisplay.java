@@ -197,7 +197,6 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                     );
                     publish("SELECT_ENEMY", new SelectEnemyEvent(SC));
                     this.channel.isSelecting = true;
-                    System.out.println("ATTACK CARD");
                 }
             }
         } else {
@@ -269,7 +268,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                 arrCharPane[i].setOnMouseClicked(e -> {
                     publish("SUMMON_CHARACTER", new SummonCharacterEvent((Character) event.card, ID, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.card.getElement(), ((Character)(event.card)).getPowVal()));
-//                    resetBoardProperty();  -> GA PERLU, UDAH DI MAINCONT
+                    publish("UPDATE_STATUS", new UpdateStatusEvent());
                 });
             }
         }
@@ -334,6 +333,7 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                     publish("SUMMON_SKILL", new SummonSkillEvent(event.skill, event.id, event.owner));
                     publish("SPEND_POWER_EVENT", new SpendPowerEvent(event.owner, event.skill.getElement(), event.skill.getPowVal()));
                     publish("ATTACH_SKILL", new SkillCardAttachedEvent(event.skill, board.getCharwithId(ID), ID));
+                    publish("UPDATE_STATUS", new UpdateStatusEvent());
                 });
             }
         }
@@ -364,17 +364,13 @@ public class BoardDisplay implements BaseView, Initializable, Publisher, Subscri
                             this.channel.isSelecting = false;
                             resetStyle();
                             event.SC.doAttack(getBoard().getCharwithId(ID), ID);
-//                            publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(event.SC, ID));
                         });
                     }
                 }
             } else {
-                // TODO ATTACK PLAYER
                 AlertPlayer alert = new AlertPlayer("Attacking directly to the opponent!", Alert.AlertType.INFORMATION, "Attack Player");
                 alert.show();
                 event.SC.doAttackPlayer(this.board.getOwner());
-                this.channel.isSelecting = false;
-
             }
         }
     }

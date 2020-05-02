@@ -75,9 +75,12 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
     }
 
     public void doAttack(SummonedCharacter target, int ID) {
+        setAlreadyAttack();
         this.publish("ATTACK_CHARACTER_EVENT", new AttackCharacterEvent(this, target, ID));
     }
     public void doAttackPlayer(String target) {
+        setAlreadyAttack();
+        publish("UPDATE_STATUS", new UpdateStatusEvent());
         this.publish("ATTACK_PLAYER_EVENT", new AttackPlayerEvent(this.CharCard.getAttack(), target));
     }
 
@@ -160,7 +163,8 @@ public class SummonedCharacter implements ICharSummoned, Publisher, Subscriber,
                 } else {
                     AlertPlayer fail = new AlertPlayer("Attack failed! Your opponent is stronger than you think!", Alert.AlertType.WARNING, "Attack Failed");
                     fail.show();
-                    publish("ATTACK_FAIL", new AttackFailEvent(e.fromCard.owner));
+                    this.gameplayChannel.isSelecting = false;
+                    publish("UPDATE_STATUS", new UpdateStatusEvent());
                 }
             }
         }

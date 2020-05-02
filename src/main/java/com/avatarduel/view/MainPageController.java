@@ -1,6 +1,8 @@
 package com.avatarduel.view;
 
+import com.avatarduel.model.Element;
 import com.avatarduel.model.cards.card.*;
+import com.avatarduel.model.cards.card.Character;
 import com.avatarduel.model.gameplay.BaseEvent;
 import com.avatarduel.model.Phase;
 import com.avatarduel.model.gameplay.GameplayChannel;
@@ -36,10 +38,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         DisplayCardEvent.DisplayCardEventHandler,
         RequestSummonEvent.RequestSummonEventHandler,
         ChangePlayerEvent.ChangePlayerEventHandler,
-        SummonSkillEvent.SummonSkillEventHandler,
-        SummonCharacterEvent.SummonCharacterEventHandler,
-        AttackFailEvent.AttackFailEventHandler,
-        AttackPlayerEvent.AttackPlayerEventHandler,
+        UpdateStatusEvent.UpdateStatusEventHandler,
         EndGameEvent.EndGameEventHandler {
     private static final String CHAR_CSV_FILE_PATH = "../card/data/character.csv";
     private static final String LAND_CSV_FILE_PATH = "../card/data/land.csv";
@@ -261,7 +260,7 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         this.channel.addSubscriber("SUMMON_SKILL", this);
         this.channel.addSubscriber("SUMMON_CHARACTER", this);
         this.channel.addSubscriber("ATTACK_FAIL", this);
-        this.channel.addSubscriber("ATTACK_PLAYER_EVENT", this);
+        this.channel.addSubscriber("UPDATE_STATUS", this);
 
         this.cardAmount = cardAmount;
         this.player1 = new Player(P1, 80, channel);
@@ -331,10 +330,6 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         if (getPhase() == Phase.DRAW_PHASE) {
             this.publish("RESET_POWER_EVENT", new ResetPowerEvent(this.channel.activePlayer.getName()));
         }
-        // else if (getPhase() == Phase.MAIN_PHASE) {
-        //     System.out.println("P1 HAND: " + this.player1.getHand().getSize());
-        //     System.out.println("P2 HAND: " + this.player2.getHand().getSize());
-        // }
         else if (getPhase() == Phase.END_PHASE) {
             Player nextPlayer = getNextPlayer();
             AlertPlayer alert = new AlertPlayer(nextPlayer.getName() + "'s Turn!", AlertType.INFORMATION, "Info Turn " + (turn % 2 + 1));
@@ -389,31 +384,13 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
             } else {
                 if (this.player1.getName().equals(e.owner)) {
                     this.board1.doSelectSkillSlotAvailable(e);
+                    this.channel.isSelecting = true;
                 } else {
                     this.board2.doSelectSkillSlotAvailable(e);
+                    this.channel.isSelecting = true;
                 }
-                this.channel.isSelecting = true;
             }
         }
-    }
-
-    @Override
-    public void onAttackFail(AttackFailEvent e) {
-        this.board1.resetBoardProperty();
-        this.board2.resetBoardProperty();
-        this.channel.isSelecting = false;
-    }
-
-    @Override
-    public void onSummonCharacterEvent(SummonCharacterEvent e) {
-        this.board1.resetBoardProperty();
-        this.board2.resetBoardProperty();
-    }
-
-    @Override
-    public void onSummonSkillEvent(SummonSkillEvent e) {
-        this.board1.resetBoardProperty();
-        this.board2.resetBoardProperty();
     }
 
     @Override
@@ -427,18 +404,12 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
     }
 
     @Override
-    public void onAttackPlayer(AttackPlayerEvent e) {
-        System.out.println("P1: " + player1.getHealth());
-        System.out.println("P2: " + player2.getHealth());
+    public void onUpdateStatus(UpdateStatusEvent e) {
+        this.health1Text.setValue(Integer.toString(player1.getHealth()));
+        this.health2Text.setValue(Integer.toString(player2.getHealth()));
         this.board1.resetBoardProperty();
         this.board2.resetBoardProperty();
-        if (e.target.equals(this.player1.getName())) {
-            this.health1Text.setValue(Integer.toString(player1.getHealth()));
-        } else {
-            this.health2Text.setValue(Integer.toString(player2.getHealth()));
-        }
-        this.board1.resetBoardProperty();
-        this.board2.resetBoardProperty();
+        this.channel.isSelecting = false;
     }
 
     @Override
@@ -458,20 +429,11 @@ public class MainPageController implements Initializable, Publisher, Subscriber,
         else if (event instanceof RequestSummonEvent) {
             this.onRequestSummon((RequestSummonEvent) event);
         }
-        else if (event instanceof SummonSkillEvent) {
-            this.onSummonSkillEvent((SummonSkillEvent) event);
-        }
-        else if (event instanceof SummonCharacterEvent) {
-            this.onSummonCharacterEvent((SummonCharacterEvent) event);
-        }
-        else if (event instanceof AttackFailEvent) {
-            this.onAttackFail((AttackFailEvent) event);
-        }
         else if (event instanceof EndGameEvent) {
             this.onEndGame((EndGameEvent) event);
         }
-        else if (event instanceof AttackPlayerEvent) {
-            this.onAttackPlayer((AttackPlayerEvent) event);
+        else if (event instanceof UpdateStatusEvent) {
+            this.onUpdateStatus((UpdateStatusEvent) event);
         }
     }
 }

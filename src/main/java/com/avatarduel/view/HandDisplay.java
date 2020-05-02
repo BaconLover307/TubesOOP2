@@ -111,7 +111,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
-                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
             }
 
         } else if (cD.getCard() instanceof Character) {
@@ -133,7 +132,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
-                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
             }
 
         } else if (cD.getCard() instanceof Skill) {
@@ -154,7 +152,6 @@ public class HandDisplay implements BaseView, Flippable, Publisher, Subscriber,
             } else if (ret.equals("Discard")) {
                 this.removeCard(cD.getCard());
                 this.hand.removeCard(cD.getCard());
-                this.publish("DISCARD", new DiscardEvent(cD.getCard(), this.getHand().getPlayer()));
             }
         }
     }

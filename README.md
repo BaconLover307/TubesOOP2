@@ -19,3 +19,6 @@
 
 
 ![Screenshot permainan3](doc/gameplay3.png)
+
+## Note
+Jika terjebak dalam game, tekan ESCAPE

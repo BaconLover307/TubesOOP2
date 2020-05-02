@@ -3,11 +3,7 @@ import com.avatarduel.model.gameplay.GameplayChannel;
 import com.avatarduel.model.gameplay.Publisher;
 import com.avatarduel.model.gameplay.Subscriber;
 import com.avatarduel.model.gameplay.BaseEvent;
-import com.avatarduel.model.gameplay.events.AttackPlayerEvent;
-import com.avatarduel.model.gameplay.events.EndGameEvent;
-import com.avatarduel.model.gameplay.events.ResetPowerEvent;
-import com.avatarduel.model.gameplay.events.UseLandEvent;
-import com.avatarduel.model.gameplay.events.SpendPowerEvent;
+import com.avatarduel.model.gameplay.events.*;
 import com.avatarduel.model.cards.cardcollection.Deck;
 import com.avatarduel.model.cards.cardcollection.Hand;
 import com.avatarduel.model.cards.cardcollection.Board;
@@ -90,12 +86,13 @@ public class Player implements Publisher, Subscriber,
      */
     @Override
     public void onAttackPlayer(AttackPlayerEvent e) {
-        if(this.name.equals(e.target)){
+        if (this.name.equals(e.target)){
             this.health -= e.amount;
             System.out.println(this.getName() + this.getHealth());
             if (this.health <= 0){
                 this.publish("END_GAME", new EndGameEvent(this.name));
             }
+            publish("UPDATE_STATUS", new UpdateStatusEvent());
         }
     }
 
